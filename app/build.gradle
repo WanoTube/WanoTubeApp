@@ -4,8 +4,8 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.0"
+    compileSdkVersion 31
+    buildToolsVersion "31.0.0"
 
     defaultConfig {
         applicationId "com.wanotube.wanotubeapp"
@@ -40,7 +40,8 @@ dependencies {
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.2'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
-    
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
     // FFMPEG dependencies
 //    implementation fileTree(dir: 'libs', include: ['*.jar'])
 //    implementation 'com.writingminds:FFmpegAndroid:0.3.2'
