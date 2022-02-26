@@ -54,8 +54,8 @@ dependencies {
 
     // navigation
     def nav_version = "2.4.1"
-    implementation "android.arch.navigation:navigation-fragment-ktx:$nav_version"
-    implementation "android.arch.navigation:navigation-ui-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
     // coroutines for getting off the UI thread
     def coroutines = "1.5.0"
