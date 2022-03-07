@@ -7,13 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.wanotube.wanotubeapp.databinding.ActivityMainBinding
-import com.wanotube.wanotubeapp.domain.User
-
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        setContentView(R.layout.activity_main)
         val binding: ActivityMainBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_main)
 
@@ -21,6 +18,7 @@ class MainActivity : AppCompatActivity() {
         val userFragment= UserFragment()
         
         setCurrentFragment(homeFragment)
+        
         binding.bottomNavigationView.setOnItemSelectedListener {
             when(it.itemId){
                 R.id.home->setCurrentFragment(homeFragment)
