@@ -13,14 +13,20 @@ import com.wanotube.wanotubeapp.util.smartTruncate
 /**
  * Videos represent a WanoTube video that can be displayed
  */
-data class WanoTubeVideo(val title: String,
-                         val description: String,
-                         val url: String,
-                         val updated: String,
-                         val thumbnail: String) {
+data class WanoTubeVideo(
+    val title: String,
+    val description: String,
+    val url: String,
+    val updated: String,
+    val thumbnail: String,
+) {
     /**
      * Short description is used for displaying truncated descriptions in the UI
      */
     val shortDescription: String
         get() = description.smartTruncate(200)
+}
+
+data class User (val firstName: String, val lastName: String) {
+    
 }
