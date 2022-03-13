@@ -6,6 +6,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.wanotube.wanotubeapp.databinding.ActivityMainBinding
+import com.wanotube.wanotubeapp.ui.home.HomeFragment
 
 
 class MainActivity : AppCompatActivity() {
