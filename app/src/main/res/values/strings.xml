@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">WanoTubeApp</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="home">Home</string>
     <string name="profile">Profile</string>
+    <string name="following">Following</string>
+    <string name="shorts">Shorts</string>
 
 </resources>

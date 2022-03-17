@@ -1,18 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/page_1"
+        android:id="@+id/home"
         android:enabled="true"
         android:icon="@drawable/ic_home"
-        android:title="Test"/>
+        android:title="Home"/>
     <item
-        android:id="@+id/page_2"
+        android:id="@+id/shorts"
         android:enabled="true"
-        android:icon="@drawable/ic_home"
-        android:title="Test"/>
+        android:icon="@drawable/ic_slow_motion"
+        android:title="Shorts"/>
     <item
-        android:id="@+id/page_3"
+        android:id="@+id/create"
+        android:enabled="false"
+        android:icon="@drawable/ic_add"
+        android:title="Create"/>
+    <item
+        android:id="@+id/following"
         android:enabled="true"
-        android:icon="@drawable/ic_home"
-        android:title="Test"/>
+        android:icon="@drawable/ic_library"
+        android:title="Following"/>
+    <item
+        android:id="@+id/user"
+        android:enabled="true"
+        android:icon="@drawable/ic_person"
+        android:title="User"/>
 </menu>

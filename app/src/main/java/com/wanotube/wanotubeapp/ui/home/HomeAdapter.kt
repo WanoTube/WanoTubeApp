@@ -15,7 +15,7 @@ class HomeAdapter(private val dataSet: Array<String>) :
      * (custom ViewHolder).
      */
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val textView: TextView = view.findViewById(R.id.textView)
+//        val textView: TextView = view.findViewById(R.id.textView)
 
         init {
             // Define click listener for the ViewHolder's View.
@@ -36,7 +36,7 @@ class HomeAdapter(private val dataSet: Array<String>) :
 
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
-        viewHolder.textView.text = dataSet[position]
+//        viewHolder.textView.text = dataSet[position]
     }
 
     // Return the size of your dataset (invoked by the layout manager)
