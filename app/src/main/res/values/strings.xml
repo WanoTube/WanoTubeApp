@@ -1,10 +1,8 @@
 <resources>
     <string name="app_name">WanoTubeApp</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="bottomNavigationView">Bottom Navigation View</string>
-    <string name="settings">Settings</string>
-    <string name="person">Person</string>
     <string name="home">Home</string>
-    <string name="user">User</string>
+    <string name="profile">Profile</string>
+    <string name="following">Following</string>
+    <string name="shorts">Shorts</string>
+
 </resources>
