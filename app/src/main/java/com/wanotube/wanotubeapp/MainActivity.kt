@@ -1,10 +1,7 @@
 package com.wanotube.wanotubeapp
 
 import android.os.Bundle
-import android.view.View
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.Toast
+import android.view.Menu
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -34,22 +31,21 @@ class MainActivity : AppCompatActivity() {
 
     private fun customActionBar() {
 
-        supportActionBar!!.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
-        supportActionBar!!.setDisplayShowCustomEnabled(true)
-        supportActionBar!!.setCustomView(R.layout.custom_action_bar_layout)
-        val view: View = supportActionBar!!.customView
-
-        val backButton = view.findViewById(R.id.action_bar_back) as ImageButton
-        backButton.setOnClickListener { finish() }
-
-        val forwardButton = view.findViewById(R.id.action_bar_forward) as ImageButton
-        forwardButton.setOnClickListener {
-            Toast.makeText(applicationContext, "Forward Button is clicked", Toast.LENGTH_LONG)
-                .show()
+        supportActionBar!!.apply {
+            displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
+            setDisplayShowCustomEnabled(true)
+            setCustomView(R.layout.custom_action_bar_layout)
+            elevation = 0f
         }
-
-
     }
+
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        super.onCreateOptionsMenu(menu)
+//        val inflater = menuInflater
+//        inflater.inflate(R.menu.toolbar_icon_menu, menu)
+//        return true
+//    }
+
     private fun customNavigation(navigationBarView: BottomNavigationView) {
 
         navigationBarView.setOnItemSelectedListener { item ->
