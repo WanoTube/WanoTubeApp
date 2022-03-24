@@ -1,10 +1,13 @@
 package com.wanotube.wanotubeapp.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.wanotube.wanotubeapp.database.VideosDatabase
 import com.wanotube.wanotubeapp.database.asDomainModel
 import com.wanotube.wanotubeapp.domain.WanoTubeVideo
+import com.wanotube.wanotubeapp.network.NetworkVideo
+import com.wanotube.wanotubeapp.network.NetworkVideoContainer
 import com.wanotube.wanotubeapp.network.WanoTubeNetwork
 import com.wanotube.wanotubeapp.network.asDatabaseModel
 import kotlinx.coroutines.Dispatchers
@@ -29,9 +32,25 @@ class VideosRepository(private val database: VideosDatabase) {
      */
     suspend fun refreshVideos() {
         withContext(Dispatchers.IO) {
-            Timber.d("refresh videos is called");
-            val playlist = WanoTubeNetwork.wanotubes.getPlaylist()
-            database.videoDao.insertAll(playlist.asDatabaseModel())
+//            val playlist = WanoTubeNetwork.wanotubes.getPlaylist()
+            val playlist = NetworkVideoContainer(
+                videos = listOf(
+                    NetworkVideo(
+                        id = "Bye",
+                        title = "Test",
+                        description = "description",
+                        url = "https://www.youtube.com/watch?v=n2B22TfO3CM",
+                        updated = "Test",
+                        thumbnail = "Test",
+                        closedCaptions = "closedCaptions"
+                    )
+                )
+            )
+            Log.e("Repo", "playlist: $playlist")
+
+            val playListModel = playlist.asDatabaseModel()
+            Log.e("Repo", "playListModel: $playListModel")
+            database.videoDao.insertAll(playListModel)
         }
     }
 }

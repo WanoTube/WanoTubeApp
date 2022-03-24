@@ -16,6 +16,7 @@ import com.wanotube.wanotubeapp.domain.WanoTubeVideo
 @Entity
 data class DatabaseVideo constructor(
     @PrimaryKey
+    val id: String,
     val url: String,
     val updated: String,
     val title: String,
@@ -28,6 +29,7 @@ data class DatabaseVideo constructor(
 fun List<DatabaseVideo>.asDomainModel(): List<WanoTubeVideo> {
     return map {
         WanoTubeVideo(
+            id = it.id,
             url = it.url,
             title = it.title,
             description = it.description,

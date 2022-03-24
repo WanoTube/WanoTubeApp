@@ -91,7 +91,7 @@ class WanoTubeViewModel(application: Application) : AndroidViewModel(application
     /**
      * Factory for constructing WanoTubeViewModel with parameter
      */
-    class Factory(val app: Application) : ViewModelProvider.Factory {
+    class WanoTubeViewModelFactory(val app: Application) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(WanoTubeViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")

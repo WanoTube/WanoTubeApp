@@ -14,6 +14,7 @@ import com.wanotube.wanotubeapp.util.smartTruncate
  * Videos represent a WanoTube video that can be displayed
  */
 data class WanoTubeVideo(
+    val id: String,
     val title: String,
     val description: String,
     val url: String,

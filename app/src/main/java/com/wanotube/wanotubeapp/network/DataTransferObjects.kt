@@ -27,6 +27,7 @@ data class NetworkVideoContainer(val videos: List<NetworkVideo>)
  */
 @JsonClass(generateAdapter = true)
 data class NetworkVideo(
+    val id: String,
     val title: String,
     val description: String,
     val url: String,
@@ -40,6 +41,7 @@ data class NetworkVideo(
 fun NetworkVideoContainer.asDatabaseModel(): List<DatabaseVideo> {
     return videos.map {
         DatabaseVideo(
+            id = it.id,
             title = it.title,
             description = it.description,
             url = it.url,
