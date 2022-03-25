@@ -69,7 +69,7 @@ class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable {
     //    private val youtubeLayout: YoutubeLayout
     private val isMaximise = true
     private var url =
-        "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
+        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -116,10 +116,8 @@ class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable {
     }
 
     private fun initiateVideo() {
-        videoView.apply {
-            setVideoURI(Uri.parse(url))
-            start()
-        }
+        videoView.setVideoURI(Uri.parse(url))
+        videoView.start()
 
         if (videoView.isPlaying)
             progressBar.visibility = View.VISIBLE;
