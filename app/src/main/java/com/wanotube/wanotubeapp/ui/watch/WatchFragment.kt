@@ -84,7 +84,8 @@ class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable {
         setHandler()
         initiateVideo()
 
-        return inflater.inflate(R.layout.fragment_watch, container, false)
+        //IMPORTANT
+        return binding.root
     }
 
     private fun initLayouts(binding: FragmentWatchBinding) {
