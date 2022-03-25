@@ -15,6 +15,9 @@ import com.wanotube.wanotubeapp.ui.shorts.ShortsFragment
 import com.wanotube.wanotubeapp.ui.watch.WatchFragment
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var  currentFragment: Fragment
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -22,7 +25,9 @@ class MainActivity : AppCompatActivity() {
             DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         customActionBar()
-        loadFragment(WatchFragment())
+
+        currentFragment = WatchFragment()
+        loadFragment(currentFragment)
 
         val navigationBarView = binding.bottomNavigation
         customNavigation(navigationBarView)
@@ -80,4 +85,27 @@ class MainActivity : AppCompatActivity() {
         transaction.addToBackStack(null)
         transaction.commit()
     }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (currentFragment is IOnFocusListenable) {
+            (currentFragment as IOnFocusListenable).onWindowFocusChanged(hasFocus)
+        }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        (currentFragment as? IOnBackPressed)?.onBackPressed()?.not()?.let {
+            super.onBackPressed()
+        }
+    }
+}
+
+
+interface IOnFocusListenable {
+    fun onWindowFocusChanged(hasFocus: Boolean)
+}
+
+interface IOnBackPressed {
+    fun onBackPressed(): Boolean
 }
