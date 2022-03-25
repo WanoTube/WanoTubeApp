@@ -12,6 +12,7 @@ import com.wanotube.wanotubeapp.ui.following.FollowingFragment
 import com.wanotube.wanotubeapp.ui.home.HomeFragment
 import com.wanotube.wanotubeapp.ui.profile.ProfileFragment
 import com.wanotube.wanotubeapp.ui.shorts.ShortsFragment
+import com.wanotube.wanotubeapp.ui.watch.WatchFragment
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,7 +22,7 @@ class MainActivity : AppCompatActivity() {
             DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         customActionBar()
-        loadFragment(HomeFragment())
+        loadFragment(WatchFragment())
 
         val navigationBarView = binding.bottomNavigation
         customNavigation(navigationBarView)

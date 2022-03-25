@@ -32,15 +32,27 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@drawable/ic_slow_motion" />
-        <TextView
-            android:id="@+id/description"
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="20dp"
-            android:layout_marginStart="8dp"
+            android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/avatar_user"
             app:layout_constraintTop_toTopOf="@+id/avatar_user"
-            tools:text="Wednesday" />
+            android:layout_marginStart="8dp"
+            android:orientation="vertical">
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="8dp"
+                    tools:text="Wednesday" />
+                <TextView
+                    android:id="@+id/subtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="8dp"
+                    tools:text="Wednesday" />
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

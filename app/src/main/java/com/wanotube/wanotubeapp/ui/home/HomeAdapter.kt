@@ -34,19 +34,27 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView){
 
-        private val descriptionView: TextView = itemView.findViewById(R.id.description)
+        private val titleView: TextView = itemView.findViewById(R.id.title)
+        private val subtitleView: TextView = itemView.findViewById(R.id.subtitle)
+
         private val thumbnailVideoView: ImageView = itemView.findViewById(R.id.thumbnail_video)
         private val avatarView: ImageView = itemView.findViewById(R.id.avatar_user)
 
         fun bind(item: WanoTubeVideo) {
-            descriptionView.text = item.description
+            titleView.text = item.title
+            val subtitle = item.authorId + "  " + item.totalViews + "views"
+            subtitleView.text = subtitle
+
             val thumbnailVideo = getThumbnailYoutubeVideo(item.url)
             Glide.with(itemView.context)
                 .load(thumbnailVideo)
                 .override(480, 269)
                 .centerCrop()
                 .into(thumbnailVideoView)
-            Glide.with(avatarView.context).load(thumbnailVideo).circleCrop().into(avatarView)
+            Glide.with(avatarView.context)
+                .load(thumbnailVideo)
+                .circleCrop()
+                .into(avatarView)
         }
 
         companion object {
