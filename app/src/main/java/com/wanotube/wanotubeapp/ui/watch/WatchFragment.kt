@@ -1,5 +1,7 @@
 package com.wanotube.wanotubeapp.ui.watch
 
+import android.content.pm.ActivityInfo
+import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_SENSOR
 import android.content.res.Configuration
 import android.media.MediaPlayer
 import android.net.Uri
@@ -7,8 +9,12 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
 import android.util.TypedValue
+import android.view.GestureDetector
+import android.view.GestureDetector.SimpleOnGestureListener
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
+import android.view.View.OnTouchListener
 import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.AlphaAnimation
@@ -18,6 +24,7 @@ import android.view.animation.DecelerateInterpolator
 import android.view.animation.ScaleAnimation
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.MediaController
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import android.widget.SeekBar
@@ -26,11 +33,13 @@ import android.widget.TextView
 import android.widget.VideoView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import com.wanotube.wanotubeapp.IOnBackPressed
+import com.wanotube.wanotubeapp.IOnFocusListenable
 import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.databinding.FragmentWatchBinding
 
 
-class WatchFragment: Fragment() {
+class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable {
     private lateinit var videoLayout: RelativeLayout
     private lateinit var videoView: VideoView
     private lateinit var forwardImg: ImageView
@@ -71,6 +80,8 @@ class WatchFragment: Fragment() {
         )
 
         initLayouts(binding)
+        initialiseSeekBar()
+        setHandler()
         initiateVideo()
 
         return inflater.inflate(R.layout.fragment_watch, container, false)
@@ -167,19 +178,14 @@ class WatchFragment: Fragment() {
         super.onConfigurationChanged(newConfig)
     }
 
-//    fun onWindowFocusChanged(hasFocus: Boolean) {
-//        super.onWindowFocusChanged(hasFocus)
-//        val chechConfig: Configuration = resources.configuration
-//        if (chechConfig.orientation === Configuration.ORIENTATION_LANDSCAPE) {
-//            if (hasFocus) {
-//                hideSystemUI()
-//            }
-//        }
-//    }
-
-//    var height =
-//        TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 230.0f, resources.displayMetrics)
-//            .toInt()
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        val checkConfig: Configuration = resources.configuration
+        if (checkConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            if (hasFocus) {
+                hideSystemUI()
+            }
+        }
+    }
 
     private fun hideSystemUI() {
         val decorView: View? = activity?.window?.decorView
@@ -374,7 +380,7 @@ class WatchFragment: Fragment() {
         return time
     }
 
-    fun initialiseSeekBar() {
+    private fun initialiseSeekBar() {
         seekBar.progress = 0
         seekBar.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
@@ -393,19 +399,27 @@ class WatchFragment: Fragment() {
         })
     }
 
-//    private fun releaseVideoPlayer() {
+    private fun releaseVideoPlayer() {
+        videoHandler.removeCallbacks(videoRunnable)
+
 //        if (videoView != null) {
 //            videoHandler.removeCallbacks(videoRunnable)
 //            videoView = null
 //        }
-//    }
+    }
 
-//    override fun onBackPressed(): Boolean {
-//        super.onBackPressed()
-//        releaseVideoPlayer()
-//    }
+    override fun onBackPressed(): Boolean {
+        releaseVideoPlayer()
+        return true
+//        return if (myCondition) {
+//            //action not popBackStack
+//            true
+//        } else {
+//            false
+//        }
+    }
 
-    fun dismissControls() {
+    private fun dismissControls() {
         cancelTimer()
         if (mediaControls.visibility == View.VISIBLE) {
             val fadeOut: Animation = AlphaAnimation(1f, 0f)
