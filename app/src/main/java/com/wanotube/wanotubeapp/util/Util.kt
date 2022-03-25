@@ -31,3 +31,8 @@ fun String.smartTruncate(length: Int): String {
     }
     return builder.toString()
 }
+
+fun getThumbnailYoutubeVideo(url: String): String {
+    val id = url.split("=")[1]
+    return "https://img.youtube.com/vi/$id/0.jpg"
+}

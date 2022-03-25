@@ -42,14 +42,18 @@ class VideosRepository(private val database: VideosDatabase) {
                         url = "https://www.youtube.com/watch?v=n2B22TfO3CM",
                         updated = "Test",
                         thumbnail = "Test",
-                        closedCaptions = "closedCaptions"
+                        size = 0,
+                        totalViews = 200,
+                        totalLikes = 100,
+                        totalComments = 2,
+                        duration = "2:30",
+                        authorId = "User",
+                        visibility = 1
                     )
                 )
             )
-            Log.e("Repo", "playlist: $playlist")
 
             val playListModel = playlist.asDatabaseModel()
-            Log.e("Repo", "playListModel: $playListModel")
             database.videoDao.insertAll(playListModel)
         }
     }

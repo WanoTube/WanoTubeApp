@@ -1,7 +1,6 @@
 package com.wanotube.wanotubeapp
 
 import android.os.Bundle
-import android.view.Menu
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -13,7 +12,6 @@ import com.wanotube.wanotubeapp.ui.following.FollowingFragment
 import com.wanotube.wanotubeapp.ui.home.HomeFragment
 import com.wanotube.wanotubeapp.ui.profile.ProfileFragment
 import com.wanotube.wanotubeapp.ui.shorts.ShortsFragment
-
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,13 +36,6 @@ class MainActivity : AppCompatActivity() {
             elevation = 0f
         }
     }
-
-//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-//        super.onCreateOptionsMenu(menu)
-//        val inflater = menuInflater
-//        inflater.inflate(R.menu.toolbar_icon_menu, menu)
-//        return true
-//    }
 
     private fun customNavigation(navigationBarView: BottomNavigationView) {
 

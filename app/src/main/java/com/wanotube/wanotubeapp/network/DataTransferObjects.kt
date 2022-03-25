@@ -28,12 +28,18 @@ data class NetworkVideoContainer(val videos: List<NetworkVideo>)
 @JsonClass(generateAdapter = true)
 data class NetworkVideo(
     val id: String,
-    val title: String,
-    val description: String,
     val url: String,
+    val title: String,
     val updated: String,
+    val description: String,
     val thumbnail: String,
-    val closedCaptions: String?)
+    val size: Long,
+    val totalViews: Long,
+    val totalLikes: Long,
+    val totalComments: Long,
+    val visibility: Int,
+    val duration: String,
+    val authorId: String)
 
 /**
  * Convert Network results to database objects
@@ -42,10 +48,17 @@ fun NetworkVideoContainer.asDatabaseModel(): List<DatabaseVideo> {
     return videos.map {
         DatabaseVideo(
             id = it.id,
+            url = it.url,
             title = it.title,
             description = it.description,
-            url = it.url,
             updated = it.updated,
-            thumbnail = it.thumbnail)
+            thumbnail = it.thumbnail,
+            size = it.size,
+            totalViews = it.totalViews,
+            totalLikes = it.totalLikes,
+            totalComments = it.totalComments,
+            visibility = it.visibility,
+            duration = it.duration,
+            authorId = it.authorId)
     }
 }

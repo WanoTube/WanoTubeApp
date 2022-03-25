@@ -1,7 +1,6 @@
 package com.wanotube.wanotubeapp.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,14 +36,11 @@ class HomeFragment : Fragment() {
 
         binding.videoList.adapter = adapter
 
-        videoViewModel.playlist.observe(viewLifecycleOwner, Observer {
+        videoViewModel.playlist.observe(viewLifecycleOwner, {
             it?.let {
                 adapter.data = it
             }
         })
-
-        val dataAdapter = adapter.data
-        Log.e("Ngan", "dataAdapter: $dataAdapter")
 
         binding.lifecycleOwner = this
 
