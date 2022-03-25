@@ -336,10 +336,10 @@ class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable {
         countdownTimer?.cancel()
     }
 
-//    protected override fun onDestroy() {
-//        cancelTimer()
-//        super.onDestroy()
-//    }
+    override fun onDestroy() {
+        cancelTimer()
+        super.onDestroy()
+    }
 
     fun setHandler() {
         videoHandler = Handler()
