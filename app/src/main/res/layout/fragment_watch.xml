@@ -98,7 +98,7 @@
                             android:layout_height="match_parent">
                         </FrameLayout>
                         <ImageView
-                            android:visibility="visible"
+                            android:visibility="gone"
                             android:background="?selectableItemBackgroundBorderless"
                             android:id="@+id/showup"
                             android:padding="10sp"
@@ -295,92 +295,7 @@
             </LinearLayout>
             <View style="@style/Divider.Horizontal"/>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
 
-                <ImageView
-                    android:id="@+id/avatar_user"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:src="@drawable/ic_slow_motion" />
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/avatar_user"
-                    app:layout_constraintTop_toTopOf="@+id/avatar_user"
-                    android:layout_marginStart="8dp"
-                    android:orientation="vertical">
-                    <TextView
-                        android:id="@+id/title"
-                        android:layout_width="match_parent"
-                        android:layout_height="20dp"
-                        android:layout_marginStart="8dp"
-                        tools:text="Wednesday" />
-                    <TextView
-                        android:id="@+id/subtitle"
-                        android:layout_width="match_parent"
-                        android:layout_height="20dp"
-                        android:layout_marginStart="8dp"
-                        tools:text="Wednesday" />
-                </LinearLayout>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-            <View style="@style/Divider.Horizontal"/>
-            <TextView
-                android:id="@+id/commentTitle"
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                tools:text="Comment" />
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/avatar_user_1"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:src="@drawable/ic_slow_motion" />
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/avatar_user_1"
-                    app:layout_constraintTop_toTopOf="@+id/avatar_user_1"
-                    android:layout_marginStart="8dp"
-                    android:orientation="vertical">
-                    <TextView
-                        android:id="@+id/title_1"
-                        android:layout_width="match_parent"
-                        android:layout_height="20dp"
-                        android:layout_marginStart="8dp"
-                        tools:text="Wednesday" />
-                    <TextView
-                        android:id="@+id/subtitle_1"
-                        android:layout_width="match_parent"
-                        android:layout_height="20dp"
-                        android:layout_marginStart="8dp"
-                        tools:text="Wednesday" />
-                </LinearLayout>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
     </FrameLayout>
 </layout>

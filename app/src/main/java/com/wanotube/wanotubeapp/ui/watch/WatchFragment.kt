@@ -24,7 +24,6 @@ import android.view.animation.DecelerateInterpolator
 import android.view.animation.ScaleAnimation
 import android.widget.FrameLayout
 import android.widget.ImageView
-import android.widget.MediaController
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import android.widget.SeekBar
@@ -114,17 +113,125 @@ class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable {
         dismissControlFrame.setOnClickListener {
             dismissControls()
         }
+
+//        showImgUp.setOnClickListener{
+//            showUp()
+//        }
+//        showImgDown.setOnClickListener{
+//            showDown()
+//        }
     }
 
+    private fun setClickListener() {
+
+        val gd = GestureDetector(context, object : SimpleOnGestureListener() {
+            override fun onDoubleTap(e: MotionEvent): Boolean {
+                if (check == 1) fastRewind() else if (check == 0) fastForward()
+                return true
+            }
+
+            override fun onLongPress(e: MotionEvent) {}
+            override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
+                startTimer()
+                return super.onSingleTapConfirmed(e)
+            }
+
+            override fun onDoubleTapEvent(e: MotionEvent): Boolean {
+                return true
+            }
+
+            override fun onDown(e: MotionEvent): Boolean {
+                return true
+            }
+
+            override fun onScroll(
+                e1: MotionEvent,
+                e2: MotionEvent,
+                distanceX: Float,
+                distanceY: Float
+            ): Boolean {
+                return super.onScroll(e1, e2, distanceX, distanceY)
+            }
+
+            override fun onFling(
+                event1: MotionEvent,
+                event2: MotionEvent,
+                velocityX: Float,
+                velocityY: Float
+            ): Boolean {
+                //TODO: Minimise and maximise
+//                if (isMaximise) {
+//                   minimiseView()
+//                } else {
+//                    maximiseView()
+//                }
+                return true
+            }
+        })
+
+        forwardFrame.setOnTouchListener(OnTouchListener { view, event ->
+            check = 1
+            gd.onTouchEvent(event)
+        })
+
+        backFrame.setOnTouchListener(OnTouchListener { view, event ->
+            check = 0
+            gd.onTouchEvent(event)
+        })
+
+        playBtn.setOnClickListener(View.OnClickListener {
+            val fadeIn: Animation = AlphaAnimation(0f, 1f)
+            fadeIn.interpolator = DecelerateInterpolator()
+            fadeIn.duration = 500
+            val animation = AnimationSet(false)
+            animation.addAnimation(fadeIn)
+            pauseBtn.animation = animation
+            videoView.start()
+            pauseBtn.visibility = View.VISIBLE
+            playBtn.visibility = View.GONE
+        })
+
+        pauseBtn.setOnClickListener(View.OnClickListener {
+            val fadeIn: Animation = AlphaAnimation(0f, 1f)
+            fadeIn.interpolator = DecelerateInterpolator()
+            fadeIn.duration = 500
+            val animation = AnimationSet(false)
+            animation.addAnimation(fadeIn)
+            playBtn.animation = animation
+            pauseBtn.visibility = View.GONE
+            playBtn.visibility = View.VISIBLE
+            videoView.pause()
+        })
+
+        fullscreen.setOnClickListener {
+            activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+            val TIME_OUT = 2500
+            Handler().postDelayed(
+                { activity?.requestedOrientation = SCREEN_ORIENTATION_SENSOR },
+                TIME_OUT.toLong()
+            )
+        }
+
+        fullscreenExit.setOnClickListener(View.OnClickListener {
+            activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+            val TIME_OUT = 2500
+            Handler().postDelayed(
+                { activity?.requestedOrientation = SCREEN_ORIENTATION_SENSOR },
+                TIME_OUT.toLong()
+            )
+        })
+    }
     private fun initiateVideo() {
         videoView.setVideoURI(Uri.parse(url))
-        videoView.start()
+        //TODO
+//        videoView.start()
 
         if (videoView.isPlaying)
             progressBar.visibility = View.VISIBLE;
 
         videoView.setOnPreparedListener { mp ->
-            videoView.start()
+            //TODO
+//            videoView.start()
             seekBar.max = videoView.duration
             progressBar.visibility = View.GONE
             mp.setOnInfoListener { _, what, _ ->
