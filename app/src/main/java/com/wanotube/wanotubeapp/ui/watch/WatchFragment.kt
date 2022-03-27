@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
+import android.util.Log
 import android.util.TypedValue
 import android.view.GestureDetector
 import android.view.GestureDetector.SimpleOnGestureListener
@@ -29,6 +30,7 @@ import android.widget.RelativeLayout
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
+import android.widget.Toast
 import android.widget.VideoView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -36,6 +38,7 @@ import com.wanotube.wanotubeapp.IOnBackPressed
 import com.wanotube.wanotubeapp.IOnFocusListenable
 import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.databinding.FragmentWatchBinding
+import timber.log.Timber
 
 
 class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable {
@@ -110,63 +113,55 @@ class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable {
         forwardFrame = binding.ffrdframe
         dismissControlFrame = binding.dismissControlFrame
 
-        dismissControlFrame.setOnClickListener {
-            dismissControls()
-        }
+        setClickListener()
 
-//        showImgUp.setOnClickListener{
-//            showUp()
-//        }
-//        showImgDown.setOnClickListener{
-//            showDown()
-//        }
     }
 
     private fun setClickListener() {
 
         val gd = GestureDetector(context, object : SimpleOnGestureListener() {
-            override fun onDoubleTap(e: MotionEvent): Boolean {
-                if (check == 1) fastRewind() else if (check == 0) fastForward()
-                return true
-            }
-
-            override fun onLongPress(e: MotionEvent) {}
-            override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
-                startTimer()
-                return super.onSingleTapConfirmed(e)
-            }
-
-            override fun onDoubleTapEvent(e: MotionEvent): Boolean {
-                return true
-            }
-
-            override fun onDown(e: MotionEvent): Boolean {
-                return true
-            }
-
-            override fun onScroll(
-                e1: MotionEvent,
-                e2: MotionEvent,
-                distanceX: Float,
-                distanceY: Float
-            ): Boolean {
-                return super.onScroll(e1, e2, distanceX, distanceY)
-            }
-
-            override fun onFling(
-                event1: MotionEvent,
-                event2: MotionEvent,
-                velocityX: Float,
-                velocityY: Float
-            ): Boolean {
-                //TODO: Minimise and maximise
-//                if (isMaximise) {
-//                   minimiseView()
-//                } else {
-//                    maximiseView()
-//                }
-                return true
-            }
+//            override fun onDoubleTap(e: MotionEvent): Boolean {
+//                if (check == 1) fastRewind() else if (check == 0) fastForward()
+//                return true
+//            }
+//
+//            override fun onLongPress(e: MotionEvent) {}
+//            override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
+//                startTimer()
+//                return super.onSingleTapConfirmed(e)
+//            }
+//
+//            override fun onDoubleTapEvent(e: MotionEvent): Boolean {
+//                return true
+//            }
+//
+//            override fun onDown(e: MotionEvent): Boolean {
+//                return true
+//            }
+//
+//            override fun onScroll(
+//                e1: MotionEvent,
+//                e2: MotionEvent,
+//                distanceX: Float,
+//                distanceY: Float
+//            ): Boolean {
+//                return super.onScroll(e1, e2, distanceX, distanceY)
+//            }
+//
+//            override fun onFling(
+//                event1: MotionEvent,
+//                event2: MotionEvent,
+//                velocityX: Float,
+//                velocityY: Float
+//            ): Boolean {
+//                //TODO: Minimise and maximise
+////                if (isMaximise) {
+////                   minimiseView()
+////                } else {
+////                    maximiseView()
+////                }
+//                return true
+//            }
         })
 
         forwardFrame.setOnTouchListener(OnTouchListener { view, event ->
@@ -179,7 +174,7 @@ class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable {
             gd.onTouchEvent(event)
         })
 
-        playBtn.setOnClickListener(View.OnClickListener {
+        playBtn.setOnClickListener {
             val fadeIn: Animation = AlphaAnimation(0f, 1f)
             fadeIn.interpolator = DecelerateInterpolator()
             fadeIn.duration = 500
@@ -189,7 +184,7 @@ class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable {
             videoView.start()
             pauseBtn.visibility = View.VISIBLE
             playBtn.visibility = View.GONE
-        })
+        }
 
         pauseBtn.setOnClickListener(View.OnClickListener {
             val fadeIn: Animation = AlphaAnimation(0f, 1f)
@@ -220,6 +215,17 @@ class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable {
                 TIME_OUT.toLong()
             )
         })
+
+//        dismissControlFrame.setOnClickListener {
+//            dismissControls()
+//        }
+
+//        showImgUp.setOnClickListener{
+//            showUp()
+//        }
+//        showImgDown.setOnClickListener{
+//            showDown()
+//        }
     }
     private fun initiateVideo() {
         videoView.setVideoURI(Uri.parse(url))
@@ -457,7 +463,7 @@ class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable {
                     val currentPosition = videoView.currentPosition
                     seekBar.progress = currentPosition
                     startTime.text = "" + convertIntToTime(currentPosition)
-                    endTime.text = "" + convertIntToTime(videoView.duration - currentPosition)
+                    endTime.text = "" + convertIntToTime(videoView.duration)
                 }
                 videoHandler.postDelayed(this, 0)
             }
