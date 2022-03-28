@@ -120,48 +120,48 @@ class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable {
     private fun setClickListener() {
 
         val gd = GestureDetector(context, object : SimpleOnGestureListener() {
-//            override fun onDoubleTap(e: MotionEvent): Boolean {
-//                if (check == 1) fastRewind() else if (check == 0) fastForward()
-//                return true
-//            }
-//
-//            override fun onLongPress(e: MotionEvent) {}
-//            override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
-//                startTimer()
-//                return super.onSingleTapConfirmed(e)
-//            }
-//
-//            override fun onDoubleTapEvent(e: MotionEvent): Boolean {
-//                return true
-//            }
-//
-//            override fun onDown(e: MotionEvent): Boolean {
-//                return true
-//            }
-//
-//            override fun onScroll(
-//                e1: MotionEvent,
-//                e2: MotionEvent,
-//                distanceX: Float,
-//                distanceY: Float
-//            ): Boolean {
-//                return super.onScroll(e1, e2, distanceX, distanceY)
-//            }
-//
-//            override fun onFling(
-//                event1: MotionEvent,
-//                event2: MotionEvent,
-//                velocityX: Float,
-//                velocityY: Float
-//            ): Boolean {
-//                //TODO: Minimise and maximise
-////                if (isMaximise) {
-////                   minimiseView()
-////                } else {
-////                    maximiseView()
-////                }
-//                return true
-//            }
+            override fun onDoubleTap(e: MotionEvent): Boolean {
+                if (check == 1) fastRewind() else if (check == 0) fastForward()
+                return true
+            }
+
+            override fun onLongPress(e: MotionEvent) {}
+            override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
+                startTimer()
+                return super.onSingleTapConfirmed(e)
+            }
+
+            override fun onDoubleTapEvent(e: MotionEvent): Boolean {
+                return true
+            }
+
+            override fun onDown(e: MotionEvent): Boolean {
+                return true
+            }
+
+            override fun onScroll(
+                e1: MotionEvent,
+                e2: MotionEvent,
+                distanceX: Float,
+                distanceY: Float
+            ): Boolean {
+                return super.onScroll(e1, e2, distanceX, distanceY)
+            }
+
+            override fun onFling(
+                event1: MotionEvent,
+                event2: MotionEvent,
+                velocityX: Float,
+                velocityY: Float
+            ): Boolean {
+                //TODO: Minimise and maximise
+//                if (isMaximise) {
+//                   minimiseView()
+//                } else {
+//                    maximiseView()
+//                }
+                return true
+            }
         })
 
         forwardFrame.setOnTouchListener(OnTouchListener { view, event ->
@@ -311,7 +311,7 @@ class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable {
         }
     }
 
-    fun animForward(view: ImageView) {
+    private fun animForward(view: ImageView) {
         val scaleAnimation = ScaleAnimation(
             0.0f, 1.0f, 0.0f, 1.0f,
             Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f
