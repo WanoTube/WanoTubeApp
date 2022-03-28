@@ -8,7 +8,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
-import android.util.Log
 import android.util.TypedValue
 import android.view.GestureDetector
 import android.view.GestureDetector.SimpleOnGestureListener
@@ -30,14 +29,16 @@ import android.widget.RelativeLayout
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
-import android.widget.Toast
 import android.widget.VideoView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.wanotube.wanotubeapp.IOnBackPressed
 import com.wanotube.wanotubeapp.IOnFocusListenable
 import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.databinding.FragmentWatchBinding
+import com.wanotube.wanotubeapp.ui.home.HomeAdapter
+import com.wanotube.wanotubeapp.viewmodels.WanoTubeViewModel
 import timber.log.Timber
 
 
@@ -82,11 +83,33 @@ class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable {
         )
 
         initLayouts(binding)
+        setClickListeners()
         initialiseSeekBar()
         setHandler()
         initiateVideo()
 
-        //IMPORTANT
+        val application = requireNotNull(this.activity).application
+
+        val viewModelFactory = WanoTubeViewModel.WanoTubeViewModelFactory(application)
+
+        val videoViewModel =
+            ViewModelProvider(
+                this, viewModelFactory).get(WanoTubeViewModel::class.java)
+
+        binding.videoViewModel = videoViewModel
+
+        val adapter = WatchAdapter()
+
+        binding.recommendVideoList.adapter = adapter
+
+        videoViewModel.playlist.observe(viewLifecycleOwner, {
+            it?.let {
+                adapter.data = it
+            }
+        })
+
+        binding.lifecycleOwner = this
+
         return binding.root
     }
 
@@ -112,12 +135,9 @@ class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable {
         backFrame = binding.bbkframe
         forwardFrame = binding.ffrdframe
         dismissControlFrame = binding.dismissControlFrame
-
-        setClickListener()
-
     }
 
-    private fun setClickListener() {
+    private fun setClickListeners() {
 
         val gd = GestureDetector(context, object : SimpleOnGestureListener() {
             override fun onDoubleTap(e: MotionEvent): Boolean {
