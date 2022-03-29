@@ -14,5 +14,7 @@
     <string name="hello_world">Hello Square World!</string>
     <string name="user_avatar">User\'s avatar</string>
     <string name="video_thumbnail">Video\'s thumbnail</string>
+    <string name="comment_guidelines">Remember to keep comments respectful and to follow our Community Guidelines</string>
+    <string name="comment_placeholder">Add a comment..</string>
 
 </resources>

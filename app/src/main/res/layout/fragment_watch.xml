@@ -232,189 +232,303 @@
                     android:layout_height="wrap_content" />
 
             </RelativeLayout>
-            <ScrollView
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <LinearLayout
+                <ScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
+                    android:layout_height="wrap_content">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginEnd="20dp"
-                        android:orientation="vertical">
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textStyle="bold"
-                            android:textSize="20dp"
-                            android:text="Title"
-                            android:textColor="@color/black"/>
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="300"
-                            android:text="Subtitle"/>
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="16dp"
-                        android:layout_gravity="center"
-                        android:orientation="horizontal">
-                        <LinearLayout
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content">
-                            <ImageView
-                                android:layout_width="50dp"
-                                android:layout_height="20dp"
-                                android:src="@drawable/like"/>
-
-                            <TextView
-                                android:layout_width="50dp"
-                                android:layout_height="wrap_content"
-                                android:text="22N">
-
-                            </TextView>
-                        </LinearLayout>
-                        <LinearLayout
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content">
-                            <ImageView
-                                android:layout_width="50dp"
-                                android:layout_height="20dp"
-                                android:src="@drawable/comment"/>
-                            <TextView
-                                android:layout_width="50dp"
-                                android:layout_height="wrap_content"
-                                android:text="22N"/>
-                        </LinearLayout>
-                        <LinearLayout
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content">
-                            <ImageView
-                                android:layout_width="50dp"
-                                android:layout_height="20dp"
-                                android:src="@drawable/share"/>
-                            <TextView
-                                android:layout_width="50dp"
-                                android:layout_height="wrap_content"
-                                android:text="22N"/>
-                        </LinearLayout>
-                    </LinearLayout>
-                    <View style="@style/Divider.Horizontal"/>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="16dp">
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
-
-                            <ImageView
-                                android:layout_width="45dp"
-                                android:layout_height="45dp"
-                                android:src="@drawable/user"/>
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="16dp"
-                                android:layout_marginEnd="16dp"
-                                android:layout_marginTop="2dp"
-                                android:layout_marginBottom="2dp"
-
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:textStyle="bold"
-                                    android:textColor="@color/black"
-                                    android:text="Author's name"/>
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:text="Author's followers"/>
-                            </LinearLayout>
-                        </LinearLayout>
+                        android:orientation="vertical"
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="end">
-                            <Button
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Follow"
-                                android:backgroundTint="@color/black">
-                            </Button>
-                        </LinearLayout>
-                    </LinearLayout>
-                    <View style="@style/Divider.Horizontal"/>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="16dp">
-                        <LinearLayout
-                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginEnd="20dp"
                             android:orientation="vertical">
-                            <LinearLayout
+                            <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textColor="@color/black"
-                                    android:text="Comments"/>
-
-                                <TextView
-                                    android:layout_marginStart="8dp"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="94"/>
-                            </LinearLayout>
-
-                            <LinearLayout
+                                android:textStyle="bold"
+                                android:textSize="20dp"
+                                android:text="Title"
+                                android:textColor="@color/black"/>
+                            <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_margin="8dp"
-                                android:gravity="center"
-                                android:orientation="horizontal">
+                                android:layout_weight="300"
+                                android:text="Subtitle"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="16dp"
+                            android:layout_gravity="center"
+                            android:orientation="horizontal">
+                            <LinearLayout
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content">
                                 <ImageView
-                                    android:layout_width="30dp"
-                                    android:layout_height="30dp"
-                                    android:src="@drawable/user">
-                                </ImageView>
+                                    android:layout_width="50dp"
+                                    android:layout_height="20dp"
+                                    android:src="@drawable/like"/>
+
                                 <TextView
-                                    android:layout_marginStart="8dp"
-                                    android:layout_width="match_parent"
+                                    android:layout_width="50dp"
                                     android:layout_height="wrap_content"
-                                    android:text="Broooo"
-                                    android:textColor="@color/black">
+                                    android:text="22N">
+
                                 </TextView>
                             </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content">
+                                <ImageView
+                                    android:layout_width="50dp"
+                                    android:layout_height="20dp"
+                                    android:src="@drawable/comment"/>
+                                <TextView
+                                    android:layout_width="50dp"
+                                    android:layout_height="wrap_content"
+                                    android:text="22N"/>
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content">
+                                <ImageView
+                                    android:layout_width="50dp"
+                                    android:layout_height="20dp"
+                                    android:src="@drawable/share"/>
+                                <TextView
+                                    android:layout_width="50dp"
+                                    android:layout_height="wrap_content"
+                                    android:text="22N"/>
+                            </LinearLayout>
                         </LinearLayout>
+                        <View style="@style/Divider.Horizontal"/>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="16dp">
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:layout_width="45dp"
+                                    android:layout_height="45dp"
+                                    android:src="@drawable/user"/>
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:layout_marginEnd="16dp"
+                                    android:layout_marginTop="2dp"
+                                    android:layout_marginBottom="2dp"
+
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:textStyle="bold"
+                                        android:textColor="@color/black"
+                                        android:text="Author's name"/>
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:text="Author's followers"/>
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="end">
+                                <Button
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Follow"
+                                    android:backgroundTint="@color/black">
+                                </Button>
+                            </LinearLayout>
+                        </LinearLayout>
+                        <View style="@style/Divider.Horizontal"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="16dp">
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal">
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:textColor="@color/black"
+                                        android:text="Comments"/>
+
+                                    <TextView
+                                        android:layout_marginStart="8dp"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="94"/>
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="8dp"
+                                    android:gravity="center"
+                                    android:orientation="horizontal">
+                                    <ImageView
+                                        android:layout_width="30dp"
+                                        android:layout_height="30dp"
+                                        android:src="@drawable/user">
+                                    </ImageView>
+                                    <TextView
+                                        android:layout_marginStart="8dp"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:text="Broooo"
+                                        android:textColor="@color/black">
+                                    </TextView>
+                                </LinearLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+                        <View style="@style/Divider.Horizontal.Thick"/>
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recommend_video_list"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
                     </LinearLayout>
-                    <View style="@style/Divider.Horizontal.Thick"/>
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recommend_video_list"
+
+                </ScrollView>
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/shape">
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                        android:orientation="vertical">
 
-                </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="40dp"
+                            android:layout_height="5dp"
+                            android:layout_marginTop="5dp"
+                            android:background="#E5E5E5"
+                            android:layout_gravity="center">
 
-            </ScrollView>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_gravity="center"
+                            android:layout_margin="8dp">
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Comments"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/black"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:text="2"/>
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="end">
+                                <ImageView
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/ic_close"/>
+                            </LinearLayout>
+
+                        </LinearLayout>
+                        <View style="@style/Divider.Horizontal"/>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="#EAEAEA">
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:textSize="10sp"
+                                android:textColor="@color/black"
+                                android:text="@string/comment_guidelines"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:orientation="horizontal">
+                            <ImageView
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/user"/>
+                            <EditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="8dp"
+                                android:textSize="10sp"
+                                android:text="@string/comment_placeholder">
+                            </EditText>
+                        </LinearLayout>
+                        <View style="@style/Divider.Horizontal"/>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:src="@drawable/user">
+                            </ImageView>
+                            <TextView
+                                android:layout_marginStart="8dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Broooo"
+                                android:textColor="@color/black">
+                            </TextView>
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+                </ScrollView>
+            </RelativeLayout>
         </LinearLayout>
     </FrameLayout>
 </layout>
