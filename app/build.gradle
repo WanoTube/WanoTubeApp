@@ -53,8 +53,6 @@ dependencies {
 
     // glide image library
     implementation 'com.github.bumptech.glide:glide:4.13.0'
-    implementation 'androidx.wear:wear:1.0.0'
-    compileOnly 'com.google.android.wearable:wearable:2.6.0'
 
     // Room dependency
     def room_version = '2.2.5'
@@ -71,6 +69,12 @@ dependencies {
 
     // logging
     implementation 'com.jakewharton.timber:timber:4.7.1'
+
+    // navigation
+    def nav_version = "2.0.0"
+    // Kotlin
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

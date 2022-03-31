@@ -9,6 +9,7 @@
             type="com.wanotube.wanotubeapp.viewmodels.WanoTubeViewModel" />
     </data>
     <FrameLayout
+        android:id="@+id/fragment_watch"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.watch.WatchFragment">
@@ -236,6 +237,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <ScrollView
+                    android:id="@+id/video_info_section"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <LinearLayout
@@ -363,6 +365,7 @@
                         <View style="@style/Divider.Horizontal"/>
 
                         <LinearLayout
+                            android:id="@+id/first_comment"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="16dp">
@@ -420,6 +423,8 @@
                 </ScrollView>
 
                 <ScrollView
+                    android:id="@+id/comment_list"
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/shape">
@@ -464,6 +469,7 @@
                                 android:layout_height="match_parent"
                                 android:gravity="end">
                                 <ImageView
+                                    android:id="@+id/close_comment_list"
                                     android:layout_width="20dp"
                                     android:layout_height="20dp"
                                     android:layout_gravity="center"

@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.wanotube.wanotubeapp.R
@@ -45,7 +46,7 @@ class WatchAdapter : RecyclerView.Adapter<WatchAdapter.ViewHolder>() {
             subtitleView.text = subtitle
 
             val thumbnailVideo = getThumbnailYoutubeVideo(item.url)
-            Glide.with(itemView.context)
+            Glide.with(thumbnailVideoView.context)
                 .load(thumbnailVideo)
                 .override(480, 269)
                 .centerCrop()
@@ -54,6 +55,12 @@ class WatchAdapter : RecyclerView.Adapter<WatchAdapter.ViewHolder>() {
                 .load(thumbnailVideo)
                 .circleCrop()
                 .into(avatarView)
+
+            thumbnailVideoView.setOnClickListener{
+                itemView.findNavController().navigate(
+                    R.id.fragment_watch
+                )
+            }
         }
 
         companion object {

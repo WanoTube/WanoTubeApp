@@ -11,6 +11,7 @@ import android.os.Handler
 import android.util.TypedValue
 import android.view.GestureDetector
 import android.view.GestureDetector.SimpleOnGestureListener
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -24,8 +25,10 @@ import android.view.animation.DecelerateInterpolator
 import android.view.animation.ScaleAnimation
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
+import android.widget.ScrollView
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
@@ -33,13 +36,14 @@ import android.widget.VideoView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.transition.Slide
+import androidx.transition.Transition
+import androidx.transition.TransitionManager
 import com.wanotube.wanotubeapp.IOnBackPressed
 import com.wanotube.wanotubeapp.IOnFocusListenable
 import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.databinding.FragmentWatchBinding
-import com.wanotube.wanotubeapp.ui.home.HomeAdapter
 import com.wanotube.wanotubeapp.viewmodels.WanoTubeViewModel
-import timber.log.Timber
 
 
 class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable {
@@ -69,16 +73,22 @@ class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable {
     private lateinit var forwardFrame:FrameLayout
     private lateinit var dismissControlFrame:FrameLayout
 
+    private lateinit var firstCommentSection: LinearLayout
+    private lateinit var commentListView: ScrollView
+    private lateinit var videoInfoView: ScrollView
+
+
     //    private val youtubeLayout: YoutubeLayout
     private val isMaximise = true
     private var url =
         "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
+    private lateinit var binding: FragmentWatchBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding: FragmentWatchBinding = DataBindingUtil.inflate(
+        binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_watch, container, false
         )
 
@@ -94,7 +104,8 @@ class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable {
 
         val videoViewModel =
             ViewModelProvider(
-                this, viewModelFactory).get(WanoTubeViewModel::class.java)
+                this, viewModelFactory
+            ).get(WanoTubeViewModel::class.java)
 
         binding.videoViewModel = videoViewModel
 
@@ -135,6 +146,10 @@ class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable {
         backFrame = binding.bbkframe
         forwardFrame = binding.ffrdframe
         dismissControlFrame = binding.dismissControlFrame
+
+        firstCommentSection = binding.firstComment
+        commentListView = binding.commentList
+        videoInfoView = binding.videoInfoSection
     }
 
     private fun setClickListeners() {
@@ -236,6 +251,17 @@ class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable {
             )
         })
 
+        firstCommentSection.setOnClickListener(View.OnClickListener {
+            toggleCommentSection(true)
+        })
+
+        videoInfoView.setOnClickListener {
+            toggleCommentSection(false)
+        }
+
+        binding.closeCommentList.setOnClickListener{
+            toggleCommentSection(false)
+        }
 //        dismissControlFrame.setOnClickListener {
 //            dismissControls()
 //        }
@@ -247,13 +273,25 @@ class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable {
 //            showDown()
 //        }
     }
+
+    private fun toggleCommentSection(show: Boolean) {
+        if ((!show && commentListView.visibility == View.VISIBLE) ||
+            show && commentListView.visibility == View.GONE) {
+            val transition: Transition = Slide(Gravity.BOTTOM)
+            transition.duration = 600
+            transition.addTarget(R.id.comment_list)
+            TransitionManager.beginDelayedTransition(videoInfoView, transition)
+            commentListView.visibility = if (show) View.VISIBLE else View.GONE
+        }
+    }
+
     private fun initiateVideo() {
         videoView.setVideoURI(Uri.parse(url))
         //TODO
 //        videoView.start()
 
         if (videoView.isPlaying)
-            progressBar.visibility = View.VISIBLE;
+            progressBar.visibility = View.VISIBLE
 
         videoView.setOnPreparedListener { mp ->
             //TODO

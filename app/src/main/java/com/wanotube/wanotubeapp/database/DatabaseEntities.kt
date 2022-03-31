@@ -44,6 +44,14 @@ data class DatabaseUser constructor(
     val avatar: String,
     val description: String)
 
+@Entity
+data class DatabaseComment constructor(
+    @PrimaryKey
+    val id: String,
+    val content: String,
+    val authorId: String,
+    val videoId: String)
+
 /**
  * Map DatabaseVideos to domain entities
  */

@@ -46,5 +46,10 @@ data class User (
     val country: String,
     val avatar: String,
     val description: String) {
-
 }
+
+data class Comment (
+    val id: String,
+    val content: String,
+    val authorId: String,
+    val videoId: String)
