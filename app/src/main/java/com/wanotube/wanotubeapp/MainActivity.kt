@@ -86,6 +86,11 @@ class MainActivity : AppCompatActivity() {
         transaction.commit()
     }
 
+    private fun unloadFragment(fragment: Fragment) {
+        // TODO: Unload fragment
+
+    }
+
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         if (currentFragment is IOnFocusListenable) {

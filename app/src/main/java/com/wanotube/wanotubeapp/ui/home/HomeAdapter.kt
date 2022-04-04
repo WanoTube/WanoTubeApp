@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -46,7 +47,7 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
             subtitleView.text = subtitle
 
             val thumbnailVideo = getThumbnailYoutubeVideo(item.url)
-            Glide.with(itemView.context)
+            Glide.with(thumbnailVideoView.context)
                 .load(thumbnailVideo)
                 .override(480, 269)
                 .centerCrop()
@@ -55,6 +56,10 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
                 .load(thumbnailVideo)
                 .circleCrop()
                 .into(avatarView)
+
+            thumbnailVideoView.setOnClickListener{ view ->
+                view.findNavController().navigate(R.id.fragment_watch)
+            }
         }
 
         companion object {
