@@ -17,4 +17,6 @@
     <dimen name="video_component_title_height">20dp</dimen>
     <dimen name="component_start_margin">8dp</dimen>
     <dimen name="video_thumbnail_height">269dp</dimen>
+    <dimen name="normal_text_size">15sp</dimen>
+    <dimen name="title_text_size">20sp</dimen>
 </resources>

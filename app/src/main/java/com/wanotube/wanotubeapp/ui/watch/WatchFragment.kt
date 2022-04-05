@@ -262,6 +262,10 @@ class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable {
         binding.closeCommentList.setOnClickListener{
             toggleCommentSection(false)
         }
+
+        binding.commentEditText.setOnClickListener {
+
+        }
 //        dismissControlFrame.setOnClickListener {
 //            dismissControls()
 //        }
