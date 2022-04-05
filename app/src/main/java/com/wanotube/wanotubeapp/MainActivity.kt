@@ -1,18 +1,18 @@
 package com.wanotube.wanotubeapp
 
 import android.os.Bundle
+import android.widget.FrameLayout
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
+import androidx.navigation.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.wanotube.wanotubeapp.databinding.ActivityMainBinding
 import com.wanotube.wanotubeapp.ui.following.FollowingFragment
 import com.wanotube.wanotubeapp.ui.home.HomeFragment
 import com.wanotube.wanotubeapp.ui.profile.ProfileFragment
 import com.wanotube.wanotubeapp.ui.shorts.ShortsFragment
-import com.wanotube.wanotubeapp.ui.watch.WatchFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
 
         customActionBar()
 
-        currentFragment = WatchFragment()
+        currentFragment = HomeFragment()
         loadFragment(currentFragment)
 
         val navigationBarView = binding.bottomNavigation
@@ -79,23 +79,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadFragment(fragment: Fragment) {
-        // load fragment
-        val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.frame_container, fragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
-    }
-
-    private fun unloadFragment(fragment: Fragment) {
-        // TODO: Unload fragment
-
+        findViewById<FrameLayout>(R.id.myNavHostFragment).findNavController().navigate(R.id.fragment_home)
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
-        if (currentFragment is IOnFocusListenable) {
-            (currentFragment as IOnFocusListenable).onWindowFocusChanged(hasFocus)
-        }
+//        if (currentFragment is IOnFocusListenable) {
+//            (currentFragment as IOnFocusListenable).onWindowFocusChanged(hasFocus)
+//        }
     }
 
     override fun onBackPressed() {

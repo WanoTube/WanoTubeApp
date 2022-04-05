@@ -57,8 +57,8 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
                 .circleCrop()
                 .into(avatarView)
 
-            thumbnailVideoView.setOnClickListener{ view ->
-                view.findNavController().navigate(R.id.fragment_watch)
+            thumbnailVideoView.setOnClickListener{
+                itemView.findNavController().navigate(R.id.fragment_watch)
             }
         }
 
