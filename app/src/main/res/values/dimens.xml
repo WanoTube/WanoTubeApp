@@ -19,4 +19,6 @@
     <dimen name="video_thumbnail_height">269dp</dimen>
     <dimen name="normal_text_size">15sp</dimen>
     <dimen name="title_text_size">20sp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="avatar_size">25dp</dimen>
 </resources>

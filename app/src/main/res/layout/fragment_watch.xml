@@ -180,7 +180,7 @@
                                     android:layout_height="wrap_content">
 
                                     <ImageView
-
+                                        android:visibility="gone"
                                         android:layout_gravity="end"
                                         android:id="@+id/fullscreen"
                                         android:layout_width="wrap_content"
@@ -188,7 +188,7 @@
                                         android:src="@drawable/ic_fullscreen" />
 
                                     <ImageView
-                                        android:visibility="visible"
+                                        android:visibility="gone"
                                         android:layout_gravity="end"
                                         android:id="@+id/fullscreenexit"
                                         android:layout_width="wrap_content"
@@ -497,19 +497,40 @@
                             android:layout_margin="8dp"
                             android:orientation="horizontal">
                             <ImageView
-                                android:layout_width="25dp"
-                                android:layout_height="25dp"
+                                android:layout_width="@dimen/avatar_size"
+                                android:layout_height="@dimen/avatar_size"
                                 android:layout_gravity="center"
                                 android:src="@drawable/user"/>
-                            <EditText
-                                android:id="@+id/comment_edit_text"
+                            <TableLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textSize="@dimen/normal_text_size"
-                                android:layout_marginStart="8dp"
-                                android:layout_marginEnd="8dp"
-                                android:hint="@string/comment_placeholder">
-                            </EditText>
+                                android:stretchColumns="1"
+                                android:shrinkColumns="0"
+                                android:orientation="horizontal">
+                                <TableRow
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content">
+                                    <EditText
+                                        android:id="@+id/comment_edit_text"
+                                        android:layout_column="1"
+                                        android:layout_marginStart="8dp"
+                                        android:layout_marginEnd="8dp"
+                                        android:textSize="@dimen/normal_text_size"
+                                        android:maxLength="2000"
+                                        android:imeOptions="actionSend|flagNoEnterAction"
+                                        android:inputType="textCapSentences"
+                                        android:hint="@string/comment_placeholder">
+                                    </EditText>
+                                    <ImageView
+                                        android:id="@+id/send_comment"
+                                        android:visibility="gone"
+                                        android:layout_width="@dimen/avatar_size"
+                                        android:layout_height="@dimen/avatar_size"
+                                        android:layout_gravity="center"
+                                        android:src="@drawable/ic_send_comment"/>
+                                </TableRow>
+                            </TableLayout>
+
                         </LinearLayout>
                         <View style="@style/Divider.Horizontal"/>
                         <LinearLayout

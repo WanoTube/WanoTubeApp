@@ -1,6 +1,9 @@
 package com.wanotube.wanotubeapp
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.FrameLayout
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
@@ -9,14 +12,18 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.wanotube.wanotubeapp.databinding.ActivityMainBinding
+import com.wanotube.wanotubeapp.ui.edit.UploadActivity
 import com.wanotube.wanotubeapp.ui.following.FollowingFragment
 import com.wanotube.wanotubeapp.ui.home.HomeFragment
 import com.wanotube.wanotubeapp.ui.profile.ProfileFragment
 import com.wanotube.wanotubeapp.ui.shorts.ShortsFragment
+import com.wanotube.wanotubeapp.util.Constant
+import com.wanotube.wanotubeapp.util.URIPathHelper
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var  currentFragment: Fragment
+    private var  currentFragmentId: Int = R.id.home
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +34,7 @@ class MainActivity : AppCompatActivity() {
         customActionBar()
 
         currentFragment = HomeFragment()
+        currentFragmentId =  R.id.home
         loadFragment(currentFragment)
 
         val navigationBarView = binding.bottomNavigation
@@ -46,34 +54,41 @@ class MainActivity : AppCompatActivity() {
     private fun customNavigation(navigationBarView: BottomNavigationView) {
 
         navigationBarView.setOnItemSelectedListener { item ->
-            val fragment: Fragment
+            if (currentFragmentId == item.itemId) {
+                false
+            } else {
+                val fragment: Fragment
+                currentFragmentId = item.itemId
+                when(item.itemId) {
+                    R.id.home -> {
+                        fragment = HomeFragment()
+                        loadFragment(fragment)
 
-            when(item.itemId) {
-                R.id.home -> {
-                    fragment = HomeFragment()
-                    loadFragment(fragment)
+                        true
+                    }
+                    R.id.shorts -> {
+                        fragment = ShortsFragment()
+                        loadFragment(fragment)
+                        true
+                    }
+                    R.id.following -> {
+                        fragment = FollowingFragment()
+                        loadFragment(fragment)
 
-                    true
+                        true
+                    }
+                    R.id.user -> {
+                        fragment = ProfileFragment()
+                        loadFragment(fragment)
+
+                        true
+                    }
+                    R.id.create -> {
+                        openGalleryForVideo()
+                        true
+                    }
+                    else -> false
                 }
-                R.id.shorts -> {
-                    fragment = ShortsFragment()
-                    loadFragment(fragment)
-
-                    true
-                }
-                R.id.following -> {
-                    fragment = FollowingFragment()
-                    loadFragment(fragment)
-
-                    true
-                }
-                R.id.user -> {
-                    fragment = ProfileFragment()
-                    loadFragment(fragment)
-
-                    true
-                }
-                else -> false
             }
         }
     }
@@ -94,6 +109,39 @@ class MainActivity : AppCompatActivity() {
         (currentFragment as? IOnBackPressed)?.onBackPressed()?.not()?.let {
             super.onBackPressed()
         }
+    }
+
+    private fun openGalleryForVideo() {
+        Log.e("Ngan", "openGalleryForVideo")
+        val intent = Intent()
+        intent.type = "video/*"
+        intent.action = Intent.ACTION_PICK
+        startActivityForResult(
+            Intent.createChooser(intent, "Select Video"),
+            Constant.REQUEST_VIDEO
+        )
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == Constant.REQUEST_VIDEO){
+            if (resultCode == Activity.RESULT_OK){
+                if (data?.data != null) {
+                    val uriPathHelper = URIPathHelper()
+                    val videoFullPath = uriPathHelper.getPath(this, data.data!!)
+                    if (videoFullPath != null) {
+                        loadUploadActivity(videoFullPath)
+//                        UploadVideoAPICall(file)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun loadUploadActivity(filePath: String) {
+        val intent = Intent(baseContext, UploadActivity::class.java)
+        intent.putExtra("FILE_PATH", filePath)
+        startActivity(intent)
     }
 }
 

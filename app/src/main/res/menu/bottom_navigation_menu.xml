@@ -12,7 +12,7 @@
         android:title="Shorts"/>
     <item
         android:id="@+id/create"
-        android:enabled="false"
+        android:enabled="true"
         android:icon="@drawable/ic_add"
         android:title="Create"/>
     <item
