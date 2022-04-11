@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.wanotube.wanotubeapp.databinding.ActivityMainBinding
+import com.wanotube.wanotubeapp.ui.edit.EditActivity
 import com.wanotube.wanotubeapp.ui.edit.UploadActivity
 import com.wanotube.wanotubeapp.ui.following.FollowingFragment
 import com.wanotube.wanotubeapp.ui.home.HomeFragment
@@ -143,7 +144,7 @@ class MainActivity : AppCompatActivity(), IEventListener {
     }
 
     private fun loadUploadActivity(filePath: String) {
-        val intent = Intent(baseContext, UploadActivity::class.java)
+        val intent = Intent(baseContext, EditActivity::class.java)
         intent.putExtra("FILE_PATH", filePath)
         startActivity(intent)
     }

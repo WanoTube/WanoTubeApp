@@ -13,6 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WanoTubeApp">
+        <activity android:name=".ui.edit.EditActivity"></activity>
         <activity android:name=".ui.edit.UploadActivity" />
         <activity
             android:name=".MainActivity"
