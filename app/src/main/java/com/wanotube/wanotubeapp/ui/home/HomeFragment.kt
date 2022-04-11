@@ -1,13 +1,14 @@
 package com.wanotube.wanotubeapp.ui.home
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.wanotube.wanotubeapp.IEventListener
 import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.databinding.FragmentHomeBinding
 import com.wanotube.wanotubeapp.viewmodels.WanoTubeViewModel
@@ -15,12 +16,24 @@ import com.wanotube.wanotubeapp.viewmodels.WanoTubeViewModel
 
 class HomeFragment : Fragment() {
 
+    private lateinit var listener: IEventListener
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            listener = context as IEventListener
+        } catch (castException: ClassCastException) {
+            /** The activity does not implement the listener.  */
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         val binding: FragmentHomeBinding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_home, container, false)
+            inflater, R.layout.fragment_home, container, false
+        )
 
         val application = requireNotNull(this.activity).application
 
@@ -28,11 +41,12 @@ class HomeFragment : Fragment() {
 
         val videoViewModel =
             ViewModelProvider(
-                this, viewModelFactory).get(WanoTubeViewModel::class.java)
+                this, viewModelFactory
+            ).get(WanoTubeViewModel::class.java)
 
         binding.videoViewModel = videoViewModel
 
-        val adapter = HomeAdapter()
+        val adapter = HomeAdapter(listener)
 
         binding.videoList.adapter = adapter
 
@@ -43,6 +57,7 @@ class HomeFragment : Fragment() {
         })
 
         binding.lifecycleOwner = this
+
 
         return binding.root
     }

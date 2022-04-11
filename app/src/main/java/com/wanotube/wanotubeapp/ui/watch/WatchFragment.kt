@@ -10,6 +10,9 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.util.TypedValue
 import android.view.GestureDetector
 import android.view.GestureDetector.SimpleOnGestureListener
@@ -26,6 +29,7 @@ import android.view.animation.AnimationSet
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.ScaleAnimation
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -50,7 +54,7 @@ import com.wanotube.wanotubeapp.databinding.FragmentWatchBinding
 import com.wanotube.wanotubeapp.viewmodels.WanoTubeViewModel
 
 
-class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable {
+class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable{
 
     private lateinit var binding: FragmentWatchBinding
 
@@ -273,17 +277,28 @@ class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable {
     }
 
     private fun handleSendComment() {
+        binding.commentEditText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable) {
+                binding.btnSendComment.visibility = View.VISIBLE
 
-        binding.commentEditText.setOnClickListener {
-            binding.sendComment.visibility = View.VISIBLE
-        }
+            }
 
-        binding.sendComment.setOnClickListener {
-            var commentText = binding.commentEditText.text.toString()
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                if (count == 0)
+                    binding.btnSendComment.visibility = View.GONE
+            }
+        })
+
+        binding.btnSendComment.setOnClickListener {
+            val commentText = binding.commentEditText.text.toString()
             binding.commentEditText.text.clear()
 
             val toast = Toast.makeText(context, commentText, Toast.LENGTH_SHORT)
             toast.show()
+
+            binding.btnSendComment.visibility = View.GONE
+
             activity?.applicationContext?.let { it1 -> hideKeyboardFrom(
                 it1,
                 binding.commentEditText
@@ -291,6 +306,7 @@ class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable {
 
         }
     }
+
     private fun setClickListeners() {
 
         handleVideoPlayer()

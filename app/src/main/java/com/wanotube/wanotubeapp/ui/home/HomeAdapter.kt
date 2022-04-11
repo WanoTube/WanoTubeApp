@@ -9,11 +9,15 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.wanotube.wanotubeapp.IEventListener
 import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.domain.WanoTubeVideo
+import com.wanotube.wanotubeapp.ui.watch.WatchFragment
 import com.wanotube.wanotubeapp.util.getThumbnailYoutubeVideo
 
-class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
+class HomeAdapter(iEventListener: IEventListener) : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
+
+    private var listener: IEventListener = iEventListener
 
     var data =  listOf<WanoTubeVideo>()
         set(value) {
@@ -28,13 +32,15 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
         holder.bind(item)
     }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder.from(parent)
+        return ViewHolder.from(parent, listener)
     }
 
-    class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView){
+    class ViewHolder private constructor(itemView: View, listener: IEventListener) : RecyclerView.ViewHolder(
+        itemView
+    ){
 
+        private var listener: IEventListener = listener
         private val titleView: TextView = itemView.findViewById(R.id.title)
         private val subtitleView: TextView = itemView.findViewById(R.id.subtitle)
 
@@ -59,15 +65,16 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
             thumbnailVideoView.setOnClickListener{
                 itemView.findNavController().navigate(R.id.fragment_watch)
+                listener.setCurrentFragment(WatchFragment())
             }
         }
 
         companion object {
-            fun from(parent: ViewGroup): ViewHolder {
+            fun from(parent: ViewGroup, listener: IEventListener): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater
                     .inflate(R.layout.home_video_component_list, parent, false)
-                return ViewHolder(view)
+                return ViewHolder(view, listener)
             }
         }
     }

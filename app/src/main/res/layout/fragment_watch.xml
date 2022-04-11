@@ -522,7 +522,7 @@
                                         android:hint="@string/comment_placeholder">
                                     </EditText>
                                     <ImageView
-                                        android:id="@+id/send_comment"
+                                        android:id="@+id/btn_send_comment"
                                         android:visibility="gone"
                                         android:layout_width="@dimen/avatar_size"
                                         android:layout_height="@dimen/avatar_size"

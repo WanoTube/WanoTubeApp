@@ -1,10 +1,15 @@
 package com.wanotube.wanotubeapp
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.MotionEvent
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -20,7 +25,7 @@ import com.wanotube.wanotubeapp.ui.shorts.ShortsFragment
 import com.wanotube.wanotubeapp.util.Constant
 import com.wanotube.wanotubeapp.util.URIPathHelper
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), IEventListener {
 
     private lateinit var  currentFragment: Fragment
     private var  currentFragmentId: Int = R.id.home
@@ -57,29 +62,28 @@ class MainActivity : AppCompatActivity() {
             if (currentFragmentId == item.itemId) {
                 false
             } else {
-                val fragment: Fragment
                 currentFragmentId = item.itemId
                 when(item.itemId) {
                     R.id.home -> {
-                        fragment = HomeFragment()
-                        loadFragment(fragment)
+                        currentFragment = HomeFragment()
+                        loadFragment(currentFragment)
 
                         true
                     }
                     R.id.shorts -> {
-                        fragment = ShortsFragment()
-                        loadFragment(fragment)
+                        currentFragment = ShortsFragment()
+                        loadFragment(currentFragment)
                         true
                     }
                     R.id.following -> {
-                        fragment = FollowingFragment()
-                        loadFragment(fragment)
+                        currentFragment = FollowingFragment()
+                        loadFragment(currentFragment)
 
                         true
                     }
                     R.id.user -> {
-                        fragment = ProfileFragment()
-                        loadFragment(fragment)
+                        currentFragment = ProfileFragment()
+                        loadFragment(currentFragment)
 
                         true
                     }
@@ -99,9 +103,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
-//        if (currentFragment is IOnFocusListenable) {
-//            (currentFragment as IOnFocusListenable).onWindowFocusChanged(hasFocus)
-//        }
+        if (currentFragment is IOnFocusListenable) {
+            (currentFragment as IOnFocusListenable).onWindowFocusChanged(hasFocus)
+        }
     }
 
     override fun onBackPressed() {
@@ -143,6 +147,34 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra("FILE_PATH", filePath)
         startActivity(intent)
     }
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        val ret = super.dispatchTouchEvent(ev)
+        ev?.let { event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                currentFocus?.let { view ->
+                    if (view is EditText) {
+                        val touchCoordinates = IntArray(2)
+                        view.getLocationOnScreen(touchCoordinates)
+                        val x: Float = event.rawX + view.getLeft() - touchCoordinates[0]
+                        val y: Float = event.rawY + view.getTop() - touchCoordinates[1]
+                        //If the touch position is outside the EditText then we hide the keyboard
+                        if (x < view.getLeft() || x >= view.getRight() || y < view.getTop() || y > view.getBottom()) {
+                            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                            imm.hideSoftInputFromWindow(view.windowToken, 0)
+                            view.clearFocus()
+                        }
+                    }
+                }
+            }
+        }
+
+        return ret
+    }
+
+    override fun setCurrentFragment(fragment: Fragment) {
+        currentFragment = fragment
+    }
 }
 
 
@@ -152,4 +184,8 @@ interface IOnFocusListenable {
 
 interface IOnBackPressed {
     fun onBackPressed(): Boolean
+}
+
+interface IEventListener {
+    fun setCurrentFragment(fragment: Fragment)
 }
