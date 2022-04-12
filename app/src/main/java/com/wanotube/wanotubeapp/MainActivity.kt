@@ -144,7 +144,7 @@ class MainActivity : AppCompatActivity(), IEventListener {
     }
 
     private fun loadUploadActivity(filePath: String) {
-        val intent = Intent(baseContext, EditActivity::class.java)
+        val intent = Intent(baseContext, UploadActivity::class.java)
         intent.putExtra("FILE_PATH", filePath)
         startActivity(intent)
     }

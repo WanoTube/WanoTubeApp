@@ -1,15 +1,14 @@
 package com.wanotube.wanotubeapp.ui.edit
 
-import android.net.Uri
 import android.os.Bundle
-import android.widget.MediaController
-import android.widget.VideoView
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.wanotube.wanotubeapp.R
 
 
 class UploadActivity : AppCompatActivity() {
-    private lateinit var videoView: VideoView
+    private lateinit var imageView: ImageView
     var filePath: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,21 +17,12 @@ class UploadActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true);
 
-
+        imageView = findViewById(R.id.thumbnail_video_upload)
         filePath = intent.getStringExtra("FILE_PATH")
-        val uri: Uri = Uri.parse(filePath)
 
-        videoView = findViewById(R.id.video_player)
-        videoView.setVideoURI(uri)
-
-        val mediaController = MediaController(this)
-        videoView.setMediaController(mediaController)
-
-        playVideo()
+        Glide.with(this)
+            .load(filePath)
+            .into(imageView)
     }
 
-    private fun playVideo() {
-        videoView.start()
-    }
 }
-
