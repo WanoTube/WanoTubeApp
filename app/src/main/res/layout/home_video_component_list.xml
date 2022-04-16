@@ -46,14 +46,14 @@
                 android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/video_component_title_height"
-                android:layout_marginStart="@dimen/component_start_margin"
+                android:layout_marginStart="@dimen/component_margin"
                 tools:text="Video's Title" />
 
             <TextView
                 android:id="@+id/subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/video_component_title_height"
-                android:layout_marginStart="@dimen/component_start_margin"
+                android:layout_marginStart="@dimen/component_margin"
                 tools:text="Video's subtitle" />
         </LinearLayout>
 

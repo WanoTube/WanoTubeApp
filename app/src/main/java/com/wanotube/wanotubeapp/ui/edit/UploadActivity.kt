@@ -2,12 +2,12 @@ package com.wanotube.wanotubeapp.ui.edit
 
 import android.os.Bundle
 import android.widget.ImageView
-import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.ActionBar
 import com.bumptech.glide.Glide
 import com.wanotube.wanotubeapp.R
+import com.wanotube.wanotubeapp.WanoTubeActivity
 
-
-class UploadActivity : AppCompatActivity() {
+class UploadActivity : WanoTubeActivity() {
     private lateinit var imageView: ImageView
     var filePath: String = ""
 
@@ -15,7 +15,7 @@ class UploadActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_upload)
 
-        supportActionBar?.setDisplayHomeAsUpEnabled(true);
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         imageView = findViewById(R.id.thumbnail_video_upload)
         filePath = intent.getStringExtra("FILE_PATH")
@@ -23,6 +23,13 @@ class UploadActivity : AppCompatActivity() {
         Glide.with(this)
             .load(filePath)
             .into(imageView)
+    }
+
+    override fun customActionBar() {
+        super.customActionBar()
+        supportActionBar!!.apply {
+            displayOptions = ActionBar.DISPLAY_SHOW_TITLE
+        }
     }
 
 }

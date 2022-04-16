@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,7 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <RelativeLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/relativelayout"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" >
@@ -29,8 +27,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignEnd="@+id/thumbnail_video_upload"
                 android:layout_alignBottom="@+id/thumbnail_video_upload"
-                android:layout_margin="8dp"
-                android:text="00:10"
+                android:layout_margin="@dimen/component_margin"
+                android:text="@string/default_time_code"
                 android:background="@color/black"
                 android:textColor="@color/white" />
 
@@ -38,9 +36,12 @@
     </LinearLayout>
     <View style="@style/Divider.Horizontal"/>
     <LinearLayout
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/component_start_margin"
         android:gravity="center"
         android:orientation="horizontal">
         <ImageView
@@ -51,24 +52,21 @@
             android:layout_marginStart="@dimen/layout_start_margin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Username"/>
+            android:text="@string/username"/>
     </LinearLayout>
     <View style="@style/Divider.Horizontal"/>
     <LinearLayout
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-
+        android:layout_marginStart="@dimen/component_large_margin"
+        android:layout_marginEnd="@dimen/component_large_margin"
+        android:layout_marginTop="@dimen/component_medium_margin"
+        android:layout_marginBottom="@dimen/component_medium_margin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Title">
-
-        </TextView>
+            android:text="@string/title"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -76,8 +74,6 @@
             android:scrollbars="vertical"
             android:paddingTop="2dp"
             android:id="@+id/video_caption"
-            android:layout_column="1"
-            android:textSize="@dimen/title_text_size"
             android:lines="2"
             android:maxLength="2000"
             android:imeOptions="actionSend|flagNoEnterAction"

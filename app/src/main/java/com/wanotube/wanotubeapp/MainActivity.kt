@@ -9,15 +9,12 @@ import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.FrameLayout
-import android.widget.Toast
 import androidx.appcompat.app.ActionBar
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.wanotube.wanotubeapp.databinding.ActivityMainBinding
-import com.wanotube.wanotubeapp.ui.edit.EditActivity
 import com.wanotube.wanotubeapp.ui.edit.UploadActivity
 import com.wanotube.wanotubeapp.ui.following.FollowingFragment
 import com.wanotube.wanotubeapp.ui.home.HomeFragment
@@ -26,7 +23,7 @@ import com.wanotube.wanotubeapp.ui.shorts.ShortsFragment
 import com.wanotube.wanotubeapp.util.Constant
 import com.wanotube.wanotubeapp.util.URIPathHelper
 
-class MainActivity : AppCompatActivity(), IEventListener {
+class MainActivity : WanoTubeActivity(), IEventListener {
 
     private lateinit var  currentFragment: Fragment
     private var  currentFragmentId: Int = R.id.home
@@ -37,8 +34,6 @@ class MainActivity : AppCompatActivity(), IEventListener {
         val binding: ActivityMainBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        customActionBar()
-
         currentFragment = HomeFragment()
         currentFragmentId =  R.id.home
         loadFragment(currentFragment)
@@ -47,13 +42,12 @@ class MainActivity : AppCompatActivity(), IEventListener {
         customNavigation(navigationBarView)
     }
 
-    private fun customActionBar() {
-
+    override fun customActionBar() {
+        super.customActionBar()
         supportActionBar!!.apply {
-            displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
             setDisplayShowCustomEnabled(true)
-            setCustomView(R.layout.custom_action_bar_layout)
-            elevation = 0f
+            displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
+            setCustomView(R.layout.custom_home_action_bar_layout)
         }
     }
 
@@ -117,7 +111,6 @@ class MainActivity : AppCompatActivity(), IEventListener {
     }
 
     private fun openGalleryForVideo() {
-        Log.e("Ngan", "openGalleryForVideo")
         val intent = Intent()
         intent.type = "video/*"
         intent.action = Intent.ACTION_PICK

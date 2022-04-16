@@ -14,4 +14,7 @@
     <string name="title_placeholder">Name your video title</string>
 
     <string name="title_activity_edit">EditActivity</string>
+    <string name="username">Username</string>
+    <string name="title">Title</string>
+    <string name="default_time_code">00:10</string>
 </resources>
