@@ -4,16 +4,15 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.FrameLayout
 import androidx.appcompat.app.ActionBar
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationBarView.LABEL_VISIBILITY_UNLABELED
 import com.wanotube.wanotubeapp.databinding.ActivityMainBinding
 import com.wanotube.wanotubeapp.ui.edit.UploadActivity
 import com.wanotube.wanotubeapp.ui.following.FollowingFragment
@@ -26,13 +25,16 @@ import com.wanotube.wanotubeapp.util.URIPathHelper
 class MainActivity : WanoTubeActivity(), IEventListener {
 
     private lateinit var  currentFragment: Fragment
+    private lateinit var binding: ActivityMainBinding
+
     private var  currentFragmentId: Int = R.id.home
+    private var  previousFragmentId: Int = R.id.home
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val binding: ActivityMainBinding =
-            DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         currentFragment = HomeFragment()
         currentFragmentId =  R.id.home
@@ -57,37 +59,36 @@ class MainActivity : WanoTubeActivity(), IEventListener {
             if (currentFragmentId == item.itemId) {
                 false
             } else {
+                var validFlag = true
+
                 currentFragmentId = item.itemId
                 when(item.itemId) {
                     R.id.home -> {
                         currentFragment = HomeFragment()
                         loadFragment(currentFragment)
-
-                        true
                     }
                     R.id.shorts -> {
                         currentFragment = ShortsFragment()
                         loadFragment(currentFragment)
-                        true
                     }
                     R.id.following -> {
                         currentFragment = FollowingFragment()
                         loadFragment(currentFragment)
-
-                        true
                     }
                     R.id.user -> {
                         currentFragment = ProfileFragment()
                         loadFragment(currentFragment)
-
-                        true
                     }
                     R.id.create -> {
                         openGalleryForVideo()
-                        true
                     }
-                    else -> false
+                    else -> validFlag = false
                 }
+                item.isChecked = false
+
+                previousFragmentId = item.itemId
+
+                validFlag
             }
         }
     }
@@ -114,6 +115,11 @@ class MainActivity : WanoTubeActivity(), IEventListener {
         val intent = Intent()
         intent.type = "video/*"
         intent.action = Intent.ACTION_PICK
+        binding.bottomNavigation.apply {
+            selectedItemId = previousFragmentId
+            labelVisibilityMode = LABEL_VISIBILITY_UNLABELED
+        }
+
         startActivityForResult(
             Intent.createChooser(intent, "Select Video"),
             Constant.REQUEST_VIDEO
@@ -129,7 +135,6 @@ class MainActivity : WanoTubeActivity(), IEventListener {
                     val videoFullPath = uriPathHelper.getPath(this, data.data!!)
                     if (videoFullPath != null) {
                         loadUploadActivity(videoFullPath)
-//                        UploadVideoAPICall(file)
                     }
                 }
             }
@@ -170,7 +175,6 @@ class MainActivity : WanoTubeActivity(), IEventListener {
         currentFragment = fragment
     }
 }
-
 
 interface IOnFocusListenable {
     fun onWindowFocusChanged(hasFocus: Boolean)

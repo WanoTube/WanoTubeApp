@@ -4,12 +4,15 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NavUtils
+import timber.log.Timber
+import timber.log.Timber.DebugTree
 
 abstract class WanoTubeActivity : AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         customActionBar()
+        Timber.plant(DebugTree())
     }
 
     open fun customActionBar() {
@@ -30,5 +33,10 @@ abstract class WanoTubeActivity : AppCompatActivity(){
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
     }
 }
