@@ -5,13 +5,17 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.MotionEvent
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.FrameLayout
+import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.navigation.NavigationBarView.LABEL_VISIBILITY_UNLABELED
 import com.wanotube.wanotubeapp.databinding.ActivityMainBinding
 import com.wanotube.wanotubeapp.ui.edit.UploadActivity
@@ -21,6 +25,7 @@ import com.wanotube.wanotubeapp.ui.profile.ProfileFragment
 import com.wanotube.wanotubeapp.ui.shorts.ShortsFragment
 import com.wanotube.wanotubeapp.util.Constant
 import com.wanotube.wanotubeapp.util.URIPathHelper
+
 
 class MainActivity : WanoTubeActivity(), IEventListener {
 
@@ -80,7 +85,7 @@ class MainActivity : WanoTubeActivity(), IEventListener {
                         loadFragment(currentFragment)
                     }
                     R.id.create -> {
-                        openGalleryForVideo()
+                        showBottomSheetDialog()
                     }
                     else -> validFlag = false
                 }
@@ -173,6 +178,23 @@ class MainActivity : WanoTubeActivity(), IEventListener {
 
     override fun setCurrentFragment(fragment: Fragment) {
         currentFragment = fragment
+    }
+
+    private fun showBottomSheetDialog() {
+        val bottomSheetDialog = BottomSheetDialog(this)
+        bottomSheetDialog.apply {
+            setContentView(R.layout.bottom_sheet_dialog_layout)
+            findViewById<LinearLayout>(R.id.upload_video)?.setOnClickListener {
+                openGalleryForVideo()
+                bottomSheetDialog.dismiss()
+            }
+            findViewById<LinearLayout>(R.id.create_short)?.setOnClickListener {
+                openGalleryForVideo()
+                bottomSheetDialog.dismiss()
+            }
+            show()
+        }
+
     }
 }
 
