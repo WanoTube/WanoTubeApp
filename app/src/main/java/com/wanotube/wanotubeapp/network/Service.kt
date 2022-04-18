@@ -1,8 +1,15 @@
 package com.wanotube.wanotubeapp.network
 
+import com.google.gson.GsonBuilder
+import com.wanotube.wanotubeapp.util.Constant.PORT
+import com.wanotube.wanotubeapp.util.Constant.SYSTEM_URL
+import com.wanotube.wanotubeapp.util.Constant.VERSION
+import retrofit2.Call
+import retrofit2.Response
 import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+
 
 // Since we only have one service, this can all go in one file.
 // If you add more services, split this to multiple files and make sure to share the retrofit
@@ -12,8 +19,8 @@ import retrofit2.http.GET
  * A retrofit service to fetch a wanotube playlist.
  */
 interface WanoTubeService {
-    @GET("wanotube")
-    suspend fun getPlaylist(): NetworkVideoContainer
+    @GET("videos")
+    suspend fun getVideos(): Call<NetworkVideoContainer>
 }
 
 /**
@@ -23,10 +30,9 @@ object WanoTubeNetwork {
 
     // Configure retrofit to parse JSON and use coroutines
     private val retrofit = Retrofit.Builder()
-        .baseUrl("BASEURL")
-        .addConverterFactory(MoshiConverterFactory.create())
+        .baseUrl("$SYSTEM_URL:$PORT$VERSION/")
+        .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
         .build()
 
-    val wanotubes = retrofit.create(WanoTubeService::class.java)
-
+    val wanotubes: WanoTubeService = retrofit.create(WanoTubeService::class.java)
 }

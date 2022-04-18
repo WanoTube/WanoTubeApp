@@ -1,6 +1,5 @@
 package com.wanotube.wanotubeapp.network
 
-import com.squareup.moshi.JsonClass
 import com.wanotube.wanotubeapp.database.DatabaseVideo
 
 /**
@@ -19,27 +18,28 @@ import com.wanotube.wanotubeapp.database.DatabaseVideo
  *   "videos": []
  * }
  */
-@JsonClass(generateAdapter = true)
 data class NetworkVideoContainer(val videos: List<NetworkVideo>)
 
 /**
  * Videos represent a WanoTube video that can be displayed
  */
-@JsonClass(generateAdapter = true)
 data class NetworkVideo(
-    val id: String,
+    val _id: String,
     val url: String,
     val title: String,
     val updated: String,
     val description: String,
     val thumbnail: String,
     val size: Long,
-    val totalViews: Long,
-    val totalLikes: Long,
-    val totalComments: Long,
+    val total_views: Long,
+    val total_likes: Long,
+    val total_comments: Long,
     val visibility: Int,
     val duration: String,
-    val authorId: String)
+    val author_id: String,
+    val type: String,
+    val created_at: String,
+    val updated_at: String)
 
 /**
  * Convert Network results to database objects
@@ -47,18 +47,18 @@ data class NetworkVideo(
 fun NetworkVideoContainer.asDatabaseModel(): List<DatabaseVideo> {
     return videos.map {
         DatabaseVideo(
-            id = it.id,
+            id = it._id,
             url = it.url,
             title = it.title,
             description = it.description,
             updated = it.updated,
             thumbnail = it.thumbnail,
             size = it.size,
-            totalViews = it.totalViews,
-            totalLikes = it.totalLikes,
-            totalComments = it.totalComments,
+            totalViews = it.total_views,
+            totalLikes = it.total_likes,
+            totalComments = it.total_comments,
             visibility = it.visibility,
             duration = it.duration,
-            authorId = it.authorId)
+            authorId = it.author_id)
     }
 }
