@@ -17,4 +17,6 @@
     <string name="username">Username</string>
     <string name="title">Title</string>
     <string name="default_time_code">00:10</string>
+    <string name="next">Next</string>
+    <string name="click_to_finish_this_step">Click to finish this step</string>
 </resources>

@@ -1,6 +1,8 @@
 package com.wanotube.wanotubeapp.ui.edit
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.ImageView
 import androidx.appcompat.app.ActionBar
 import com.bumptech.glide.Glide
@@ -32,4 +34,21 @@ class UploadActivity : WanoTubeActivity() {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.normal_action_bar, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.next -> {
+            finish();
+            super.onBackPressed();
+            true
+        }
+
+        else -> {
+            super.onOptionsItemSelected(item)
+        }
+    }
 }

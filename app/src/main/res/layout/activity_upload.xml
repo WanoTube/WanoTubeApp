@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    android:id="@+id/activity_upload"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -83,5 +85,31 @@
         </EditText>
     </LinearLayout>
     <View style="@style/Divider.Horizontal"/>
-
+    <LinearLayout
+        android:layout_marginStart="@dimen/component_large_margin"
+        android:layout_marginEnd="@dimen/component_large_margin"
+        android:layout_marginTop="@dimen/component_medium_margin"
+        android:layout_marginBottom="@dimen/component_medium_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Description"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:scrollbars="vertical"
+            android:paddingTop="2dp"
+            android:id="@+id/video_description"
+            android:lines="2"
+            android:maxLength="2000"
+            android:imeOptions="actionSend|flagNoEnterAction"
+            android:inputType="textMultiLine|textCapSentences"
+            android:background="@android:color/transparent"
+            android:hint="Your description">
+        </EditText>
+    </LinearLayout>
 </LinearLayout>
