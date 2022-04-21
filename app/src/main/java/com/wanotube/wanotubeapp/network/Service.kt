@@ -5,10 +5,10 @@ import com.wanotube.wanotubeapp.util.Constant.PORT
 import com.wanotube.wanotubeapp.util.Constant.SYSTEM_URL
 import com.wanotube.wanotubeapp.util.Constant.VERSION
 import retrofit2.Call
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 
 // Since we only have one service, this can all go in one file.
@@ -20,11 +20,15 @@ import retrofit2.http.GET
  */
 interface WanoTubeService {
     @GET("videos")
-    suspend fun getVideos(): Call<NetworkVideoContainer>
+    fun getVideos(): Call<NetworkVideoContainer>
+
+    @GET("videos/")
+    fun getVideo(@Query("id") id: String): Call<NetworkVideo>
+
 }
 
 /**
- * Main entry point for network access. Call like `WanoTubeNetwork.wanotubes.getPlaylist()`
+ * Main entry point for network access. Call like `WanoTubeNetwork.wanotubes.getVideos()`
  */
 object WanoTubeNetwork {
 

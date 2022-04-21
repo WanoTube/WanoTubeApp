@@ -1,5 +1,6 @@
 package com.wanotube.wanotubeapp.network
 
+import com.google.gson.annotations.SerializedName
 import com.wanotube.wanotubeapp.database.DatabaseVideo
 
 /**
@@ -18,28 +19,48 @@ import com.wanotube.wanotubeapp.database.DatabaseVideo
  *   "videos": []
  * }
  */
-data class NetworkVideoContainer(val videos: List<NetworkVideo>)
-
+class NetworkVideoContainer {
+    @SerializedName("videos")
+    var videos: List<NetworkVideo> = listOf()
+}
 /**
  * Videos represent a WanoTube video that can be displayed
  */
-data class NetworkVideo(
-    val _id: String,
-    val url: String,
-    val title: String,
-    val updated: String,
-    val description: String,
-    val thumbnail: String,
-    val size: Long,
-    val total_views: Long,
-    val total_likes: Long,
-    val total_comments: Long,
-    val visibility: Int,
-    val duration: String,
-    val author_id: String,
-    val type: String,
-    val created_at: String,
-    val updated_at: String)
+class NetworkVideo {
+    @SerializedName("_id")
+    var _id: String = ""
+    @SerializedName("url")
+    val url: String = ""
+    @SerializedName("title")
+    val title: String = ""
+    @SerializedName("updated")
+    val updated: String = ""
+    @SerializedName("description")
+    val description: String  = ""
+    @SerializedName("thumbnail")
+    val thumbnail: String = ""
+    @SerializedName("size")
+    val size: Long = 0
+    @SerializedName("total_views")
+    val total_views: Long = 0
+    @SerializedName("total_likes")
+    val total_likes: Long = 0
+    @SerializedName("total_comments")
+    val total_comments: Long = 0
+    @SerializedName("visibility")
+    val visibility: Int = 0
+    @SerializedName("duration")
+    val duration: String = ""
+    @SerializedName("author_id")
+    val author_id: String = ""
+    @SerializedName("type")
+    val type: String = ""
+    @SerializedName("created_at")
+    val created_at: String = ""
+    @SerializedName("updated_at")
+    val updated_at: String = ""
+}
+
 
 /**
  * Convert Network results to database objects

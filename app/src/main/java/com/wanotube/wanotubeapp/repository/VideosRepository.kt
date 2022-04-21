@@ -8,8 +8,9 @@ import com.wanotube.wanotubeapp.domain.WanoTubeVideo
 import com.wanotube.wanotubeapp.network.NetworkVideoContainer
 import com.wanotube.wanotubeapp.network.WanoTubeNetwork
 import com.wanotube.wanotubeapp.network.asDatabaseModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -31,8 +32,8 @@ class VideosRepository(private val database: VideosDatabase) {
      * function is now safe to call from any thread including the Main thread.
      *
      */
-    suspend fun refreshVideos() {
-        withContext(Dispatchers.IO) {
+    fun refreshVideos() {
+        CoroutineScope(Dispatchers.IO).launch {
             val playlist = WanoTubeNetwork.wanotubes.getVideos()
             playlist.enqueue(object : Callback<NetworkVideoContainer> {
                 override fun onResponse(
@@ -40,19 +41,18 @@ class VideosRepository(private val database: VideosDatabase) {
                     response: Response<NetworkVideoContainer?>?
                 ) {
                     //TODO Xử ký dữ liệu trả về
-                    Timber.e("Ngan %s", response!!.body()!!.videos)
 
-                    val playListModel = response.body()?.asDatabaseModel()
-                    if (playListModel != null) {
-                        database.videoDao.insertAll(playListModel)
+                    val playListModel = response?.body()?.asDatabaseModel()
+                    CoroutineScope(Dispatchers.IO).launch {
+                        if (playListModel != null) {
+                            database.videoDao.insertAll(playListModel)
+                        }
                     }
                 }
-
                 override fun onFailure(call: Call<NetworkVideoContainer>?, t: Throwable?) {
                     Timber.e("Failed: t: %s", t.toString())
                 }
             })
-
         }
     }
 }
