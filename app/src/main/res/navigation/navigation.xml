@@ -9,9 +9,16 @@
         <action
             android:id="@+id/action_home_fragment_to_fragment_watch"
             app:destination="@id/fragment_watch" />
+        <action
+            android:id="@+id/action_home_fragment_to_fragment_short"
+            app:destination="@id/fragment_short"/>
     </fragment>
     <fragment
         android:id="@+id/fragment_watch"
         android:name="com.wanotube.wanotubeapp.ui.watch.WatchFragment"
         android:label="WatchFragment" />
+    <fragment
+        android:id="@+id/fragment_short"
+        android:name="com.wanotube.wanotubeapp.ui.shorts.ShortsFragment"
+        android:label="ShortFragment"/>
 </navigation>

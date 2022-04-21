@@ -43,7 +43,7 @@ class MainActivity : WanoTubeActivity(), IEventListener {
 
         currentFragment = HomeFragment()
         currentFragmentId =  R.id.home
-        loadFragment(currentFragment)
+        findViewById<FrameLayout>(R.id.myNavHostFragment).findNavController().navigate(R.id.fragment_home)
 
         val navigationBarView = binding.bottomNavigation
         customNavigation(navigationBarView)
@@ -70,19 +70,19 @@ class MainActivity : WanoTubeActivity(), IEventListener {
                 when(item.itemId) {
                     R.id.home -> {
                         currentFragment = HomeFragment()
-                        loadFragment(currentFragment)
+                        findViewById<FrameLayout>(R.id.myNavHostFragment).findNavController().navigate(R.id.fragment_home)
                     }
                     R.id.shorts -> {
                         currentFragment = ShortsFragment()
-                        loadFragment(currentFragment)
+                        findViewById<FrameLayout>(R.id.myNavHostFragment).findNavController().navigate(R.id.fragment_short)
                     }
                     R.id.following -> {
                         currentFragment = FollowingFragment()
-                        loadFragment(currentFragment)
+                        findViewById<FrameLayout>(R.id.myNavHostFragment).findNavController().navigate(R.id.fragment_management)
                     }
                     R.id.user -> {
                         currentFragment = ProfileFragment()
-                        loadFragment(currentFragment)
+//                        loadFragment(currentFragment)
                     }
                     R.id.create -> {
                         showBottomSheetDialog()
@@ -99,7 +99,7 @@ class MainActivity : WanoTubeActivity(), IEventListener {
     }
 
     private fun loadFragment(fragment: Fragment) {
-        findViewById<FrameLayout>(R.id.myNavHostFragment).findNavController().navigate(R.id.fragment_home)
+        findViewById<FrameLayout>(R.id.myNavHostFragment).findNavController().navigate(R.id.fragment_short)
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
