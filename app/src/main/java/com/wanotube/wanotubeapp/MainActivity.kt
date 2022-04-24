@@ -78,7 +78,7 @@ class MainActivity : WanoTubeActivity(), IEventListener {
                     }
                     R.id.following -> {
                         currentFragment = FollowingFragment()
-                        findViewById<FrameLayout>(R.id.myNavHostFragment).findNavController().navigate(R.id.fragment_management)
+//                        findViewById<FrameLayout>(R.id.myNavHostFragment).findNavController().navigate(R.id.fragment_management)
                     }
                     R.id.user -> {
                         currentFragment = ProfileFragment()
