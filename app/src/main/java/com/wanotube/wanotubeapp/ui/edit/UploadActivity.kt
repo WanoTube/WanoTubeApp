@@ -3,23 +3,39 @@ package com.wanotube.wanotubeapp.ui.edit
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.EditText
 import android.widget.ImageView
 import androidx.appcompat.app.ActionBar
 import com.bumptech.glide.Glide
 import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.WanoTubeActivity
+import com.wanotube.wanotubeapp.database.getDatabase
+import com.wanotube.wanotubeapp.repository.VideosRepository
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
 
-class UploadActivity : WanoTubeActivity() {
+
+class UploadActivity() : WanoTubeActivity() {
     private lateinit var imageView: ImageView
-    var filePath: String = ""
+    private lateinit var titleText: EditText
+    private lateinit var descriptionText: EditText
+
+    private lateinit var videosRepository: VideosRepository
+    private var filePath: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_upload)
 
+        videosRepository = VideosRepository(getDatabase(application))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         imageView = findViewById(R.id.thumbnail_video_upload)
+        titleText = findViewById(R.id.video_title)
+        descriptionText = findViewById(R.id.video_description)
+        
         filePath = intent.getStringExtra("FILE_PATH")
 
         Glide.with(this)
@@ -42,13 +58,35 @@ class UploadActivity : WanoTubeActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.next -> {
-            finish();
-            super.onBackPressed();
+            uploadVideo()
+            finish()
+            super.onBackPressed()
             true
         }
 
         else -> {
             super.onOptionsItemSelected(item)
         }
+    }
+    
+    private fun uploadVideo() {
+        val file = File(filePath)
+        val requestFile: RequestBody =
+            RequestBody.create("multipart/form-data".toMediaTypeOrNull(), filePath)
+        val fileBody: MultipartBody.Part = MultipartBody.Part.createFormData("video", file.name, requestFile)
+        val titleBody: MultipartBody.Part = MultipartBody.Part.createFormData("title", titleText.text.toString())
+        val descriptionBody: MultipartBody.Part = MultipartBody.Part.createFormData("description", descriptionText.text.toString())
+        val authorBody: MultipartBody.Part = MultipartBody.Part.createFormData("author_id", "")
+        val durationBody: MultipartBody.Part = MultipartBody.Part.createFormData("duration", "")
+        val privacyBody: MultipartBody.Part = MultipartBody.Part.createFormData("privacy", "0")
+
+        videosRepository.uploadVideo(
+            titleBody,
+            descriptionBody,
+            fileBody,
+            authorBody,
+            durationBody,
+            privacyBody
+        )
     }
 }

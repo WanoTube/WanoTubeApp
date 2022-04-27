@@ -37,7 +37,7 @@ class NetworkVideo {
     val updated: String = ""
     @SerializedName("description")
     val description: String  = ""
-    @SerializedName("thumbnail")
+    @SerializedName("thumbnail_url")
     val thumbnail: String = ""
     @SerializedName("size")
     val size: Long = 0

@@ -24,7 +24,7 @@
                 android:src="@drawable/default_thumbnail"/>
 
             <TextView
-                android:id="@+id/myImageViewText"
+                android:id="@+id/duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignEnd="@+id/thumbnail_video_upload"
@@ -75,7 +75,7 @@
             android:gravity="start"
             android:scrollbars="vertical"
             android:paddingTop="2dp"
-            android:id="@+id/video_caption"
+            android:id="@+id/video_title"
             android:lines="2"
             android:maxLength="2000"
             android:imeOptions="actionSend|flagNoEnterAction"

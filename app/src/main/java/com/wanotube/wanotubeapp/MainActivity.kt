@@ -25,6 +25,7 @@ import com.wanotube.wanotubeapp.ui.profile.ProfileFragment
 import com.wanotube.wanotubeapp.ui.shorts.ShortsFragment
 import com.wanotube.wanotubeapp.util.Constant
 import com.wanotube.wanotubeapp.util.URIPathHelper
+import timber.log.Timber
 
 
 class MainActivity : WanoTubeActivity(), IEventListener {
@@ -120,6 +121,8 @@ class MainActivity : WanoTubeActivity(), IEventListener {
         val intent = Intent()
         intent.type = "video/*"
         intent.action = Intent.ACTION_PICK
+        //2131230869
+        Timber.e("Ngan %s", "previousFragmentId: $previousFragmentId")
         binding.bottomNavigation.apply {
             selectedItemId = previousFragmentId
             labelVisibilityMode = LABEL_VISIBILITY_UNLABELED
