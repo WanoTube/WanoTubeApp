@@ -4,25 +4,25 @@
         android:id="@+id/home"
         android:enabled="true"
         android:icon="@drawable/ic_home"
-        android:title="Home"/>
+        android:title="@string/home"/>
     <item
         android:id="@+id/shorts"
         android:enabled="true"
         android:icon="@drawable/ic_slow_motion"
-        android:title="Shorts"/>
+        android:title="@string/shorts"/>
     <item
         android:id="@+id/create"
         android:enabled="true"
         android:icon="@drawable/ic_add"
-        android:title="Create"/>
+        android:title="@string/create"/>
     <item
-        android:id="@+id/following"
+        android:id="@+id/management"
         android:enabled="true"
         android:icon="@drawable/ic_library"
-        android:title="Following"/>
+        android:title="@string/my_videos"/>
     <item
         android:id="@+id/user"
         android:enabled="true"
         android:icon="@drawable/ic_person"
-        android:title="User"/>
+        android:title="@string/profile"/>
 </menu>

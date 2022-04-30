@@ -5,12 +5,10 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.MotionEvent
-import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
@@ -19,22 +17,18 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.navigation.NavigationBarView.LABEL_VISIBILITY_UNLABELED
 import com.wanotube.wanotubeapp.databinding.ActivityMainBinding
 import com.wanotube.wanotubeapp.ui.edit.UploadActivity
-import com.wanotube.wanotubeapp.ui.following.FollowingFragment
 import com.wanotube.wanotubeapp.ui.home.HomeFragment
+import com.wanotube.wanotubeapp.ui.manage.ManagementFragment
 import com.wanotube.wanotubeapp.ui.profile.ProfileFragment
 import com.wanotube.wanotubeapp.ui.shorts.ShortsFragment
 import com.wanotube.wanotubeapp.util.Constant
 import com.wanotube.wanotubeapp.util.URIPathHelper
-import timber.log.Timber
-
 
 class MainActivity : WanoTubeActivity(), IEventListener {
 
     private lateinit var  currentFragment: Fragment
     private lateinit var binding: ActivityMainBinding
-
     private var  currentFragmentId: Int = R.id.home
-    private var  previousFragmentId: Int = R.id.home
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,28 +56,28 @@ class MainActivity : WanoTubeActivity(), IEventListener {
     private fun customNavigation(navigationBarView: BottomNavigationView) {
 
         navigationBarView.setOnItemSelectedListener { item ->
-            if (currentFragmentId == item.itemId) {
+            if (currentFragmentId == item.itemId && !isCreateFragment()) {
                 false
             } else {
                 var validFlag = true
-
                 currentFragmentId = item.itemId
+                
                 when(item.itemId) {
                     R.id.home -> {
                         currentFragment = HomeFragment()
-                        findViewById<FrameLayout>(R.id.myNavHostFragment).findNavController().navigate(R.id.fragment_home)
+                        loadFragment(R.id.fragment_home)
                     }
                     R.id.shorts -> {
                         currentFragment = ShortsFragment()
-                        findViewById<FrameLayout>(R.id.myNavHostFragment).findNavController().navigate(R.id.fragment_short)
+                        loadFragment(R.id.fragment_short)
                     }
-                    R.id.following -> {
-                        currentFragment = FollowingFragment()
-//                        findViewById<FrameLayout>(R.id.myNavHostFragment).findNavController().navigate(R.id.fragment_management)
+                    R.id.management -> {
+                        currentFragment = ManagementFragment()
+                        loadFragment(R.id.fragment_management)
                     }
                     R.id.user -> {
                         currentFragment = ProfileFragment()
-//                        loadFragment(currentFragment)
+                        loadFragment(R.id.fragment_profile)
                     }
                     R.id.create -> {
                         showBottomSheetDialog()
@@ -91,16 +85,17 @@ class MainActivity : WanoTubeActivity(), IEventListener {
                     else -> validFlag = false
                 }
                 item.isChecked = false
-
-                previousFragmentId = item.itemId
-
                 validFlag
             }
         }
     }
+    
+    private fun isCreateFragment(): Boolean {
+        return currentFragmentId == R.id.create
+    }
 
-    private fun loadFragment(fragment: Fragment) {
-        findViewById<FrameLayout>(R.id.myNavHostFragment).findNavController().navigate(R.id.fragment_short)
+    private fun loadFragment(fragmentId: Int) {
+        findViewById<FrameLayout>(R.id.myNavHostFragment).findNavController().navigate(fragmentId)
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
@@ -121,13 +116,7 @@ class MainActivity : WanoTubeActivity(), IEventListener {
         val intent = Intent()
         intent.type = "video/*"
         intent.action = Intent.ACTION_PICK
-        //2131230869
-        Timber.e("Ngan %s", "previousFragmentId: $previousFragmentId")
-        binding.bottomNavigation.apply {
-            selectedItemId = previousFragmentId
-            labelVisibilityMode = LABEL_VISIBILITY_UNLABELED
-        }
-
+        binding.bottomNavigation.labelVisibilityMode = LABEL_VISIBILITY_UNLABELED
         startActivityForResult(
             Intent.createChooser(intent, "Select Video"),
             Constant.REQUEST_VIDEO
