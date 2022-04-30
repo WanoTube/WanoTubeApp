@@ -46,7 +46,7 @@ class ManagementAdapter(iEventListener: IEventListener) : RecyclerView.Adapter<M
 
         fun bind(item: WanoTubeVideo) {
             titleView.text = item.title
-            val subtitle = item.authorId + "  " + item.totalViews + "views"
+            val subtitle = item.authorId + "  " + item.totalViews + " views"
             subtitleView.text = subtitle
 
             Glide.with(thumbnailVideoView.context)

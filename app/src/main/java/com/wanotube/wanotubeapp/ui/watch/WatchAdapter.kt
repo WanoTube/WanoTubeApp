@@ -41,7 +41,7 @@ class WatchAdapter : RecyclerView.Adapter<WatchAdapter.ViewHolder>() {
 
         fun bind(item: WanoTubeVideo) {
             titleView.text = item.title
-            val subtitle = item.authorId + "  " + item.totalViews + "views"
+            val subtitle = item.authorId + "  " + item.totalViews + " views"
             subtitleView.text = subtitle
 
             Glide.with(thumbnailVideoView.context)
