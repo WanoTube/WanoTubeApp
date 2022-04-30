@@ -14,10 +14,11 @@ import com.wanotube.wanotubeapp.repository.VideosRepository
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 
 
-class UploadActivity() : WanoTubeActivity() {
+class UploadActivity : WanoTubeActivity() {
     private lateinit var imageView: ImageView
     private lateinit var titleText: EditText
     private lateinit var descriptionText: EditText
@@ -71,12 +72,11 @@ class UploadActivity() : WanoTubeActivity() {
     
     private fun uploadVideo() {
         val file = File(filePath)
-        val requestFile: RequestBody =
-            RequestBody.create("multipart/form-data".toMediaTypeOrNull(), filePath)
-        val fileBody: MultipartBody.Part = MultipartBody.Part.createFormData("video", file.name, requestFile)
+        val videoBody: RequestBody = file.asRequestBody("video/*".toMediaTypeOrNull())
+        val fileBody: MultipartBody.Part = MultipartBody.Part.createFormData("video", file.name, videoBody)
         val titleBody: MultipartBody.Part = MultipartBody.Part.createFormData("title", titleText.text.toString())
         val descriptionBody: MultipartBody.Part = MultipartBody.Part.createFormData("description", descriptionText.text.toString())
-        val authorBody: MultipartBody.Part = MultipartBody.Part.createFormData("author_id", "")
+        val authorBody: MultipartBody.Part = MultipartBody.Part.createFormData("author_id", "62697a06925d325eb6ef0ab4")
         val durationBody: MultipartBody.Part = MultipartBody.Part.createFormData("duration", "")
         val privacyBody: MultipartBody.Part = MultipartBody.Part.createFormData("privacy", "0")
 
