@@ -18,6 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
+            app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
             android:background="?android:attr/windowBackground"
             app:itemBackground="@color/bgBottomNavigation"
             android:foreground="?attr/selectableItemBackground"

@@ -13,7 +13,6 @@ import com.wanotube.wanotubeapp.IEventListener
 import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.domain.WanoTubeVideo
 import com.wanotube.wanotubeapp.ui.watch.WatchFragment
-import com.wanotube.wanotubeapp.util.getThumbnailYoutubeVideo
 
 class ManagementAdapter(iEventListener: IEventListener) : RecyclerView.Adapter<ManagementAdapter.ViewHolder>() {
 
@@ -50,9 +49,8 @@ class ManagementAdapter(iEventListener: IEventListener) : RecyclerView.Adapter<M
             val subtitle = item.authorId + "  " + item.totalViews + "views"
             subtitleView.text = subtitle
 
-            val thumbnailVideo = getThumbnailYoutubeVideo(item.url)
             Glide.with(thumbnailVideoView.context)
-                .load(thumbnailVideo)
+                .load(item.url)
                 .override(480, 269)
                 .centerCrop()
                 .into(thumbnailVideoView)

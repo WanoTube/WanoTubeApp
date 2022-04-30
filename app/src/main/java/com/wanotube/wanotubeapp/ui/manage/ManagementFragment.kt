@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.wanotube.wanotubeapp.IEventListener
 import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.databinding.FragmentHomeBinding
+import com.wanotube.wanotubeapp.util.MarginItemDecoration
 import com.wanotube.wanotubeapp.viewmodels.WanoTubeViewModel
 
 class ManagementFragment : Fragment() {
@@ -47,7 +48,20 @@ class ManagementFragment : Fragment() {
 
         val adapter = ManagementAdapter(listener)
 
-        binding.videoList.adapter = adapter
+        binding.videoList.apply {
+            this.adapter = adapter
+            val topBottomMargin = resources.getDimensionPixelSize(R.dimen.component_large_margin)
+            val leftRightMargin = resources.getDimensionPixelSize(R.dimen.component_margin)
+
+            addItemDecoration(
+                MarginItemDecoration(
+                    bottomSpaceSize = topBottomMargin,
+                    topSpaceSize = topBottomMargin,
+                    leftSpaceSize = leftRightMargin,
+                    rightSpaceSize = leftRightMargin
+                )
+            )
+        }
 
         videoViewModel.playlist.observe(viewLifecycleOwner) {
             it?.let {
