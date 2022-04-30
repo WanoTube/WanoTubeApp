@@ -6,13 +6,13 @@
 
 
     <EditText
-        android:id="@+id/username"
+        android:id="@+id/email"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintWidth_percent=".8"
-        app:layout_constraintVertical_bias=".3"
+        app:layout_constraintVertical_bias=".2"
         app:layout_constraintHorizontal_bias=".5"
-        android:hint="@string/username"
+        android:hint="@string/email"
         android:paddingStart="20dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
@@ -32,7 +32,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username"
+        app:layout_constraintTop_toBottomOf="@+id/email"
         android:layout_marginTop="20dp"
         app:layout_constraintVertical_bias="0"
         app:layout_constraintWidth_percent=".8" />
@@ -41,7 +41,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintWidth_percent=".8"
-        app:layout_constraintVertical_bias=".7"
+        app:layout_constraintVertical_bias=".3"
         android:background="@xml/primary_button"
         app:backgroundTint="@null"
         android:textColor="@color/white"

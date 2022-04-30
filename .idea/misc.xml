@@ -6,10 +6,10 @@
         <entry key="app/src/main/res/drawable/primary_button.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/rounded_shape.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/shape.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_login.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.14855804443359377" />
         <entry key="app/src/main/res/layout/fragment_login_tab.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_login_tab2.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fragment_signup_tab.xml" value="0.5048126220703125" />
+        <entry key="app/src/main/res/layout/fragment_signup_tab.xml" value="0.11" />
         <entry key="app/src/main/res/layout/fragment_watch.xml" value="0.1" />
         <entry key="app/src/main/res/layout/tab_color_selector.xml" value="0.3417874396135266" />
       </map>
