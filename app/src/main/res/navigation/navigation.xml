@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/navigation"
+    xmlns:app="http://schemas.android.com/apk/res-auto" 
+    android:id="@+id/navigation"
     app:startDestination="@id/fragment_home">
     <fragment
         android:id="@+id/fragment_home"
@@ -73,8 +74,8 @@
 
     <fragment
         android:id="@+id/fragment_profile"
-        android:name="com.wanotube.wanotubeapp.ui.manage.ManagementFragment"
-        android:label="ManagementFragment">
+        android:name="com.wanotube.wanotubeapp.ui.profile.ProfileFragment"
+        android:label="ProfileFragment">
         <action
             android:id="@+id/action_profile_fragment_to_home_fragment"
             app:destination="@id/fragment_home" />
@@ -85,7 +86,7 @@
             android:id="@+id/action_profile_fragment_to_short_fragment"
             app:destination="@id/fragment_short"/>
         <action
-            android:id="@+id/action_profile_fragment_to_mangement_fragment"
+            android:id="@+id/action_profile_fragment_to_management_fragment"
             app:destination="@id/fragment_management"/>
     </fragment>
 </navigation>

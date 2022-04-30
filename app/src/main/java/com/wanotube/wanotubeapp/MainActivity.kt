@@ -38,7 +38,7 @@ class MainActivity : WanoTubeActivity(), IEventListener {
 
         currentFragment = HomeFragment()
         currentFragmentId =  R.id.home
-        findViewById<FrameLayout>(R.id.myNavHostFragment).findNavController().navigate(R.id.fragment_home)
+        loadFragment(R.id.fragment_home)
 
         val navigationBarView = binding.bottomNavigation
         customNavigation(navigationBarView)

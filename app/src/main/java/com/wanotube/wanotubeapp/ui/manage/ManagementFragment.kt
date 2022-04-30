@@ -11,9 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.wanotube.wanotubeapp.IEventListener
 import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.databinding.FragmentHomeBinding
-import com.wanotube.wanotubeapp.ui.home.HomeAdapter
 import com.wanotube.wanotubeapp.viewmodels.WanoTubeViewModel
-
 
 class ManagementFragment : Fragment() {
 
@@ -47,18 +45,17 @@ class ManagementFragment : Fragment() {
 
         binding.videoViewModel = videoViewModel
 
-        val adapter = HomeAdapter(listener)
+        val adapter = ManagementAdapter(listener)
 
         binding.videoList.adapter = adapter
 
-        videoViewModel.playlist.observe(viewLifecycleOwner, {
+        videoViewModel.playlist.observe(viewLifecycleOwner) {
             it?.let {
                 adapter.data = it
             }
-        })
+        }
 
         binding.lifecycleOwner = this
-
 
         return binding.root
     }

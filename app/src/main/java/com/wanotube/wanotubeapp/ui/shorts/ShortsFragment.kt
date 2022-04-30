@@ -42,6 +42,7 @@ class ShortsFragment : Fragment() {
         }
 
         binding.lifecycleOwner = this
-
-        return binding.root    }
+        
+        return binding.root    
+    }
 }
