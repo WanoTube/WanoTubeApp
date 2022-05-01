@@ -64,7 +64,7 @@ class LoginTabFragment : Fragment() {
                     Timber.e("Failed: error: %s", "Email or password is incorrect")
                 } else {
                     val user = body.user
-                    val token = body.token
+                    val token = "Bearer " + body.token
 
                     // Save session username & auth token
                     mAuthPreferences?.authToken = token
