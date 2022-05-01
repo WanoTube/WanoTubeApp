@@ -98,7 +98,6 @@ class WatchActivity : WanoTubeActivity() {
         initialiseSeekBar()
         setHandler()
         initAdapter()
-        initiateVideo()
     }
 
     override fun customActionBar() {
@@ -108,11 +107,11 @@ class WatchActivity : WanoTubeActivity() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.normal_action_bar, menu)
-        return true
-    }
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        menuInflater.inflate(R.menu.normal_action_bar, menu)
+//        return true
+//    }
     
     private fun initAdapter() {
         val viewModelFactory = WanoTubeViewModel.WanoTubeViewModelFactory(application)
@@ -134,9 +133,14 @@ class WatchActivity : WanoTubeActivity() {
         videoViewModel.playlist.observe(this) {
             it?.let {
                 adapter.data = it
+
                 currentVideo = it.find { 
                     video -> videoId == video.id
                 }
+                Timber.e("Ngan %s", "currentVideo: $currentVideo")
+
+                if (currentVideo != null)
+                    initVideo()
             }
         } 
     }
@@ -345,7 +349,8 @@ class WatchActivity : WanoTubeActivity() {
         }
     }
 
-    private fun initiateVideo() {
+    private fun initVideo() {
+        Timber.e("Ngan %s", "video's url: " + currentVideo?.url)
         videoView.setVideoURI(Uri.parse(currentVideo?.url ?: ""))
         if (videoView.isPlaying)
             progressBar.visibility = View.VISIBLE
