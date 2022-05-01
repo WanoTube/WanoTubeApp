@@ -15,6 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WanoTubeApp"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".ui.watch.WatchActivity"
+            android:exported="false" />
         <activity android:name=".ui.edit.ShortUploadActivity" />
         <activity android:name=".ui.edit.EditActivity" />
         <activity android:name=".ui.edit.UploadActivity" />

@@ -1,18 +1,18 @@
 package com.wanotube.wanotubeapp.ui.manage
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.wanotube.wanotubeapp.IEventListener
 import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.domain.WanoTubeVideo
-import com.wanotube.wanotubeapp.ui.watch.WatchFragment
+import com.wanotube.wanotubeapp.ui.watch.WatchActivity
 
 class ManagementAdapter(iEventListener: IEventListener) : RecyclerView.Adapter<ManagementAdapter.ViewHolder>() {
 
@@ -54,9 +54,12 @@ class ManagementAdapter(iEventListener: IEventListener) : RecyclerView.Adapter<M
                 .override(480, 269)
                 .centerCrop()
                 .into(thumbnailVideoView)
+
+            val context = thumbnailVideoView.context
             thumbnailVideoView.setOnClickListener{
-                itemView.findNavController().navigate(R.id.fragment_watch)
-                listener.setCurrentFragment(WatchFragment())
+                val intent = Intent(context, WatchActivity::class.java)
+                intent.putExtra("VIDEO_ID", item.id)
+                context.startActivity(intent)
             }
         }
 

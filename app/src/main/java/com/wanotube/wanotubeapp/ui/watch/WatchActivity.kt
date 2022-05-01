@@ -1,9 +1,9 @@
 package com.wanotube.wanotubeapp.ui.watch
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.pm.ActivityInfo
-import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_SENSOR
 import android.content.res.Configuration
 import android.media.MediaPlayer
 import android.net.Uri
@@ -12,15 +12,11 @@ import android.os.CountDownTimer
 import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.util.TypedValue
 import android.view.GestureDetector
-import android.view.GestureDetector.SimpleOnGestureListener
 import android.view.Gravity
-import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
-import android.view.View.OnTouchListener
 import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.AlphaAnimation
@@ -29,7 +25,6 @@ import android.view.animation.AnimationSet
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.ScaleAnimation
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -37,78 +32,80 @@ import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import android.widget.ScrollView
 import android.widget.SeekBar
-import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import android.widget.Toast
 import android.widget.VideoView
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
+import androidx.appcompat.app.ActionBar
 import androidx.lifecycle.ViewModelProvider
 import androidx.transition.Slide
 import androidx.transition.Transition
 import androidx.transition.TransitionManager
-import com.wanotube.wanotubeapp.IOnBackPressed
-import com.wanotube.wanotubeapp.IOnFocusListenable
 import com.wanotube.wanotubeapp.R
-import com.wanotube.wanotubeapp.databinding.FragmentWatchBinding
+import com.wanotube.wanotubeapp.WanoTubeActivity
+import com.wanotube.wanotubeapp.databinding.ActivityWatchBinding
+import com.wanotube.wanotubeapp.domain.WanoTubeVideo
+import com.wanotube.wanotubeapp.util.Constant
 import com.wanotube.wanotubeapp.viewmodels.WanoTubeViewModel
 
-
-class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable{
-
-    private lateinit var binding: FragmentWatchBinding
+class WatchActivity : WanoTubeActivity() {
+    private lateinit var binding: ActivityWatchBinding
 
     private lateinit var videoLayout: RelativeLayout
     private lateinit var videoView: VideoView
     private lateinit var forwardImg: ImageView
-    private  lateinit var backwardImg:ImageView
-    private  lateinit var playBtn:ImageView
-    private  lateinit var pauseBtn:ImageView
-    private  lateinit var fullscreen:ImageView
-    private  lateinit var fullscreenExit:ImageView
-    private  lateinit var showImgUp:ImageView
-    private  lateinit var showImgDown:ImageView
+    private lateinit var backwardImg: ImageView
+    private lateinit var playBtn: ImageView
+    private lateinit var pauseBtn: ImageView
+    private lateinit var fullscreen: ImageView
+    private lateinit var fullscreenExit: ImageView
+    private lateinit var showImgUp: ImageView
+    private lateinit var showImgDown: ImageView
     private lateinit var mediaControls: RelativeLayout
     private lateinit var startTime: TextView
-    private  lateinit var endTime:TextView
+    private lateinit var endTime: TextView
     private lateinit var rewindTxt: TextView
-    private  lateinit var forwardTxt:TextView
+    private lateinit var forwardTxt: TextView
     private lateinit var seekBar: SeekBar
     private lateinit var videoHandler: Handler
     private lateinit var videoRunnable: Runnable
-    private var countdownTimer: CountDownTimer? = null
     private lateinit var progressBar: ProgressBar
-    private  lateinit var bufferbar:ProgressBar
-    private lateinit var backFrame:FrameLayout
-    private lateinit var forwardFrame:FrameLayout
-    private lateinit var dismissControlFrame:FrameLayout
-
+    private lateinit var bufferBar: ProgressBar
+    private lateinit var backFrame: FrameLayout
+    private lateinit var forwardFrame: FrameLayout
+    private lateinit var dismissControlFrame: FrameLayout
     private lateinit var firstCommentSection: LinearLayout
     private lateinit var commentListView: ScrollView
     private lateinit var videoInfoView: ScrollView
-
+    
+    private var currentVideo: WanoTubeVideo? = null
+    
     private var check = 0
-
     private val isMaximise = true
-    private var url =
-        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
+    private var countdownTimer: CountDownTimer? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_watch, container, false
-        )
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        binding = ActivityWatchBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         initLayouts(binding)
         setClickListeners()
         initialiseSeekBar()
         setHandler()
-        initiateVideo()
+        initAdapter()
+    }
 
-        val application = requireNotNull(this.activity).application
+    override fun customActionBar() {
+        super.customActionBar()
+        supportActionBar!!.apply {
+            displayOptions = ActionBar.DISPLAY_SHOW_TITLE
+        }
+    }
 
+    private fun initAdapter() {
         val viewModelFactory = WanoTubeViewModel.WanoTubeViewModelFactory(application)
 
         val videoViewModel =
@@ -122,18 +119,23 @@ class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable{
 
         binding.recommendVideoList.adapter = adapter
 
-        videoViewModel.playlist.observe(viewLifecycleOwner, {
+        binding.lifecycleOwner = this
+        
+        val videoId = intent.getStringExtra("VIDEO_ID")
+        videoViewModel.playlist.observe(this) {
             it?.let {
                 adapter.data = it
+
+                currentVideo = it.find { 
+                    video -> videoId == video.id
+                }
+                if (currentVideo != null)
+                    initVideo()
             }
-        })
-
-        binding.lifecycleOwner = this
-
-        return binding.root
+        } 
     }
 
-    private fun initLayouts(binding: FragmentWatchBinding) {
+    private fun initLayouts(binding: ActivityWatchBinding) {
         videoLayout = binding.videoLayout
         videoView = binding.videoPlayer
         forwardImg = binding.frwardImg
@@ -151,7 +153,7 @@ class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable{
         forwardTxt = binding.frwrdtxt
         seekBar = binding.seekbar
         progressBar = binding.progress
-        bufferbar = binding.bufferbar
+        bufferBar = binding.bufferBar
         backFrame = binding.bbkframe
         forwardFrame = binding.ffrdframe
         dismissControlFrame = binding.dismissControlFrame
@@ -161,9 +163,10 @@ class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable{
         videoInfoView = binding.videoInfoSection
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun handleVideoPlayer() {
 
-        val gd = GestureDetector(context, object : SimpleOnGestureListener() {
+        val gd = GestureDetector(this, object : GestureDetector.SimpleOnGestureListener() {
             override fun onDoubleTap(e: MotionEvent): Boolean {
                 if (check == 1) fastRewind() else if (check == 0) fastForward()
                 return true
@@ -187,7 +190,7 @@ class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable{
                 e1: MotionEvent,
                 e2: MotionEvent,
                 distanceX: Float,
-                distanceY: Float
+                distanceY: Float,
             ): Boolean {
                 return super.onScroll(e1, e2, distanceX, distanceY)
             }
@@ -196,7 +199,7 @@ class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable{
                 event1: MotionEvent,
                 event2: MotionEvent,
                 velocityX: Float,
-                velocityY: Float
+                velocityY: Float,
             ): Boolean {
                 //TODO: Minimise and maximise
 //                if (isMaximise) {
@@ -208,16 +211,16 @@ class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable{
             }
         })
 
-        forwardFrame.setOnTouchListener(OnTouchListener { view, event ->
+        forwardFrame.setOnTouchListener { _, event ->
             check = 1
             gd.onTouchEvent(event)
-        })
+        }
 
-        backFrame.setOnTouchListener(OnTouchListener { view, event ->
+        backFrame.setOnTouchListener { _, event ->
             check = 0
             gd.onTouchEvent(event)
-        })
-
+        }
+        
         playBtn.setOnClickListener {
             val fadeIn: Animation = AlphaAnimation(0f, 1f)
             fadeIn.interpolator = DecelerateInterpolator()
@@ -230,7 +233,7 @@ class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable{
             playBtn.visibility = View.GONE
         }
 
-        pauseBtn.setOnClickListener(View.OnClickListener {
+        pauseBtn.setOnClickListener {
             val fadeIn: Animation = AlphaAnimation(0f, 1f)
             fadeIn.interpolator = DecelerateInterpolator()
             fadeIn.duration = 500
@@ -240,32 +243,30 @@ class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable{
             pauseBtn.visibility = View.GONE
             playBtn.visibility = View.VISIBLE
             videoView.pause()
-        })
+        }
 
         fullscreen.setOnClickListener {
-            activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-            val TIME_OUT = 2500
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
             Handler().postDelayed(
-                { activity?.requestedOrientation = SCREEN_ORIENTATION_SENSOR },
-                TIME_OUT.toLong()
+                { requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR },
+                Constant.TIME_OUT
             )
         }
 
-        fullscreenExit.setOnClickListener(View.OnClickListener {
-            activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-            val TIME_OUT = 2500
+        fullscreenExit.setOnClickListener {
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
             Handler().postDelayed(
-                { activity?.requestedOrientation = SCREEN_ORIENTATION_SENSOR },
-                TIME_OUT.toLong()
+                { requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR },
+                Constant.TIME_OUT
             )
-        })
+        }
     }
 
     private fun handleCommentSection() {
 
-        firstCommentSection.setOnClickListener(View.OnClickListener {
+        firstCommentSection.setOnClickListener {
             toggleCommentSection(true)
-        })
+        }
 
         videoInfoView.setOnClickListener {
             toggleCommentSection(false)
@@ -294,12 +295,12 @@ class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable{
             val commentText = binding.commentEditText.text.toString()
             binding.commentEditText.text.clear()
 
-            val toast = Toast.makeText(context, commentText, Toast.LENGTH_SHORT)
+            val toast = Toast.makeText(this, commentText, Toast.LENGTH_SHORT)
             toast.show()
 
             binding.btnSendComment.visibility = View.GONE
 
-            activity?.applicationContext?.let { it1 -> hideKeyboardFrom(
+            applicationContext?.let { it1 -> hideKeyboardFrom(
                 it1,
                 binding.commentEditText
             ) }
@@ -338,8 +339,8 @@ class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable{
         }
     }
 
-    private fun initiateVideo() {
-        videoView.setVideoURI(Uri.parse(url))
+    private fun initVideo() {
+        videoView.setVideoURI(Uri.parse(currentVideo?.url ?: ""))
         if (videoView.isPlaying)
             progressBar.visibility = View.VISIBLE
 
@@ -355,7 +356,7 @@ class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable{
                 }
                 false
             }
-            mp.setOnBufferingUpdateListener { _, percent -> bufferbar.progress = percent }
+            mp.setOnBufferingUpdateListener { _, percent -> bufferBar.progress = percent }
             mp.setOnCompletionListener { }
         }
     }
@@ -380,7 +381,7 @@ class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable{
                 }
             }
             Configuration.ORIENTATION_PORTRAIT -> {
-                val decorView: View? = activity?.window?.decorView
+                val decorView: View? = window?.decorView
                 if (decorView != null) {
                     decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 }
@@ -406,7 +407,7 @@ class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable{
     }
 
     private fun hideSystemUI() {
-        val decorView: View? = activity?.window?.decorView
+        val decorView: View? = window?.decorView
         if (decorView != null) {
             decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_IMMERSIVE
                     or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -432,7 +433,7 @@ class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable{
         view.startAnimation(animation)
     }
 
-    private fun prepareAnimationForward(animation: Animation): Animation? {
+    private fun prepareAnimationForward(animation: Animation): Animation {
         animation.repeatCount = 1
         animation.repeatMode = Animation.REVERSE
         animation.setAnimationListener(object : Animation.AnimationListener {
@@ -469,7 +470,7 @@ class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable{
         view.startAnimation(animation)
     }
 
-    private fun prepareAnimationBackward(animation: Animation): Animation? {
+    private fun prepareAnimationBackward(animation: Animation): Animation {
         animation.repeatCount = 1
         animation.repeatMode = Animation.REVERSE
         animation.setAnimationListener(object : Animation.AnimationListener {
@@ -561,7 +562,7 @@ class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable{
         super.onDestroy()
     }
 
-    fun setHandler() {
+    private fun setHandler() {
         videoHandler = Handler()
         videoRunnable = object : Runnable {
             override fun run() {
@@ -578,7 +579,6 @@ class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable{
     }
 
     private fun convertIntToTime(ms: Int): String {
-        var time: String? = null
         val seconds: Int
         val minutes: Int
         val hours: Int
@@ -588,19 +588,18 @@ class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable{
         minutes = x % 60
         x /= 60
         hours = x % 24
-        time = if (hours != 0) String.format("%02d", hours) + ":" + String.format(
+        return if (hours != 0) String.format("%02d", hours) + ":" + String.format(
             "%02d",
             minutes
         ) + ":" + String.format("%02d", seconds) else String.format(
             "%02d",
             minutes
         ) + ":" + String.format("%02d", seconds)
-        return time
     }
 
     private fun initialiseSeekBar() {
         seekBar.progress = 0
-        seekBar.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
+        seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 if (seekBar.id == R.id.seekbar) {
                     if (fromUser) {
@@ -626,9 +625,8 @@ class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable{
 //        }
     }
 
-    override fun onBackPressed(): Boolean {
+    override fun onBackPressed() {
         releaseVideoPlayer()
-        return true
 //        return if (myCondition) {
 //            //action not popBackStack
 //            true
@@ -668,7 +666,7 @@ class WatchFragment: Fragment(), IOnBackPressed, IOnFocusListenable{
         }
     }
 
-    fun hideKeyboardFrom(context: Context, view: View) {
+    private fun hideKeyboardFrom(context: Context, view: View) {
         val imm: InputMethodManager =
             context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view.windowToken, 0)

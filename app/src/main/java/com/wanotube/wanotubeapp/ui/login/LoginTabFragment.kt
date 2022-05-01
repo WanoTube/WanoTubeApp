@@ -37,7 +37,7 @@ class LoginTabFragment : Fragment() {
     }
     
     private fun handleLogin(email: String, password: String) {
-        
+        openMainActivity()
     }
     
     private fun openMainActivity() {
