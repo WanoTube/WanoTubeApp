@@ -7,4 +7,5 @@ object Constant {
 
     const val PORT = 8000
     const val VERSION = "/v1"
+    const val TIME_OUT = 2500L
 }
