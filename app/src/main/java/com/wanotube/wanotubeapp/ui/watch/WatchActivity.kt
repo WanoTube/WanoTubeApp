@@ -43,7 +43,7 @@ import androidx.transition.TransitionManager
 import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.WanoTubeActivity
 import com.wanotube.wanotubeapp.databinding.ActivityWatchBinding
-import com.wanotube.wanotubeapp.domain.WanoTubeVideo
+import com.wanotube.wanotubeapp.domain.Video
 import com.wanotube.wanotubeapp.util.Constant
 import com.wanotube.wanotubeapp.viewmodels.WanoTubeViewModel
 
@@ -77,7 +77,7 @@ class WatchActivity : WanoTubeActivity() {
     private lateinit var commentListView: ScrollView
     private lateinit var videoInfoView: ScrollView
     
-    private var currentVideo: WanoTubeVideo? = null
+    private var currentVideo: Video? = null
     
     private var check = 0
     private val isMaximise = true

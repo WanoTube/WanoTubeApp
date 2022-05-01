@@ -1,6 +1,7 @@
 package com.wanotube.wanotubeapp.network
 
 import com.google.gson.annotations.SerializedName
+import com.wanotube.wanotubeapp.database.DatabaseAccount
 import com.wanotube.wanotubeapp.database.DatabaseVideo
 
 /**
@@ -23,6 +24,7 @@ class NetworkVideoContainer {
     @SerializedName("videos")
     var videos: List<NetworkVideo> = listOf()
 }
+
 /**
  * Videos represent a WanoTube video that can be displayed
  */
@@ -61,7 +63,34 @@ class NetworkVideo {
     val updated_at: String = ""
 }
 
+class NetworkUser {
+    @SerializedName("email")
+    val email: String = ""
+    @SerializedName("password")
+    val password: String = ""
+}
 
+class NetworkAccount {
+    @SerializedName("_id")
+    val id: String = ""
+    @SerializedName("username")
+    val username: String = ""
+    @SerializedName("is_admin")
+    val isAdmin: Boolean = false
+    @SerializedName("avatar")
+    val avatar: String = ""
+    @SerializedName("channel_id")
+    val channelId: String = ""
+    @SerializedName("email")
+    val email: String = ""
+}
+
+class LoginResult {
+    @SerializedName("token")
+    val token: String = ""
+    @SerializedName("user")
+    val user: NetworkAccount? = null
+}
 /**
  * Convert Network results to database objects
  */
@@ -100,5 +129,38 @@ fun NetworkVideo.asDatabaseModel(): DatabaseVideo {
         visibility = visibility,
         duration = duration,
         authorId = author_id
+    )
+}
+
+class NetworkUserContainer {
+    @SerializedName("_id")
+    var id: String = ""
+    @SerializedName("first_name")
+    var firstName: String = ""
+    @SerializedName("last_name")
+    var lastName: String = ""
+    @SerializedName("gender")
+    var gender: String = ""
+    @SerializedName("birth_date")
+    var birthDate: String = ""
+    @SerializedName("phone_number")
+    var phoneNumber: String = ""
+    @SerializedName("country")
+    var country: String = ""
+    @SerializedName("avatar")
+    var avatar: String = ""
+    @SerializedName("created_at")
+    var createdAt: String = ""
+    @SerializedName("updated_at")
+    var updatedAt: String = ""
+}
+
+fun NetworkAccount.asDatabaseModel(): DatabaseAccount {
+    return DatabaseAccount(
+        id = id,
+        username = username,
+        avatar = avatar,
+        channelId = channelId,
+        isAdmin = isAdmin
     )
 }

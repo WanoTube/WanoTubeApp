@@ -9,11 +9,11 @@ import android.widget.TextView
 import android.widget.VideoView
 import androidx.recyclerview.widget.RecyclerView
 import com.wanotube.wanotubeapp.R
-import com.wanotube.wanotubeapp.domain.WanoTubeVideo
+import com.wanotube.wanotubeapp.domain.Video
 
 class ShortAdapter() : RecyclerView.Adapter<ShortAdapter.ViewHolder>() {
 
-    var data =  listOf<WanoTubeVideo>()
+    var data =  listOf<Video>()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -30,7 +30,7 @@ class ShortAdapter() : RecyclerView.Adapter<ShortAdapter.ViewHolder>() {
         var pbar: ProgressBar = itemView.findViewById<View>(R.id.videoProgressBar) as ProgressBar
         var fav :ImageView = itemView.findViewById(R.id.favorites) as ImageView
         var isFav = false
-        fun setData(obj: WanoTubeVideo) {
+        fun setData(obj: Video) {
             videoView.setVideoPath(obj.url)
             title.text = obj.title
             desc.text = obj.description

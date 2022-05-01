@@ -11,14 +11,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.wanotube.wanotubeapp.IEventListener
 import com.wanotube.wanotubeapp.R
-import com.wanotube.wanotubeapp.domain.WanoTubeVideo
+import com.wanotube.wanotubeapp.domain.Video
 import com.wanotube.wanotubeapp.ui.watch.WatchActivity
 
 class HomeAdapter(iEventListener: IEventListener) : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
     private var listener: IEventListener = iEventListener
 
-    var data =  listOf<WanoTubeVideo>()
+    var data =  listOf<Video>()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -46,7 +46,7 @@ class HomeAdapter(iEventListener: IEventListener) : RecyclerView.Adapter<HomeAda
         private val thumbnailVideoView: ImageView = itemView.findViewById(R.id.thumbnail_video)
         private val avatarView: ImageView = itemView.findViewById(R.id.avatar_user)
 
-        fun bind(item: WanoTubeVideo) {
+        fun bind(item: Video) {
             titleView.text = item.title
             val subtitle = item.authorId + "  " + item.totalViews + " views"
             subtitleView.text = subtitle
@@ -80,12 +80,12 @@ class HomeAdapter(iEventListener: IEventListener) : RecyclerView.Adapter<HomeAda
     }
 }
 
-class VideoDiffCallback : DiffUtil.ItemCallback<WanoTubeVideo>() {
-    override fun areItemsTheSame(oldItem: WanoTubeVideo, newItem: WanoTubeVideo): Boolean {
+class VideoDiffCallback : DiffUtil.ItemCallback<Video>() {
+    override fun areItemsTheSame(oldItem: Video, newItem: Video): Boolean {
         return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(oldItem: WanoTubeVideo, newItem: WanoTubeVideo): Boolean {
+    override fun areContentsTheSame(oldItem: Video, newItem: Video): Boolean {
         return oldItem == newItem
     }
 }

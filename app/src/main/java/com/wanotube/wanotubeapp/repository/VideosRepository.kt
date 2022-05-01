@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.wanotube.wanotubeapp.database.VideosDatabase
 import com.wanotube.wanotubeapp.database.asDomainModel
-import com.wanotube.wanotubeapp.domain.WanoTubeVideo
+import com.wanotube.wanotubeapp.domain.Video
 import com.wanotube.wanotubeapp.network.NetworkVideo
 import com.wanotube.wanotubeapp.network.NetworkVideoContainer
 import com.wanotube.wanotubeapp.network.ServiceGenerator
@@ -23,7 +23,7 @@ import timber.log.Timber
  * Repository for fetching wanotube videos from the network and storing them on disk
  */
 class VideosRepository(private val database: VideosDatabase) {
-    val videos: LiveData<List<WanoTubeVideo>> = Transformations.map(database.videoDao.getVideos()) {
+    val videos: LiveData<List<Video>> = Transformations.map(database.videoDao.getVideos()) {
         it.asDomainModel()
     }
 
@@ -63,18 +63,17 @@ class VideosRepository(private val database: VideosDatabase) {
     fun uploadVideo(title: MultipartBody.Part,
                     description: MultipartBody.Part,
                     video: MultipartBody.Part,
-                    authorId: MultipartBody.Part,
                     duration: MultipartBody.Part,
-                    privacy: MultipartBody.Part){
+                    privacy: MultipartBody.Part,
+                    token: String){
         CoroutineScope(Dispatchers.IO).launch {
 
             val videoService: IVideoService =
-                ServiceGenerator.createService(IVideoService::class.java, "auth-token")
+                ServiceGenerator.createService(IVideoService::class.java, token)
             val responseBodyCall: Call<NetworkVideo> = videoService.uploadVideo(
                 title, 
                 description, 
                 video, 
-                authorId, 
                 duration,
                 privacy)
             responseBodyCall.enqueue(object : Callback<NetworkVideo> {

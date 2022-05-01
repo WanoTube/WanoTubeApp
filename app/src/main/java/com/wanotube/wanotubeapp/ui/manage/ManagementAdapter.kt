@@ -11,14 +11,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.wanotube.wanotubeapp.IEventListener
 import com.wanotube.wanotubeapp.R
-import com.wanotube.wanotubeapp.domain.WanoTubeVideo
+import com.wanotube.wanotubeapp.domain.Video
 import com.wanotube.wanotubeapp.ui.watch.WatchActivity
 
 class ManagementAdapter(iEventListener: IEventListener) : RecyclerView.Adapter<ManagementAdapter.ViewHolder>() {
 
     private var listener: IEventListener = iEventListener
 
-    var data =  listOf<WanoTubeVideo>()
+    var data =  listOf<Video>()
         @SuppressLint("NotifyDataSetChanged")
         set(value) {
             field = value
@@ -44,7 +44,7 @@ class ManagementAdapter(iEventListener: IEventListener) : RecyclerView.Adapter<M
         private val subtitleView: TextView = itemView.findViewById(R.id.subtitle)
         private val thumbnailVideoView: ImageView = itemView.findViewById(R.id.thumbnail_video)
 
-        fun bind(item: WanoTubeVideo) {
+        fun bind(item: Video) {
             titleView.text = item.title
             val subtitle = item.authorId + "  " + item.totalViews + " views"
             subtitleView.text = subtitle
