@@ -61,6 +61,12 @@ class NetworkVideo {
     val updated_at: String = ""
 }
 
+class NetworkUser {
+    @SerializedName("email")
+    val email: String = ""
+    @SerializedName("password")
+    val password: String = ""
+}
 
 /**
  * Convert Network results to database objects
