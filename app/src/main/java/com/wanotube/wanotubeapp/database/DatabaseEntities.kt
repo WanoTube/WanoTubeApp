@@ -2,8 +2,10 @@ package com.wanotube.wanotubeapp.database
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.wanotube.wanotubeapp.domain.WanoTubeVideo
-import java.util.*
+import com.wanotube.wanotubeapp.domain.Account
+import com.wanotube.wanotubeapp.domain.User
+import com.wanotube.wanotubeapp.domain.Video
+import java.util.Date
 
 /**
  * Database entities go in this file. These are responsible for reading and writing
@@ -45,6 +47,15 @@ data class DatabaseUser constructor(
     val description: String)
 
 @Entity
+data class DatabaseAccount constructor(
+    @PrimaryKey
+    val id: String,
+    val username: String,
+    val isAdmin: Boolean,
+    val avatar: String,
+    val channelId: String)
+
+@Entity
 data class DatabaseComment constructor(
     @PrimaryKey
     val id: String,
@@ -55,9 +66,9 @@ data class DatabaseComment constructor(
 /**
  * Map DatabaseVideos to domain entities
  */
-fun List<DatabaseVideo>.asDomainModel(): List<WanoTubeVideo> {
+fun List<DatabaseVideo>.asDomainModel(): List<Video> {
     return map {
-        WanoTubeVideo(
+        Video(
             id = it.id,
             url = it.url,
             title = it.title,
@@ -74,3 +85,12 @@ fun List<DatabaseVideo>.asDomainModel(): List<WanoTubeVideo> {
     }
 }
 
+fun DatabaseAccount.asDomainModel(): Account {
+    return Account(
+        id = id,
+        username = username,
+        isAdmin = isAdmin,
+        avatar = avatar,
+        channelId = channelId
+    )
+}

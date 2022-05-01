@@ -9,11 +9,11 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.wanotube.wanotubeapp.R
-import com.wanotube.wanotubeapp.domain.WanoTubeVideo
+import com.wanotube.wanotubeapp.domain.Video
 
 class WatchAdapter : RecyclerView.Adapter<WatchAdapter.ViewHolder>() {
 
-    var data =  listOf<WanoTubeVideo>()
+    var data =  listOf<Video>()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -39,7 +39,7 @@ class WatchAdapter : RecyclerView.Adapter<WatchAdapter.ViewHolder>() {
         private val thumbnailVideoView: ImageView = itemView.findViewById(R.id.thumbnail_video)
         private val avatarView: ImageView = itemView.findViewById(R.id.avatar_user)
 
-        fun bind(item: WanoTubeVideo) {
+        fun bind(item: Video) {
             titleView.text = item.title
             val subtitle = item.authorId + "  " + item.totalViews + " views"
             subtitleView.text = subtitle

@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.wanotube.wanotubeapp.database.VideosDatabase
 import com.wanotube.wanotubeapp.database.asDomainModel
-import com.wanotube.wanotubeapp.domain.WanoTubeVideo
+import com.wanotube.wanotubeapp.domain.Video
 import com.wanotube.wanotubeapp.network.NetworkVideo
 import com.wanotube.wanotubeapp.network.NetworkVideoContainer
 import com.wanotube.wanotubeapp.network.ServiceGenerator
@@ -23,7 +23,7 @@ import timber.log.Timber
  * Repository for fetching wanotube videos from the network and storing them on disk
  */
 class VideosRepository(private val database: VideosDatabase) {
-    val videos: LiveData<List<WanoTubeVideo>> = Transformations.map(database.videoDao.getVideos()) {
+    val videos: LiveData<List<Video>> = Transformations.map(database.videoDao.getVideos()) {
         it.asDomainModel()
     }
 

@@ -1,6 +1,7 @@
 package com.wanotube.wanotubeapp.network
 
 import com.google.gson.annotations.SerializedName
+import com.wanotube.wanotubeapp.database.DatabaseAccount
 import com.wanotube.wanotubeapp.database.DatabaseVideo
 
 /**
@@ -68,6 +69,27 @@ class NetworkUser {
     val password: String = ""
 }
 
+class NetworkAccount {
+    @SerializedName("_id")
+    val id: String = ""
+    @SerializedName("username")
+    val username: String = ""
+    @SerializedName("is_admin")
+    val isAdmin: Boolean = false
+    @SerializedName("avatar")
+    val avatar: String = ""
+    @SerializedName("channel_id")
+    val channelId: String = ""
+    @SerializedName("email")
+    val email: String = ""
+}
+
+class LoginResult {
+    @SerializedName("token")
+    val token: String = ""
+    @SerializedName("user")
+    val user: NetworkAccount? = null
+}
 /**
  * Convert Network results to database objects
  */
@@ -106,5 +128,16 @@ fun NetworkVideo.asDatabaseModel(): DatabaseVideo {
         visibility = visibility,
         duration = duration,
         authorId = author_id
+    )
+}
+
+
+fun NetworkAccount.asDatabaseModel(): DatabaseAccount {
+    return DatabaseAccount(
+        id = id,
+        username = username,
+        avatar = avatar,
+        channelId = channelId,
+        isAdmin = isAdmin
     )
 }

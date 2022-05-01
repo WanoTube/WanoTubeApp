@@ -12,5 +12,5 @@ interface IUserService {
     fun login(
         @Part email: MultipartBody.Part,
         @Part password: MultipartBody.Part,
-    ): Call<NetworkUser>
+    ): Call<LoginResult>
 }

@@ -12,8 +12,9 @@ import androidx.fragment.app.Fragment
 import com.wanotube.wanotubeapp.MainActivity
 import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.network.IUserService
-import com.wanotube.wanotubeapp.network.NetworkUser
+import com.wanotube.wanotubeapp.network.LoginResult
 import com.wanotube.wanotubeapp.network.ServiceGenerator
+import com.wanotube.wanotubeapp.network.asDatabaseModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -55,22 +56,25 @@ class LoginTabFragment : Fragment() {
             
             val emailBodyPart: MultipartBody.Part = MultipartBody.Part.createFormData("email", email)
             val passwordBodyPart: MultipartBody.Part = MultipartBody.Part.createFormData("password", password)
-
-            val responseBodyCall: Call<NetworkUser> = userService.login(emailBodyPart, passwordBodyPart)
-            responseBodyCall.enqueue(object : Callback<NetworkUser> {
+            
+            val responseBodyCall: Call<LoginResult> = userService.login(emailBodyPart, passwordBodyPart)
+            responseBodyCall.enqueue(object : Callback<LoginResult> {
                 override fun onResponse(
-                    call: Call<NetworkUser>?,
-                    response: Response<NetworkUser?>?,
+                    call: Call<LoginResult>?,
+                    response: Response<LoginResult?>?,
                 ) {
                     val body = response?.body()
                     if (body == null) {
                         val toast = Toast.makeText(context, "Email or password is incorrect", Toast.LENGTH_SHORT)
                         toast.show()         
                     } else {
+                        val account = body.user?.asDatabaseModel()
+                        val toast = Toast.makeText(context, "Hi " + (body.user?.username ?: ""), Toast.LENGTH_SHORT)
+                        toast.show()
                         openMainActivity()
                     }
                 }
-                override fun onFailure(call: Call<NetworkUser>?, t: Throwable?) {
+                override fun onFailure(call: Call<LoginResult>?, t: Throwable?) {
                     Timber.e("Failed: error: %s", t.toString())
                 }
             })

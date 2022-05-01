@@ -1,7 +1,7 @@
 package com.wanotube.wanotubeapp.domain
 
 import com.wanotube.wanotubeapp.util.smartTruncate
-import java.util.*
+import java.util.Date
 
 /**
  * Domain objects are plain Kotlin data classes that represent the things in our app. These are the
@@ -14,7 +14,7 @@ import java.util.*
 /**
  * Videos represent a WanoTube video that can be displayed
  */
-data class WanoTubeVideo(
+data class Video(
     val id: String,
     val url: String,
     val title: String,
@@ -44,9 +44,15 @@ data class User (
     val birthDate: Date,
     val phoneNumber: String,
     val country: String,
-    val avatar: String,
     val description: String) {
 }
+
+data class Account (
+    val id: String,
+    val username: String,
+    val isAdmin: Boolean,
+    val avatar: String,
+    val channelId: String) {}
 
 data class Comment (
     val id: String,
