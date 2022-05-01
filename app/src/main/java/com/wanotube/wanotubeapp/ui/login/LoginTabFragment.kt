@@ -6,13 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import androidx.fragment.app.Fragment
 import com.wanotube.wanotubeapp.MainActivity
 import com.wanotube.wanotubeapp.R
 
 class LoginTabFragment : Fragment() {
     private lateinit var btnLogin: Button
-    
+    private lateinit var txtEmail: EditText
+    private lateinit var txtPassword: EditText
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -21,10 +24,20 @@ class LoginTabFragment : Fragment() {
     }
     
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        btnLogin = view.findViewById<View>(R.id.btn_login) as Button
+        btnLogin = view.findViewById(R.id.btn_login) as Button
+        txtEmail = view.findViewById(R.id.email) as EditText
+        txtPassword = view.findViewById(R.id.password) as EditText
+
         btnLogin.setOnClickListener {
-            openMainActivity()
+            handleLogin(
+                txtEmail.text.toString(), 
+                txtPassword.text.toString()
+            )
         }
+    }
+    
+    private fun handleLogin(email: String, password: String) {
+        
     }
     
     private fun openMainActivity() {

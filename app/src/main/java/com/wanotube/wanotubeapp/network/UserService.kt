@@ -4,7 +4,7 @@ import com.wanotube.wanotubeapp.domain.User
 import retrofit2.Call
 import retrofit2.http.POST
 
-interface UserService {
+interface IUserService {
     @POST("/login")
     fun login(): Call<User?>?
 }
