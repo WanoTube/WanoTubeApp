@@ -56,18 +56,18 @@ class AccountAuthenticator(private val mContext: Context) :
         val am = AccountManager.get(mContext)
         var authToken = am.peekAuthToken(account, authTokenType)
 
-        // Lets give another try to authenticate the user
-        if (null != authToken) {
-            if (authToken.isEmpty()) {
-                val password = am.getPassword(account)
-                if (password != null) {
-                    authToken = AccountUtils.mServerAuthenticator.login(account.name, password)
-                }
-            }
-        }
+        // TODO: Lets give another try to authenticate the user
+//        if (authToken != null) {
+//            if (authToken.isEmpty()) {
+//                val password = am.getPassword(account)
+//                if (password != null) {
+//                    authToken = AccountUtils.mServerAuthenticator.login(account.name, password)
+//                }
+//            }
+//        }
 
         // If we get an authToken - we return it
-        if (null != authToken) {
+        if (authToken != null){
             if (authToken.isNotEmpty()) {
                 val result = Bundle()
                 result.putString(AccountManager.KEY_ACCOUNT_NAME, account.name)
@@ -76,25 +76,6 @@ class AccountAuthenticator(private val mContext: Context) :
                 return result
             }
         }
-
-        // If we get here, then we couldn't access the user's password - so we
-        // need to re-prompt them for their credentials. We do that by creating
-        // an intent to display our AuthenticatorActivity.
-//        val intent = Intent(mContext, LoginActivity::class.java)
-//        intent.putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response)
-//        intent.putExtra(LoginActivity.ARG_ACCOUNT_TYPE, account.type)
-//        intent.putExtra(LoginActivity.ARG_AUTH_TOKEN_TYPE, authTokenType)
-
-        // This is for the case multiple accounts are stored on the device
-        // and the AccountPicker dialog chooses an account without auth token.
-        // We can pass out the account name chosen to the user of write it
-        // again in the Login activity intent returned.
-//        if (null != account) {
-//            intent.putExtra(AccountManager.KEY_ACCOUNT_NAME, account.name)
-//        }
-//        val bundle = Bundle()
-//        bundle.putParcelable(AccountManager.KEY_INTENT, intent)
-//        return bundle
         return null
     }
 

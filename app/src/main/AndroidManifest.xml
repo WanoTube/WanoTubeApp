@@ -15,6 +15,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WanoTubeApp"
         android:usesCleartextTraffic="true">
+        <service
+            android:name="com.wanotube.wanotubeapp.network.authentication.AuthenticatorService" >
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator" />
+        </service>
         <activity
             android:name=".ui.watch.WatchActivity"
             android:exported="false" />

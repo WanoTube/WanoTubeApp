@@ -1,5 +1,8 @@
 package com.wanotube.wanotubeapp.network.authentication
 
+import com.wanotube.wanotubeapp.network.LoginResult
+import retrofit2.Call
+
 interface IAuthenticatorService {
     /**
      * Tells the server to create the new user and return its auth token.
@@ -16,5 +19,5 @@ interface IAuthenticatorService {
      * @param password
      * @return Access token
      */
-    fun login(email: String, password: String): String?
+    suspend fun login(email: String, password: String): Call<LoginResult>
 }

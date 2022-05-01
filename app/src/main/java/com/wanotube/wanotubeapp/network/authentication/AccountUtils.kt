@@ -20,4 +20,11 @@ object AccountUtils {
         }
         return null
     }
+    
+    fun addAccount(context: Context?, accountName: String, authToken: String) {
+        val accountManager = AccountManager.get(context)
+        val account = Account(accountName, ACCOUNT_TYPE)
+        accountManager.addAccountExplicitly(account, authToken,null)
+        accountManager.setAuthToken(account, AUTH_TOKEN_TYPE, authToken)
+    }
 }

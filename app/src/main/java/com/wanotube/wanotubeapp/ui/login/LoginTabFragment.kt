@@ -11,14 +11,12 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.wanotube.wanotubeapp.MainActivity
 import com.wanotube.wanotubeapp.R
-import com.wanotube.wanotubeapp.network.IUserService
 import com.wanotube.wanotubeapp.network.LoginResult
-import com.wanotube.wanotubeapp.network.ServiceGenerator
-import com.wanotube.wanotubeapp.network.asDatabaseModel
+import com.wanotube.wanotubeapp.network.authentication.AccountUtils
+import com.wanotube.wanotubeapp.network.authentication.AuthPreferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -28,11 +26,13 @@ class LoginTabFragment : Fragment() {
     private lateinit var btnLogin: Button
     private lateinit var txtEmail: EditText
     private lateinit var txtPassword: EditText
+    private var mAuthPreferences: AuthPreferences? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
+        mAuthPreferences = context?.let { AuthPreferences(it) }
         return inflater.inflate(R.layout.fragment_login_tab, container, false)
     }
     
@@ -42,43 +42,50 @@ class LoginTabFragment : Fragment() {
         txtPassword = view.findViewById(R.id.password) as EditText
 
         btnLogin.setOnClickListener {
-            login(
-                txtEmail.text.toString(), 
-                txtPassword.text.toString()
-            )
+            CoroutineScope(Dispatchers.IO).launch {
+                login(
+                    txtEmail.text.toString(),
+                    txtPassword.text.toString()
+                )
+            }
         }
     }
     
-    private fun login(email: String, password: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            val userService: IUserService =
-                ServiceGenerator.createService(IUserService::class.java)
-            
-            val emailBodyPart: MultipartBody.Part = MultipartBody.Part.createFormData("email", email)
-            val passwordBodyPart: MultipartBody.Part = MultipartBody.Part.createFormData("password", password)
-            
-            val responseBodyCall: Call<LoginResult> = userService.login(emailBodyPart, passwordBodyPart)
-            responseBodyCall.enqueue(object : Callback<LoginResult> {
-                override fun onResponse(
-                    call: Call<LoginResult>?,
-                    response: Response<LoginResult?>?,
-                ) {
-                    val body = response?.body()
-                    if (body == null) {
-                        val toast = Toast.makeText(context, "Email or password is incorrect", Toast.LENGTH_SHORT)
-                        toast.show()         
-                    } else {
-                        val account = body.user?.asDatabaseModel()
-                        val toast = Toast.makeText(context, "Hi " + (body.user?.username ?: ""), Toast.LENGTH_SHORT)
-                        toast.show()
-                        openMainActivity()
-                    }
+    private suspend fun login(email: String, password: String) {
+        val responseBodyCall = AccountUtils.mServerAuthenticator.login(email, password)
+
+        responseBodyCall.enqueue(object : Callback<LoginResult> {
+            override fun onResponse(
+                call: Call<LoginResult>?,
+                response: Response<LoginResult?>?,
+            ) {
+                val body = response?.body()
+                if (body == null) {
+                    Timber.e("Failed: error: %s", "Email or password is incorrect")
+                } else {
+                    val user = body.user
+                    val token = body.token
+
+                    // Save session username & auth token
+                    mAuthPreferences?.authToken = token
+                    mAuthPreferences?.username = user?.username
+                    mAuthPreferences?.email = user?.email
+                    mAuthPreferences?.isAdmin = user?.isAdmin
+
+                    // Add account to AccountManager
+                    AccountUtils.addAccount(context, email, token)
+
+                    val toast = Toast.makeText(context, "Hi " + (user?.username ?: ""), Toast.LENGTH_SHORT)
+                    toast.show()
+
+                    openMainActivity()
                 }
-                override fun onFailure(call: Call<LoginResult>?, t: Throwable?) {
-                    Timber.e("Failed: error: %s", t.toString())
-                }
-            })
-        }
+            }
+            override fun onFailure(call: Call<LoginResult>?, t: Throwable?) {
+                Timber.e("Failed: error: %s", t.toString())
+            }
+        })
+        
     }
     
     private fun openMainActivity() {
