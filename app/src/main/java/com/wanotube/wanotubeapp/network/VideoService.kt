@@ -15,7 +15,7 @@ import retrofit2.http.Part
 import retrofit2.http.Query
 
 interface IVideoService {
-    @GET("videos")
+    @GET("videos/public")
     fun getVideos(): Call<NetworkVideoContainer>
 
     @GET("videos/")

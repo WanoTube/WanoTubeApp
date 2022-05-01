@@ -80,6 +80,25 @@ fun NetworkVideoContainer.asDatabaseModel(): List<DatabaseVideo> {
             totalComments = it.total_comments,
             visibility = it.visibility,
             duration = it.duration,
-            authorId = it.author_id)
+            authorId = it.author_id
+        )
     }
+}
+
+fun NetworkVideo.asDatabaseModel(): DatabaseVideo {
+    return DatabaseVideo(
+        id = _id,
+        url = url,
+        title = title,
+        description = description,
+        updated = updated,
+        thumbnail = thumbnail,
+        size = size,
+        totalViews = total_views,
+        totalLikes = total_likes,
+        totalComments = total_comments,
+        visibility = visibility,
+        duration = duration,
+        authorId = author_id
+    )
 }
