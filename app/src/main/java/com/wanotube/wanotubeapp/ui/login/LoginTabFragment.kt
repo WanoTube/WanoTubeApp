@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.wanotube.wanotubeapp.MainActivity
 import com.wanotube.wanotubeapp.R
@@ -40,16 +41,11 @@ class LoginTabFragment : Fragment() {
         txtPassword = view.findViewById(R.id.password) as EditText
 
         btnLogin.setOnClickListener {
-            handleLogin(
+            login(
                 txtEmail.text.toString(), 
                 txtPassword.text.toString()
             )
         }
-    }
-    
-    private fun handleLogin(email: String, password: String) {
-        login(email, password)
-//        openMainActivity()
     }
     
     private fun login(email: String, password: String) {
@@ -64,12 +60,15 @@ class LoginTabFragment : Fragment() {
             responseBodyCall.enqueue(object : Callback<NetworkUser> {
                 override fun onResponse(
                     call: Call<NetworkUser>?,
-                    response: Response<NetworkUser?>?
+                    response: Response<NetworkUser?>?,
                 ) {
-
-                    val videoModel = response?.body()
-                    Timber.e("Ngan %s", "User: $videoModel")
-
+                    val body = response?.body()
+                    if (body == null) {
+                        val toast = Toast.makeText(context, "Email or password is incorrect", Toast.LENGTH_SHORT)
+                        toast.show()         
+                    } else {
+                        openMainActivity()
+                    }
                 }
                 override fun onFailure(call: Call<NetworkUser>?, t: Throwable?) {
                     Timber.e("Failed: error: %s", t.toString())
@@ -77,6 +76,7 @@ class LoginTabFragment : Fragment() {
             })
         }
     }
+    
     private fun openMainActivity() {
         val intent = Intent(context, MainActivity::class.java)
         startActivity(intent)
