@@ -15,7 +15,6 @@ import android.text.TextWatcher
 import android.util.TypedValue
 import android.view.GestureDetector
 import android.view.Gravity
-import android.view.Menu
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
@@ -47,7 +46,6 @@ import com.wanotube.wanotubeapp.databinding.ActivityWatchBinding
 import com.wanotube.wanotubeapp.domain.WanoTubeVideo
 import com.wanotube.wanotubeapp.util.Constant
 import com.wanotube.wanotubeapp.viewmodels.WanoTubeViewModel
-import timber.log.Timber
 
 class WatchActivity : WanoTubeActivity() {
     private lateinit var binding: ActivityWatchBinding
@@ -107,12 +105,6 @@ class WatchActivity : WanoTubeActivity() {
         }
     }
 
-//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        menuInflater.inflate(R.menu.normal_action_bar, menu)
-//        return true
-//    }
-    
     private fun initAdapter() {
         val viewModelFactory = WanoTubeViewModel.WanoTubeViewModelFactory(application)
 
@@ -137,8 +129,6 @@ class WatchActivity : WanoTubeActivity() {
                 currentVideo = it.find { 
                     video -> videoId == video.id
                 }
-                Timber.e("Ngan %s", "currentVideo: $currentVideo")
-
                 if (currentVideo != null)
                     initVideo()
             }
@@ -350,7 +340,6 @@ class WatchActivity : WanoTubeActivity() {
     }
 
     private fun initVideo() {
-        Timber.e("Ngan %s", "video's url: " + currentVideo?.url)
         videoView.setVideoURI(Uri.parse(currentVideo?.url ?: ""))
         if (videoView.isPlaying)
             progressBar.visibility = View.VISIBLE
