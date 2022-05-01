@@ -7,7 +7,8 @@ import com.wanotube.wanotubeapp.database.asDomainModel
 import com.wanotube.wanotubeapp.domain.WanoTubeVideo
 import com.wanotube.wanotubeapp.network.NetworkVideo
 import com.wanotube.wanotubeapp.network.NetworkVideoContainer
-import com.wanotube.wanotubeapp.network.WanoTubeNetwork
+import com.wanotube.wanotubeapp.network.ServiceGenerator
+import com.wanotube.wanotubeapp.network.IVideoService
 import com.wanotube.wanotubeapp.network.asDatabaseModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -36,7 +37,9 @@ class VideosRepository(private val database: VideosDatabase) {
      */
     fun refreshVideos() {
         CoroutineScope(Dispatchers.IO).launch {
-            val responseBodyCall = WanoTubeNetwork.wanotubes.getVideos()
+            val videoService: IVideoService =
+                ServiceGenerator.createService(IVideoService::class.java, "auth-token")
+            val responseBodyCall: Call<NetworkVideoContainer> = videoService.getVideos()
             responseBodyCall.enqueue(object : Callback<NetworkVideoContainer> {
                 override fun onResponse(
                     call: Call<NetworkVideoContainer>?,
@@ -64,7 +67,10 @@ class VideosRepository(private val database: VideosDatabase) {
                     duration: MultipartBody.Part,
                     privacy: MultipartBody.Part){
         CoroutineScope(Dispatchers.IO).launch {
-            val responseBodyCall = WanoTubeNetwork.wanotubes.uploadVideo(
+
+            val videoService: IVideoService =
+                ServiceGenerator.createService(IVideoService::class.java, "auth-token")
+            val responseBodyCall: Call<NetworkVideo> = videoService.uploadVideo(
                 title, 
                 description, 
                 video, 

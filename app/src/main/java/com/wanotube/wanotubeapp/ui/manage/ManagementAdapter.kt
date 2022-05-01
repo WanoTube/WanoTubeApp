@@ -50,7 +50,7 @@ class ManagementAdapter(iEventListener: IEventListener) : RecyclerView.Adapter<M
             subtitleView.text = subtitle
 
             Glide.with(thumbnailVideoView.context)
-                .load(item.url)
+                .load(item.thumbnail)
                 .override(480, 269)
                 .centerCrop()
                 .into(thumbnailVideoView)

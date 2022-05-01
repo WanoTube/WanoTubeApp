@@ -14,16 +14,8 @@ import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Query
 
-
-// Since we only have one service, this can all go in one file.
-// If you add more services, split this to multiple files and make sure to share the retrofit
-// object between services.
-
-/**
- * A retrofit service to fetch a wanotube playlist.
- */
-interface WanoTubeService {
-    @GET("videos")
+interface IVideoService {
+    @GET("videos/public")
     fun getVideos(): Call<NetworkVideoContainer>
 
     @GET("videos/")
@@ -40,17 +32,17 @@ interface WanoTubeService {
         @Part privacy: MultipartBody.Part
         ): Call<NetworkVideo>
 }
-
-/**
- * Main entry point for network access. Call like `WanoTubeNetwork.wanotubes.getVideos()`
- */
-object WanoTubeNetwork {
-
-    // Configure retrofit to parse JSON and use coroutines
-    private val retrofit = Retrofit.Builder()
-        .baseUrl("$SYSTEM_URL:$PORT$VERSION/")
-        .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
-        .build()
-
-    val wanotubes: WanoTubeService = retrofit.create(WanoTubeService::class.java)
-}
+//
+///**
+// * Main entry point for network access. Call like `WanoTubeNetwork.wanotubes.getVideos()`
+// */
+//object WanoTubeNetwork {
+//
+//    // Configure retrofit to parse JSON and use coroutines
+//    private val retrofit = Retrofit.Builder()
+//        .baseUrl("$SYSTEM_URL:$PORT$VERSION/")
+//        .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
+//        .build()
+//
+//    val wanotubes: WanoTubeService = retrofit.create(WanoTubeService::class.java)
+//}
