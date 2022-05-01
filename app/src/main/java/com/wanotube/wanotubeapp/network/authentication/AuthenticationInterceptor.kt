@@ -1,4 +1,4 @@
-package com.wanotube.wanotubeapp.network
+package com.wanotube.wanotubeapp.network.authentication
 
 import okhttp3.Interceptor
 import okhttp3.Request

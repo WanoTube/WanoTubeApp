@@ -24,6 +24,7 @@ class NetworkVideoContainer {
     @SerializedName("videos")
     var videos: List<NetworkVideo> = listOf()
 }
+
 /**
  * Videos represent a WanoTube video that can be displayed
  */
@@ -131,6 +132,28 @@ fun NetworkVideo.asDatabaseModel(): DatabaseVideo {
     )
 }
 
+class NetworkUserContainer {
+    @SerializedName("_id")
+    var id: String = ""
+    @SerializedName("first_name")
+    var firstName: String = ""
+    @SerializedName("last_name")
+    var lastName: String = ""
+    @SerializedName("gender")
+    var gender: String = ""
+    @SerializedName("birth_date")
+    var birthDate: String = ""
+    @SerializedName("phone_number")
+    var phoneNumber: String = ""
+    @SerializedName("country")
+    var country: String = ""
+    @SerializedName("avatar")
+    var avatar: String = ""
+    @SerializedName("created_at")
+    var createdAt: String = ""
+    @SerializedName("updated_at")
+    var updatedAt: String = ""
+}
 
 fun NetworkAccount.asDatabaseModel(): DatabaseAccount {
     return DatabaseAccount(
