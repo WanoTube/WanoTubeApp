@@ -21,7 +21,6 @@ interface IVideoService {
         @Part title: MultipartBody.Part,
         @Part description: MultipartBody.Part,
         @Part video: MultipartBody.Part,
-        @Part author_id: MultipartBody.Part,
         @Part duration: MultipartBody.Part,
         @Part privacy: MultipartBody.Part
         ): Call<NetworkVideo>

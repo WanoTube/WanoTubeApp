@@ -63,18 +63,17 @@ class VideosRepository(private val database: VideosDatabase) {
     fun uploadVideo(title: MultipartBody.Part,
                     description: MultipartBody.Part,
                     video: MultipartBody.Part,
-                    authorId: MultipartBody.Part,
                     duration: MultipartBody.Part,
-                    privacy: MultipartBody.Part){
+                    privacy: MultipartBody.Part,
+                    token: String){
         CoroutineScope(Dispatchers.IO).launch {
 
             val videoService: IVideoService =
-                ServiceGenerator.createService(IVideoService::class.java, "auth-token")
+                ServiceGenerator.createService(IVideoService::class.java, token)
             val responseBodyCall: Call<NetworkVideo> = videoService.uploadVideo(
                 title, 
                 description, 
                 video, 
-                authorId, 
                 duration,
                 privacy)
             responseBodyCall.enqueue(object : Callback<NetworkVideo> {

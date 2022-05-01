@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.WanoTubeActivity
 import com.wanotube.wanotubeapp.database.getDatabase
+import com.wanotube.wanotubeapp.network.authentication.AuthPreferences
 import com.wanotube.wanotubeapp.repository.VideosRepository
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -76,17 +77,19 @@ class UploadActivity : WanoTubeActivity() {
         val fileBody: MultipartBody.Part = MultipartBody.Part.createFormData("video", file.name, videoBody)
         val titleBody: MultipartBody.Part = MultipartBody.Part.createFormData("title", titleText.text.toString())
         val descriptionBody: MultipartBody.Part = MultipartBody.Part.createFormData("description", descriptionText.text.toString())
-        val authorBody: MultipartBody.Part = MultipartBody.Part.createFormData("author_id", "62697a06925d325eb6ef0ab4")
         val durationBody: MultipartBody.Part = MultipartBody.Part.createFormData("duration", "")
         val privacyBody: MultipartBody.Part = MultipartBody.Part.createFormData("privacy", "0")
-
-        videosRepository.uploadVideo(
-            titleBody,
-            descriptionBody,
-            fileBody,
-            authorBody,
-            durationBody,
-            privacyBody
-        )
+        
+        val mAuthPreferences = AuthPreferences(this)
+        mAuthPreferences.authToken?.let {
+            videosRepository.uploadVideo(
+                titleBody,
+                descriptionBody,
+                fileBody,
+                durationBody,
+                privacyBody,
+                it
+            )
+        }
     }
 }

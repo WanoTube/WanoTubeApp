@@ -1,6 +1,5 @@
 package com.wanotube.wanotubeapp.network
 
-import android.text.TextUtils
 import com.wanotube.wanotubeapp.network.authentication.AuthenticationInterceptor
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -42,8 +41,8 @@ object ServiceGenerator {
     fun <S> createService(
         serviceClass: Class<S>?, authToken: String?,
     ): S {
-        if (!TextUtils.isEmpty(authToken)) {
-            val interceptor = authToken?.let { AuthenticationInterceptor(it) }
+        if (authToken != null) {
+            val interceptor = AuthenticationInterceptor(authToken)
             if (!httpClient.interceptors().contains(interceptor as Interceptor)) {
                 httpClient.addInterceptor(interceptor)
                 builder.client(httpClient.build())
