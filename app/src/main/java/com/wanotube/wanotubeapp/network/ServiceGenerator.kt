@@ -5,6 +5,7 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import timber.log.Timber
 
 
 object ServiceGenerator {
@@ -44,9 +45,13 @@ object ServiceGenerator {
         if (authToken != null) {
             val interceptor = AuthenticationInterceptor(authToken)
             if (!httpClient.interceptors().contains(interceptor as Interceptor)) {
-                httpClient.addInterceptor(interceptor)
-                builder.client(httpClient.build())
-                retrofit = builder.build()
+                try {
+                    httpClient.addInterceptor(interceptor)
+                    builder.client(httpClient.build())
+                    retrofit = builder.build()
+                } catch (error: Exception) {
+                    Timber.e("Error: %s", error.message)
+                }
             }
         }
         return retrofit.create(serviceClass)

@@ -3,6 +3,7 @@
     package="com.wanotube.wanotubeapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -27,13 +28,22 @@
         </service>
         <activity
             android:name=".ui.watch.WatchActivity"
+            android:windowSoftInputMode="stateVisible|adjustPan"
             android:exported="false" />
-        <activity android:name=".ui.edit.ShortUploadActivity" />
-        <activity android:name=".ui.edit.EditActivity" />
-        <activity android:name=".ui.edit.UploadActivity" />
-        <activity android:name=".MainActivity" />
-        <activity
+        <activity 
+            android:name=".ui.edit.ShortUploadActivity"
+            android:windowSoftInputMode="stateVisible|adjustPan" />
+        <activity 
+            android:name=".ui.edit.EditActivity"
+            android:windowSoftInputMode="stateVisible|adjustPan" />
+        <activity 
+            android:name=".ui.edit.UploadActivity"
+            android:windowSoftInputMode="stateVisible|adjustPan" />
+        <activity 
             android:name=".ui.login.LoginActivity"
+            android:windowSoftInputMode="stateVisible|adjustPan"/>
+        <activity
+            android:name=".MainActivity"
             android:windowSoftInputMode="stateVisible|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

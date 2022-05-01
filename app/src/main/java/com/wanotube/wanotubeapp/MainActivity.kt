@@ -80,7 +80,11 @@ class MainActivity : WanoTubeActivity(), IEventListener {
                         loadFragment(R.id.fragment_profile)
                     }
                     R.id.create -> {
-                        showBottomSheetDialog()
+                        if (checkTokenAvailable()) {
+                            showBottomSheetDialog()
+                        } else {
+                            openLoginActivity()
+                        }
                     }
                     else -> validFlag = false
                 }

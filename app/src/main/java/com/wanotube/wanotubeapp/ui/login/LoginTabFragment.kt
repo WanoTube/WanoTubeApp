@@ -69,7 +69,7 @@ class LoginTabFragment : Fragment() {
                     // Save session username & auth token
                     mAuthPreferences?.authToken = token
                     mAuthPreferences?.username = user?.username
-                    mAuthPreferences?.email = user?.email
+                    mAuthPreferences?.email = email
                     mAuthPreferences?.isAdmin = user?.isAdmin
 
                     // Add account to AccountManager
