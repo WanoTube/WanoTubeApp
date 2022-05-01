@@ -7,15 +7,9 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.VideoView
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.wanotube.wanotubeapp.R
-import com.wanotube.wanotubeapp.domain.VideoModel
 import com.wanotube.wanotubeapp.domain.WanoTubeVideo
-import com.wanotube.wanotubeapp.ui.home.HomeAdapter
-import com.wanotube.wanotubeapp.ui.watch.WatchAdapter
-import com.wanotube.wanotubeapp.util.getThumbnailYoutubeVideo
 
 class ShortAdapter() : RecyclerView.Adapter<ShortAdapter.ViewHolder>() {
 
@@ -27,9 +21,6 @@ class ShortAdapter() : RecyclerView.Adapter<ShortAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
-
-//        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.fragment_shorts, parent, false)
-//        return ViewHolder(view)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

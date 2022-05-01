@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.domain.WanoTubeVideo
-import com.wanotube.wanotubeapp.util.getThumbnailYoutubeVideo
 
 class WatchAdapter : RecyclerView.Adapter<WatchAdapter.ViewHolder>() {
 
@@ -42,17 +41,16 @@ class WatchAdapter : RecyclerView.Adapter<WatchAdapter.ViewHolder>() {
 
         fun bind(item: WanoTubeVideo) {
             titleView.text = item.title
-            val subtitle = item.authorId + "  " + item.totalViews + "views"
+            val subtitle = item.authorId + "  " + item.totalViews + " views"
             subtitleView.text = subtitle
 
-            val thumbnailVideo = getThumbnailYoutubeVideo(item.url)
             Glide.with(thumbnailVideoView.context)
-                .load(thumbnailVideo)
+                .load(item.url)
                 .override(480, 269)
                 .centerCrop()
                 .into(thumbnailVideoView)
             Glide.with(avatarView.context)
-                .load(thumbnailVideo)
+                .load(item.url)
                 .circleCrop()
                 .into(avatarView)
 

@@ -15,7 +15,7 @@ class ShortsFragment : Fragment() {
     private lateinit var binding: FragmentShortsBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+                              savedInstanceState: Bundle?): View {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_shorts, container, false
@@ -35,13 +35,14 @@ class ShortsFragment : Fragment() {
 
         binding.shortVideoList.adapter = adapter
 
-        videoViewModel.playlist.observe(viewLifecycleOwner, {
+        videoViewModel.playlist.observe(viewLifecycleOwner) {
             it?.let {
                 adapter.data = it
             }
-        })
+        }
 
         binding.lifecycleOwner = this
-
-        return binding.root    }
+        
+        return binding.root    
+    }
 }

@@ -12,13 +12,21 @@
     <string name="comment_placeholder">Add a comment..</string>
     <string name="caption_placeholder">Describe your video</string>
     <string name="title_placeholder">Name your video title</string>
-
     <string name="title_activity_edit">EditActivity</string>
     <string name="username">Username</string>
     <string name="title">Title</string>
     <string name="default_time_code">00:10</string>
     <string name="next">Next</string>
     <string name="click_to_finish_this_step">Click to finish this step</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="login">Login</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="birth_date">Birth Date</string>
+    <string name="create">Create</string>
+    <string name="my_videos">My Videos</string>
 </resources>

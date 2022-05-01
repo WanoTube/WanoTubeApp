@@ -50,11 +50,11 @@ class HomeFragment : Fragment() {
 
         binding.videoList.adapter = adapter
 
-        videoViewModel.playlist.observe(viewLifecycleOwner, {
+        videoViewModel.playlist.observe(viewLifecycleOwner) {
             it?.let {
                 adapter.data = it
             }
-        })
+        }
 
         binding.lifecycleOwner = this
 
