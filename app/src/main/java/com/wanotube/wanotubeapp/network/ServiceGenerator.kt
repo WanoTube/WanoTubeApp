@@ -42,17 +42,23 @@ object ServiceGenerator {
     fun <S> createService(
         serviceClass: Class<S>?, authToken: String?,
     ): S {
-        if (!TextUtils.isEmpty(authToken) && authToken != null) {
-            val interceptor = AuthenticationInterceptor(authToken)
-            if (!httpClient.interceptors().contains(interceptor as Interceptor)) {
-                try {
-                    httpClient.addInterceptor(interceptor)
-                    builder.client(httpClient.build())
-                    retrofit = builder.build()
-                } catch (error: Exception) {
-                    Timber.e("Error: %s", error.message)
+        try {
+            val noConnectionInterceptor = NoConnectionInterceptor()
+            if (!httpClient.interceptors().contains(noConnectionInterceptor as Interceptor)) {
+                httpClient.addInterceptor(noConnectionInterceptor)
+            }
+            
+            val authInterceptor = authToken?.let { AuthenticationInterceptor(it) }
+            if (!TextUtils.isEmpty(authToken) && authToken != null) {
+                if (!httpClient.interceptors().contains(authInterceptor as Interceptor)) {
+                    httpClient.addInterceptor(authInterceptor)
                 }
             }
+
+            builder.client(httpClient.build())
+            retrofit = builder.build()
+        } catch (error: Exception) {
+            Timber.e("Error: %s", error.message)
         }
         return retrofit.create(serviceClass)
     }
