@@ -10,13 +10,14 @@ import retrofit2.http.Part
 import retrofit2.http.Query
 
 interface IVideoService {
+    @Headers("isDisableAuthorization:true")
     @GET("videos/public")
     fun getVideos(): Call<NetworkVideoContainer>
 
+    @Headers("isDisableAuthorization:true")
     @GET("videos/")
     fun getVideo(@Query("id") id: String): Call<NetworkVideo>
 
-    @Headers("isAuthenticated=false")
     @Multipart
     @POST("videos/upload")
     fun uploadVideo(

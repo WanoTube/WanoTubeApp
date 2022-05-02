@@ -81,17 +81,10 @@ class VideosRepository(private val database: VideosDatabase) {
                     call: Call<NetworkVideo>,
                     response: Response<NetworkVideo>
                 ) {
-                    Timber.e("Success %s", "success" +response.code())
-
-//                    val playListModel = response?.body()?.asDatabaseModel()
-//                    CoroutineScope(Dispatchers.IO).launch {
-//                        if (playListModel != null) {
-//                            database.videoDao.insertAll(playListModel)
-//                        }
-//                    }
+                    Timber.e("Result: %s", "Status Code: " +response.code())
                 }
                 override fun onFailure(call: Call<NetworkVideo>?, t: Throwable?) {
-                    Timber.e("Failed: error: %s", t.toString())
+                    Timber.e("Failed: %s", t.toString())
                 }
             })
         }

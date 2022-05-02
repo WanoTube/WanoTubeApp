@@ -66,6 +66,7 @@ abstract class WanoTubeActivity : AppCompatActivity(){
     
     open fun logOut() {
         // Clear session and ask for new auth token
+        val authToken = mAuthPreferences!!.authToken
         mAccountManager!!.invalidateAuthToken(AccountUtils.ACCOUNT_TYPE, authToken)
         mAuthPreferences!!.authToken = null
         mAuthPreferences!!.email = null

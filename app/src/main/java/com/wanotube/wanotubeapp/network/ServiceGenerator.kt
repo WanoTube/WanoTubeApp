@@ -54,6 +54,11 @@ object ServiceGenerator {
                     httpClient.addInterceptor(authInterceptor)
                 }
             }
+            
+            val serverErrorInterception = ServerErrorInterception()
+            if (!httpClient.interceptors().contains(serverErrorInterception as Interceptor)) {
+                httpClient.addInterceptor(serverErrorInterception)
+            }
 
             builder.client(httpClient.build())
             retrofit = builder.build()

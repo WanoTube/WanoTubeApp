@@ -19,3 +19,9 @@ class NoServerException() : IOException() {
         get() =
             "Server is not available, please try again"
 }
+
+class VerifyException() : IOException() {
+    override val message: String
+        get() =
+            "Cannot verify, please try again"
+}

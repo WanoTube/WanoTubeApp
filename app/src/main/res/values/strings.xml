@@ -29,4 +29,5 @@
     <string name="birth_date">Birth Date</string>
     <string name="create">Create</string>
     <string name="my_videos">My Videos</string>
+    <string name="log_out">Log Out</string>
 </resources>

@@ -8,8 +8,8 @@ class AuthenticationInterceptor(private val authToken: String) : Interceptor {
     
     override fun intercept(chain: Interceptor.Chain): Response {
         val original: Request = chain.request()
-        val isDisableAuthorization = original.headers["isDisableAuthorization"] == "true"
-        return if (isDisableAuthorization) {
+        val isDisableAuthorization = original.header("isDisableAuthorization") == "true"
+        return if (!isDisableAuthorization) {
             val builder: Request.Builder = original.newBuilder()
                 .header("authorization", authToken)
             val request: Request = builder.build()
