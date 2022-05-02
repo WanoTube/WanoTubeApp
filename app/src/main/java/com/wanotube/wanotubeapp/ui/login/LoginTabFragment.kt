@@ -75,8 +75,7 @@ class LoginTabFragment : Fragment() {
                     // Add account to AccountManager
                     AccountUtils.addAccount(context, email, token)
 
-                    val toast = Toast.makeText(context, "Hi " + (user?.username ?: ""), Toast.LENGTH_SHORT)
-                    toast.show()
+                    Toast.makeText(context, "Hi " + (user?.username ?: ""), Toast.LENGTH_SHORT).show()
 
                     openMainActivity()
                 }

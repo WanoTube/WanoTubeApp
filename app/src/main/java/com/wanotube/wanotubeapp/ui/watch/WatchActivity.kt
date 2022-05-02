@@ -295,8 +295,7 @@ class WatchActivity : WanoTubeActivity() {
             val commentText = binding.commentEditText.text.toString()
             binding.commentEditText.text.clear()
 
-            val toast = Toast.makeText(this, commentText, Toast.LENGTH_SHORT)
-            toast.show()
+            Toast.makeText(this, commentText, Toast.LENGTH_SHORT).show()
 
             binding.btnSendComment.visibility = View.GONE
 

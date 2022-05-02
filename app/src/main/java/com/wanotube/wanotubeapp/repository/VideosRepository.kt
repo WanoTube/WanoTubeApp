@@ -64,7 +64,7 @@ class VideosRepository(private val database: VideosDatabase) {
                     description: MultipartBody.Part,
                     video: MultipartBody.Part,
                     duration: MultipartBody.Part,
-                    privacy: MultipartBody.Part,
+                    visibility: MultipartBody.Part,
                     token: String){
         CoroutineScope(Dispatchers.IO).launch {
 
@@ -75,23 +75,16 @@ class VideosRepository(private val database: VideosDatabase) {
                 description, 
                 video, 
                 duration,
-                privacy)
+                visibility)
             responseBodyCall.enqueue(object : Callback<NetworkVideo> {
                 override fun onResponse(
                     call: Call<NetworkVideo>,
                     response: Response<NetworkVideo>
                 ) {
-                    Timber.e("Success %s", "success" +response.code())
-
-//                    val playListModel = response?.body()?.asDatabaseModel()
-//                    CoroutineScope(Dispatchers.IO).launch {
-//                        if (playListModel != null) {
-//                            database.videoDao.insertAll(playListModel)
-//                        }
-//                    }
+                    Timber.e("Result: %s", "Status Code: " +response.code())
                 }
                 override fun onFailure(call: Call<NetworkVideo>?, t: Throwable?) {
-                    Timber.e("Failed: error: %s", t.toString())
+                    Timber.e("Failed: %s", t.toString())
                 }
             })
         }

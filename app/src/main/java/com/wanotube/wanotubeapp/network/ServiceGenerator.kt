@@ -1,6 +1,10 @@
 package com.wanotube.wanotubeapp.network
 
+import android.text.TextUtils
 import com.wanotube.wanotubeapp.network.authentication.AuthenticationInterceptor
+import com.wanotube.wanotubeapp.util.Constant.BASE_URL
+import com.wanotube.wanotubeapp.util.Constant.PORT
+import com.wanotube.wanotubeapp.util.Constant.VERSION
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -9,10 +13,6 @@ import timber.log.Timber
 
 
 object ServiceGenerator {
-    private const val BASE_URL = "http://localhost"
-    private const val PORT = 8000
-    private const val VERSION = "/v1"
-
     private val builder = Retrofit.Builder()
         .baseUrl("$BASE_URL:$PORT$VERSION/")
         .addConverterFactory(GsonConverterFactory.create())
@@ -42,17 +42,28 @@ object ServiceGenerator {
     fun <S> createService(
         serviceClass: Class<S>?, authToken: String?,
     ): S {
-        if (authToken != null) {
-            val interceptor = AuthenticationInterceptor(authToken)
-            if (!httpClient.interceptors().contains(interceptor as Interceptor)) {
-                try {
-                    httpClient.addInterceptor(interceptor)
-                    builder.client(httpClient.build())
-                    retrofit = builder.build()
-                } catch (error: Exception) {
-                    Timber.e("Error: %s", error.message)
+        try {
+            val noConnectionInterceptor = NoConnectionInterceptor()
+            if (!httpClient.interceptors().contains(noConnectionInterceptor as Interceptor)) {
+                httpClient.addInterceptor(noConnectionInterceptor)
+            }
+            
+            val authInterceptor = authToken?.let { AuthenticationInterceptor(it) }
+            if (!TextUtils.isEmpty(authToken) && authToken != null) {
+                if (!httpClient.interceptors().contains(authInterceptor as Interceptor)) {
+                    httpClient.addInterceptor(authInterceptor)
                 }
             }
+            
+            val serverErrorInterception = ServerErrorInterception()
+            if (!httpClient.interceptors().contains(serverErrorInterception as Interceptor)) {
+                httpClient.addInterceptor(serverErrorInterception)
+            }
+
+            builder.client(httpClient.build())
+            retrofit = builder.build()
+        } catch (error: Exception) {
+            Timber.e("Error: %s", error.message)
         }
         return retrofit.create(serviceClass)
     }

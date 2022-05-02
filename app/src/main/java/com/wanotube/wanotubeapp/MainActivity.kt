@@ -1,12 +1,8 @@
 package com.wanotube.wanotubeapp
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.MotionEvent
-import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.appcompat.app.ActionBar
@@ -102,20 +98,6 @@ class MainActivity : WanoTubeActivity(), IEventListener {
         findViewById<FrameLayout>(R.id.myNavHostFragment).findNavController().navigate(fragmentId)
     }
 
-    override fun onWindowFocusChanged(hasFocus: Boolean) {
-        super.onWindowFocusChanged(hasFocus)
-        if (currentFragment is IOnFocusListenable) {
-            (currentFragment as IOnFocusListenable).onWindowFocusChanged(hasFocus)
-        }
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        (currentFragment as? IOnBackPressed)?.onBackPressed()?.not()?.let {
-            super.onBackPressed()
-        }
-    }
-
     private fun openGalleryForVideo() {
         val intent = Intent()
         intent.type = "video/*"
@@ -148,30 +130,6 @@ class MainActivity : WanoTubeActivity(), IEventListener {
         startActivity(intent)
     }
 
-    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        val ret = super.dispatchTouchEvent(ev)
-        ev?.let { event ->
-            if (event.action == MotionEvent.ACTION_UP) {
-                currentFocus?.let { view ->
-                    if (view is EditText) {
-                        val touchCoordinates = IntArray(2)
-                        view.getLocationOnScreen(touchCoordinates)
-                        val x: Float = event.rawX + view.getLeft() - touchCoordinates[0]
-                        val y: Float = event.rawY + view.getTop() - touchCoordinates[1]
-                        //If the touch position is outside the EditText then we hide the keyboard
-                        if (x < view.getLeft() || x >= view.getRight() || y < view.getTop() || y > view.getBottom()) {
-                            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                            imm.hideSoftInputFromWindow(view.windowToken, 0)
-                            view.clearFocus()
-                        }
-                    }
-                }
-            }
-        }
-
-        return ret
-    }
-
     override fun setCurrentFragment(fragment: Fragment) {
         currentFragment = fragment
     }
@@ -192,14 +150,6 @@ class MainActivity : WanoTubeActivity(), IEventListener {
         }
 
     }
-}
-
-interface IOnFocusListenable {
-    fun onWindowFocusChanged(hasFocus: Boolean)
-}
-
-interface IOnBackPressed {
-    fun onBackPressed(): Boolean
 }
 
 interface IEventListener {
