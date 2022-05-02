@@ -104,7 +104,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Description"/>
+                    android:text="@string/description"/>
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -117,8 +117,12 @@
                     android:imeOptions="actionSend|flagNoEnterAction"
                     android:inputType="textMultiLine|textCapSentences"
                     android:background="@android:color/transparent"
-                    android:hint="Your description">
+                    android:hint="@string/your_description">
                 </EditText>
+                <Spinner
+                    android:id="@+id/privacy_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
         </LinearLayout>
         <LinearLayout

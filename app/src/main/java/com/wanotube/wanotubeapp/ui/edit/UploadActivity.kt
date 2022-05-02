@@ -6,9 +6,12 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ProgressBar
+import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.ActionBar
 import com.bumptech.glide.Glide
@@ -30,17 +33,21 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import timber.log.Timber
 import java.io.File
 
-class UploadActivity : WanoTubeActivity() {
+class UploadActivity : WanoTubeActivity(), AdapterView.OnItemSelectedListener  {
     private lateinit var imageView: ImageView
     private lateinit var titleText: EditText
     private lateinit var descriptionText: EditText
     private lateinit var progressBar: ProgressBar
     private lateinit var durationText: TextView
+
     private lateinit var videosRepository: VideosRepository
     private lateinit var mSocket: Socket
     private var filePath: String = ""
     private lateinit var file: File
     private var isUploading = false
+    
+    private var visibility = 0
+    private var duration = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +61,8 @@ class UploadActivity : WanoTubeActivity() {
         descriptionText = findViewById(R.id.video_description)
         progressBar = findViewById(R.id.spinner_loader)
         durationText = findViewById(R.id.duration)
+
+        addResourceForSpinner()
         
         filePath = intent.getStringExtra("FILE_PATH")
         file = File(filePath)
@@ -63,12 +72,36 @@ class UploadActivity : WanoTubeActivity() {
             .into(imageView)
     }
 
+    private fun addResourceForSpinner() {
+        val privacySpinner = findViewById<Spinner>(R.id.privacy_spinner)
+
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.privacy_array,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            privacySpinner.adapter = adapter
+        }
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
+        // An item was selected. You can retrieve the selected item using
+        visibility = pos
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>) {
+        // Another interface callback
+        parent.setSelection(0)
+    }
+    
     private fun setDuration() {
         val retriever = MediaMetadataRetriever()
         retriever.setDataSource(this, Uri.fromFile(file))
         val time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
         val timeInMillis = time.toFloat()
         retriever.release()
+        duration = (timeInMillis*1000).toInt()
         durationText.text = stringForTime(timeInMillis)
     }
     
@@ -101,13 +134,32 @@ class UploadActivity : WanoTubeActivity() {
         isUploading = true
         val videoBody: RequestBody = file.asRequestBody("video/*".toMediaTypeOrNull())
         val fileBody: MultipartBody.Part =
-            MultipartBody.Part.createFormData("video", file.name, videoBody)
+            MultipartBody.Part.createFormData(
+                "video", 
+                file.name, 
+                videoBody
+            )
+        
         val titleBody: MultipartBody.Part =
-            MultipartBody.Part.createFormData("title", titleText.text.toString())
+            MultipartBody.Part.createFormData(
+                "title", 
+                titleText.text.toString()
+            )
+        
         val descriptionBody: MultipartBody.Part =
-            MultipartBody.Part.createFormData("description", descriptionText.text.toString())
-        val durationBody: MultipartBody.Part = MultipartBody.Part.createFormData("duration", "")
-        val visibilityBody: MultipartBody.Part = MultipartBody.Part.createFormData("visibility", "0")
+            MultipartBody.Part.createFormData(
+                "description", 
+                descriptionText.text.toString()
+            )
+        
+        val durationBody: MultipartBody.Part = 
+            MultipartBody.Part.createFormData(
+                "duration", duration.toString())
+        
+        val visibilityBody: MultipartBody.Part = MultipartBody.Part.createFormData(
+            "visibility",
+            visibility.toString()
+        )
 
         val mAuthPreferences = AuthPreferences(this)
         mAuthPreferences.authToken?.let {
