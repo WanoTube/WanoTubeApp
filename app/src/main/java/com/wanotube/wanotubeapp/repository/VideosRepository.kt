@@ -64,7 +64,7 @@ class VideosRepository(private val database: VideosDatabase) {
                     description: MultipartBody.Part,
                     video: MultipartBody.Part,
                     duration: MultipartBody.Part,
-                    privacy: MultipartBody.Part,
+                    visibility: MultipartBody.Part,
                     token: String){
         CoroutineScope(Dispatchers.IO).launch {
 
@@ -75,7 +75,7 @@ class VideosRepository(private val database: VideosDatabase) {
                 description, 
                 video, 
                 duration,
-                privacy)
+                visibility)
             responseBodyCall.enqueue(object : Callback<NetworkVideo> {
                 override fun onResponse(
                     call: Call<NetworkVideo>,

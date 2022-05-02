@@ -1,5 +1,7 @@
 package com.wanotube.wanotubeapp.ui.edit
 
+import android.media.MediaMetadataRetriever
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -7,6 +9,7 @@ import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.appcompat.app.ActionBar
 import com.bumptech.glide.Glide
 import com.wanotube.wanotubeapp.R
@@ -16,6 +19,7 @@ import com.wanotube.wanotubeapp.network.authentication.AuthPreferences
 import com.wanotube.wanotubeapp.repository.VideosRepository
 import com.wanotube.wanotubeapp.util.Constant.BASE_URL
 import com.wanotube.wanotubeapp.util.Constant.PORT
+import com.wanotube.wanotubeapp.util.stringForTime
 import io.socket.client.IO
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
@@ -31,11 +35,11 @@ class UploadActivity : WanoTubeActivity() {
     private lateinit var titleText: EditText
     private lateinit var descriptionText: EditText
     private lateinit var progressBar: ProgressBar
-    
+    private lateinit var durationText: TextView
     private lateinit var videosRepository: VideosRepository
     private lateinit var mSocket: Socket
     private var filePath: String = ""
-
+    private lateinit var file: File
     private var isUploading = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,14 +53,25 @@ class UploadActivity : WanoTubeActivity() {
         titleText = findViewById(R.id.video_title)
         descriptionText = findViewById(R.id.video_description)
         progressBar = findViewById(R.id.spinner_loader)
+        durationText = findViewById(R.id.duration)
         
         filePath = intent.getStringExtra("FILE_PATH")
-
+        file = File(filePath)
+        setDuration()
         Glide.with(this)
             .load(filePath)
             .into(imageView)
     }
 
+    private fun setDuration() {
+        val retriever = MediaMetadataRetriever()
+        retriever.setDataSource(this, Uri.fromFile(file))
+        val time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
+        val timeInMillis = time.toFloat()
+        retriever.release()
+        durationText.text = stringForTime(timeInMillis)
+    }
+    
     override fun customActionBar() {
         super.customActionBar()
         supportActionBar!!.apply {
@@ -84,7 +99,6 @@ class UploadActivity : WanoTubeActivity() {
 
     private fun uploadVideo() {
         isUploading = true
-        val file = File(filePath)
         val videoBody: RequestBody = file.asRequestBody("video/*".toMediaTypeOrNull())
         val fileBody: MultipartBody.Part =
             MultipartBody.Part.createFormData("video", file.name, videoBody)
@@ -93,7 +107,7 @@ class UploadActivity : WanoTubeActivity() {
         val descriptionBody: MultipartBody.Part =
             MultipartBody.Part.createFormData("description", descriptionText.text.toString())
         val durationBody: MultipartBody.Part = MultipartBody.Part.createFormData("duration", "")
-        val privacyBody: MultipartBody.Part = MultipartBody.Part.createFormData("privacy", "0")
+        val visibilityBody: MultipartBody.Part = MultipartBody.Part.createFormData("visibility", "0")
 
         val mAuthPreferences = AuthPreferences(this)
         mAuthPreferences.authToken?.let {
@@ -103,7 +117,7 @@ class UploadActivity : WanoTubeActivity() {
                 descriptionBody,
                 fileBody,
                 durationBody,
-                privacyBody,
+                visibilityBody,
                 it
             )
 

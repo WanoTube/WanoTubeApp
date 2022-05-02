@@ -25,6 +25,6 @@ interface IVideoService {
         @Part description: MultipartBody.Part,
         @Part video: MultipartBody.Part,
         @Part duration: MultipartBody.Part,
-        @Part privacy: MultipartBody.Part
+        @Part visibility: MultipartBody.Part
         ): Call<NetworkVideo>
 }
