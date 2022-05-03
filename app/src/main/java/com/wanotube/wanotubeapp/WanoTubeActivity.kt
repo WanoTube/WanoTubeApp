@@ -180,7 +180,7 @@ abstract class WanoTubeActivity : AppCompatActivity(){
 
         val mAuthPreferences = AuthPreferences(this)
         mAuthPreferences.authToken?.let {
-            Timber.e("Ngan authToken: " + mAuthPreferences.authToken)
+            Timber.e("Wanotube authToken: " + mAuthPreferences.authToken)
             videosRepository.uploadVideo(
                 titleBody,
                 sizeBody,
@@ -196,7 +196,6 @@ abstract class WanoTubeActivity : AppCompatActivity(){
     fun startServerSocket() {
         try {
             mSocket = IO.socket("${Constant.BASE_URL}:${Constant.PORT}/")
-            Timber.e("Ngan socketId: %s", mSocket.id())
             mSocket.connect()
             mSocket.on(Socket.EVENT_CONNECT, onConnect)
         } catch (e: Exception) {
@@ -209,12 +208,12 @@ abstract class WanoTubeActivity : AppCompatActivity(){
         runOnUiThread {
             setProgressDialog()
         }
-        Timber.e("Ngan %s", "On connect")
+        Timber.e("Video's upload state: %s", "On connect")
         mSocket.on(UploadActivity.UPLOAD_TO_S3, onUpload)
     }
 
     private var onUpload = Emitter.Listener { args ->
-        Timber.e("Ngan %s", "Progress: " + args[0])
+        Timber.e("Video's upload progress %s", "Progress: " + args[0])
         if (args != null) {
             if (args[0] != null) {
                 val progress = args[0] as Int
