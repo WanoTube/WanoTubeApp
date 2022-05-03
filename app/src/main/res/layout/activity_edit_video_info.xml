@@ -8,109 +8,93 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:context=".ui.edit.EditInfoActivity">
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <LinearLayout
+            android:layout_height="wrap_content">
+            <com.google.android.exoplayer2.ui.PlayerView
+                android:id="@+id/video_view"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"/>
+        </LinearLayout>
+        <View style="@style/Divider.Horizontal"/>
+        <LinearLayout
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="@dimen/avatar_size"
+                android:layout_height="@dimen/avatar_size"
+                android:src="@drawable/user"/>
+            <TextView
+                android:layout_marginStart="@dimen/layout_start_margin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <RelativeLayout
-                        android:id="@+id/relativelayout"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent" >
-
-                        <com.google.android.exoplayer2.ui.PlayerView
-                            android:id="@+id/video_view"
-                            android:layout_width="match_parent"
-                            android:layout_height="200dp"/>
-
-                    </RelativeLayout>
-                </LinearLayout>
-                <View style="@style/Divider.Horizontal"/>
-                <LinearLayout
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-                    <ImageView
-                        android:layout_width="@dimen/avatar_size"
-                        android:layout_height="@dimen/avatar_size"
-                        android:src="@drawable/user"/>
-                    <TextView
-                        android:layout_marginStart="@dimen/layout_start_margin"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/username"/>
-                </LinearLayout>
-                <View style="@style/Divider.Horizontal"/>
-                <LinearLayout
-                    android:layout_marginStart="@dimen/component_large_margin"
-                    android:layout_marginEnd="@dimen/component_large_margin"
-                    android:layout_marginTop="@dimen/component_medium_margin"
-                    android:layout_marginBottom="@dimen/component_medium_margin"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/title"/>
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="start"
-                        android:scrollbars="vertical"
-                        android:paddingTop="2dp"
-                        android:id="@+id/video_title"
-                        android:lines="2"
-                        android:maxLength="2000"
-                        android:imeOptions="actionSend|flagNoEnterAction"
-                        android:inputType="textMultiLine|textCapSentences"
-                        android:background="@android:color/transparent"
-                        android:hint="@string/title_placeholder">
-                    </EditText>
-                </LinearLayout>
-                <View style="@style/Divider.Horizontal"/>
-                <LinearLayout
-                    android:layout_marginStart="@dimen/component_large_margin"
-                    android:layout_marginEnd="@dimen/component_large_margin"
-                    android:layout_marginTop="@dimen/component_medium_margin"
-                    android:layout_marginBottom="@dimen/component_medium_margin"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/description"/>
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="start"
-                        android:scrollbars="vertical"
-                        android:paddingTop="2dp"
-                        android:id="@+id/video_description"
-                        android:lines="2"
-                        android:maxLength="2000"
-                        android:imeOptions="actionSend|flagNoEnterAction"
-                        android:inputType="textMultiLine|textCapSentences"
-                        android:background="@android:color/transparent"
-                        android:hint="@string/your_description">
-                    </EditText>
-                    <Spinner
-                        android:id="@+id/privacy_spinner"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-            </LinearLayout>
-        </RelativeLayout>
+                android:text="@string/username"/>
+        </LinearLayout>
+        <View style="@style/Divider.Horizontal"/>
+        <LinearLayout
+            android:layout_marginStart="@dimen/component_large_margin"
+            android:layout_marginEnd="@dimen/component_large_margin"
+            android:layout_marginTop="@dimen/component_medium_margin"
+            android:layout_marginBottom="@dimen/component_medium_margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:scrollbars="vertical"
+                android:paddingTop="2dp"
+                android:id="@+id/video_title"
+                android:lines="2"
+                android:maxLength="2000"
+                android:imeOptions="actionSend|flagNoEnterAction"
+                android:inputType="textMultiLine|textCapSentences"
+                android:background="@android:color/transparent"
+                android:hint="@string/title_placeholder">
+            </EditText>
+        </LinearLayout>
+        <View style="@style/Divider.Horizontal"/>
+        <LinearLayout
+            android:layout_marginStart="@dimen/component_large_margin"
+            android:layout_marginEnd="@dimen/component_large_margin"
+            android:layout_marginTop="@dimen/component_medium_margin"
+            android:layout_marginBottom="@dimen/component_medium_margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/description"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:scrollbars="vertical"
+                android:paddingTop="2dp"
+                android:id="@+id/video_description"
+                android:lines="2"
+                android:maxLength="2000"
+                android:imeOptions="actionSend|flagNoEnterAction"
+                android:inputType="textMultiLine|textCapSentences"
+                android:background="@android:color/transparent"
+                android:hint="@string/your_description">
+            </EditText>
+            <Spinner
+                android:id="@+id/privacy_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
     </LinearLayout>
 </layout>

@@ -25,7 +25,6 @@
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="100dp"
-            android:paddingTop="10dp"
             android:layout_marginStart="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/thumbnail_video"
@@ -58,6 +57,7 @@
                 android:id="@+id/video_menu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                app:tint="@null"
                 android:layout_alignEnd="@+id/video_details"
                 android:src="@drawable/ic_hamburger"/>
         </RelativeLayout>

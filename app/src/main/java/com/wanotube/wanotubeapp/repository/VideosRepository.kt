@@ -81,4 +81,30 @@ class VideosRepository(private val database: VideosDatabase) {
             video,
             duration)
     }
+
+
+    fun updateVideo(title: String,
+                    description: String,
+                    url: String,
+                    size: String,
+                    duration: String,
+                    visibility: String): Call<NetworkVideo> {
+
+        val titleBody = MultipartBody.Part.createFormData("title", title)
+        val descriptionBody = MultipartBody.Part.createFormData("description", description)
+        val urlBody = MultipartBody.Part.createFormData("url", url)
+        val sizeBody = MultipartBody.Part.createFormData("size", size)
+        val durationBody = MultipartBody.Part.createFormData("duration", duration)
+        val visibilityBody = MultipartBody.Part.createFormData("visibility" ,visibility)
+
+        val videoService: IVideoService =
+            ServiceGenerator.createService(IVideoService::class.java)
+        return videoService.updateVideo(
+            titleBody,
+            descriptionBody,
+            urlBody,
+            sizeBody,
+            durationBody,
+            visibilityBody)
+    }
 }

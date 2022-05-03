@@ -28,4 +28,15 @@ interface IVideoService {
         @Part video: MultipartBody.Part,
         @Part duration: MultipartBody.Part,
         ): Call<NetworkVideo>
+    
+    @Multipart
+    @POST("videos/upload")
+    fun updateVideo(
+        @Part title: MultipartBody.Part,
+        @Part description: MultipartBody.Part,
+        @Part url: MultipartBody.Part,
+        @Part size: MultipartBody.Part,
+        @Part duration: MultipartBody.Part,
+        @Part visibility: MultipartBody.Part,
+        ): Call<NetworkVideo>
 }

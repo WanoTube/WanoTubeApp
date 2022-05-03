@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
@@ -29,7 +31,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import timber.log.Timber
 
-class EditInfoActivity: WanoTubeActivity() {
+class EditInfoActivity: WanoTubeActivity(), AdapterView.OnItemSelectedListener  {
 
     private var videoId: String = ""
     private lateinit var video: Video
@@ -38,6 +40,8 @@ class EditInfoActivity: WanoTubeActivity() {
     private lateinit var titleText: EditText
     private lateinit var descriptionText: EditText
     
+    private var visibility = 1
+
     private val viewBinding by lazy(LazyThreadSafetyMode.NONE) {
         ActivityEditVideoInfoBinding.inflate(layoutInflater)
     }
@@ -51,16 +55,41 @@ class EditInfoActivity: WanoTubeActivity() {
         super.onCreate(savedInstanceState)
         setContentView(viewBinding.root)
         
-        titleText = viewBinding.videoTitle
-        descriptionText = viewBinding.videoDescription
-
         videosRepository = VideosRepository(getDatabase(application))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         
+        titleText = viewBinding.videoTitle
+        descriptionText = viewBinding.videoDescription
+
         videoId = intent.getStringExtra("VIDEO_ID")
         
         getVideo()
-        initComponents()
+        addResourceForSpinner()
+    }
+    
+    override fun customActionBar() {
+        super.customActionBar()
+        supportActionBar!!.apply {
+            displayOptions = ActionBar.DISPLAY_SHOW_TITLE
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.normal_action_bar, menu)
+        return true
+    }
+    
+    private fun addResourceForSpinner() {
+        val privacySpinner = viewBinding.privacySpinner
+
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.privacy_array,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            privacySpinner.adapter = adapter
+        }
     }
 
     public override fun onStart() {
@@ -90,7 +119,6 @@ class EditInfoActivity: WanoTubeActivity() {
         }
     }
 
-
     public override fun onStop() {
         super.onStop()
         if (Util.SDK_INT >= 24) {
@@ -111,8 +139,12 @@ class EditInfoActivity: WanoTubeActivity() {
 
     private fun initializePlayer() {
         if (!::video.isInitialized)
-            return 
+            return
+//        val trackSelector = DefaultTrackSelector(this).apply {
+//            setParameters(buildUponParameters().setMaxVideoSizeSd())
+//        }
         player = SimpleExoPlayer.Builder(this)
+//            .setTrackSelector(trackSelector)
             .build()
             .also { exoPlayer ->
                 viewBinding.videoView.player = exoPlayer
@@ -153,6 +185,7 @@ class EditInfoActivity: WanoTubeActivity() {
                             Timber.e("Result: %s", databaseVideo)
                             if (databaseVideo != null) {
                                 video = databaseVideo.asDomainModel()
+                                initComponents()
                                 if (Util.SDK_INT >= 24) {
                                     initializePlayer()
                                 }
@@ -174,18 +207,7 @@ class EditInfoActivity: WanoTubeActivity() {
             return
         titleText.setText(video.title)
         descriptionText.setText(video.description)
-    }
-    
-    override fun customActionBar() {
-        super.customActionBar()
-        supportActionBar!!.apply {
-            displayOptions = ActionBar.DISPLAY_SHOW_TITLE
-        }
-    }
-    
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.normal_action_bar, menu)
-        return true
+        visibility = video.visibility
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
@@ -201,6 +223,46 @@ class EditInfoActivity: WanoTubeActivity() {
     }
 
     private fun updateVideo() {
+        if (!::video.isInitialized)
+            return
+        val resCall = videosRepository.updateVideo(
+            titleText.text.toString(),
+            descriptionText.text.toString(),
+            video.url,
+            video.size.toString(),
+            video.duration.toString(),
+            visibility.toString()
+        )
         
+        val context = this
+        resCall.enqueue(object : Callback<NetworkVideo> {
+            override fun onResponse(
+                call: Call<NetworkVideo>,
+                response: Response<NetworkVideo>
+            ) {
+                Timber.e("Result Status Code:  %s", response.code())
+                if (response.code() == 200) {
+                    finishActivity()
+                } else {
+                    Toast.makeText(context, "Update unsuccessfully, please try again :( ", Toast.LENGTH_SHORT).show()
+                }
+            }
+            override fun onFailure(call: Call<NetworkVideo>?, t: Throwable?) {
+                Timber.e("Failed: %s", t.toString())
+            }
+        })
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        visibility = position
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+        parent?.setSelection(visibility)
+    }
+    
+    private fun finishActivity() {
+        finish()
+        onBackPressed()
     }
 }
