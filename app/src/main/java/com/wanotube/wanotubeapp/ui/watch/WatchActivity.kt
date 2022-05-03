@@ -68,7 +68,7 @@ class WatchActivity : WanoTubeActivity() {
     private lateinit var seekBar: SeekBar
     private lateinit var videoHandler: Handler
     private lateinit var videoRunnable: Runnable
-    private lateinit var progressBar: ProgressBar
+    private lateinit var watchProgressBar: ProgressBar
     private lateinit var bufferBar: ProgressBar
     private lateinit var backFrame: FrameLayout
     private lateinit var forwardFrame: FrameLayout
@@ -152,7 +152,7 @@ class WatchActivity : WanoTubeActivity() {
         rewindTxt = binding.rewindtxt
         forwardTxt = binding.frwrdtxt
         seekBar = binding.seekbar
-        progressBar = binding.progress
+        watchProgressBar = binding.progress
         bufferBar = binding.bufferBar
         backFrame = binding.bbkframe
         forwardFrame = binding.ffrdframe
@@ -341,16 +341,16 @@ class WatchActivity : WanoTubeActivity() {
     private fun initVideo() {
         videoView.setVideoURI(Uri.parse(currentVideo?.url ?: ""))
         if (videoView.isPlaying)
-            progressBar.visibility = View.VISIBLE
+            watchProgressBar.visibility = View.VISIBLE
 
         videoView.setOnPreparedListener { mp ->
             seekBar.max = videoView.duration
-            progressBar.visibility = View.GONE
+            watchProgressBar.visibility = View.GONE
             mp.setOnInfoListener { _, what, _ ->
                 when (what) {
-                    MediaPlayer.MEDIA_INFO_BUFFERING_START -> progressBar.visibility =
+                    MediaPlayer.MEDIA_INFO_BUFFERING_START -> watchProgressBar.visibility =
                         View.VISIBLE
-                    MediaPlayer.MEDIA_INFO_BUFFERING_END -> progressBar.visibility =
+                    MediaPlayer.MEDIA_INFO_BUFFERING_END -> watchProgressBar.visibility =
                         View.GONE
                 }
                 false

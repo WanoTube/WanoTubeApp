@@ -117,17 +117,12 @@ class MainActivity : WanoTubeActivity(), IEventListener {
                     val uriPathHelper = URIPathHelper()
                     val videoFullPath = uriPathHelper.getPath(this, data.data!!)
                     if (videoFullPath != null) {
-                        loadUploadActivity(videoFullPath)
+                        uploadVideo(videoFullPath)
+//                        loadUploadActivity(videoFullPath)
                     }
                 }
             }
         }
-    }
-
-    private fun loadUploadActivity(filePath: String) {
-        val intent = Intent(baseContext, UploadActivity::class.java)
-        intent.putExtra("FILE_PATH", filePath)
-        startActivity(intent)
     }
 
     override fun setCurrentFragment(fragment: Fragment) {

@@ -10,6 +10,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 
 
 object ServiceGenerator {
@@ -23,6 +24,8 @@ object ServiceGenerator {
 //        .setLevel(HttpLoggingInterceptor.Level.BODY)
     
     private val httpClient: OkHttpClient.Builder = OkHttpClient.Builder()
+        .connectTimeout(3, TimeUnit.MINUTES)
+        .readTimeout(3, TimeUnit.MINUTES)
     
 //    fun <S> createService(
 //        serviceClass: Class<S>?,

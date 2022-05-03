@@ -22,9 +22,9 @@ interface IVideoService {
     @POST("videos/upload")
     fun uploadVideo(
         @Part title: MultipartBody.Part,
+        @Part size: MultipartBody.Part,
         @Part description: MultipartBody.Part,
         @Part video: MultipartBody.Part,
         @Part duration: MultipartBody.Part,
-        @Part visibility: MultipartBody.Part
         ): Call<NetworkVideo>
 }

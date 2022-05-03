@@ -1,5 +1,6 @@
 package com.wanotube.wanotubeapp.ui.edit
 
+import android.content.Context
 import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.Bundle
@@ -14,9 +15,11 @@ import android.widget.ProgressBar
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.ActionBar
+import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.WanoTubeActivity
+import com.wanotube.wanotubeapp.WanotubeApp.Companion.context
 import com.wanotube.wanotubeapp.database.getDatabase
 import com.wanotube.wanotubeapp.network.authentication.AuthPreferences
 import com.wanotube.wanotubeapp.repository.VideosRepository
@@ -37,14 +40,11 @@ class UploadActivity : WanoTubeActivity(), AdapterView.OnItemSelectedListener  {
     private lateinit var imageView: ImageView
     private lateinit var titleText: EditText
     private lateinit var descriptionText: EditText
-    private lateinit var progressBar: ProgressBar
     private lateinit var durationText: TextView
 
     private lateinit var videosRepository: VideosRepository
-    private lateinit var mSocket: Socket
     private var filePath: String = ""
     private lateinit var file: File
-    private var isUploading = false
     
     private var visibility = 0
     private var duration = 0
@@ -120,111 +120,13 @@ class UploadActivity : WanoTubeActivity(), AdapterView.OnItemSelectedListener  {
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.next -> {
-            if (!isUploading)
-                uploadVideo()
+            // Update DB
+            // Then go to MyVideos
             true
         }
 
         else -> {
             super.onOptionsItemSelected(item)
-        }
-    }
-
-    private fun uploadVideo() {
-        isUploading = true
-        val videoBody: RequestBody = file.asRequestBody("video/*".toMediaTypeOrNull())
-        val fileBody: MultipartBody.Part =
-            MultipartBody.Part.createFormData(
-                "video", 
-                file.name, 
-                videoBody
-            )
-        
-        val titleBody: MultipartBody.Part =
-            MultipartBody.Part.createFormData(
-                "title", 
-                titleText.text.toString()
-            )
-        
-        val descriptionBody: MultipartBody.Part =
-            MultipartBody.Part.createFormData(
-                "description", 
-                descriptionText.text.toString()
-            )
-        
-        val durationBody: MultipartBody.Part = 
-            MultipartBody.Part.createFormData(
-                "duration", duration.toString())
-        
-        val visibilityBody: MultipartBody.Part = MultipartBody.Part.createFormData(
-            "visibility",
-            visibility.toString()
-        )
-
-        val mAuthPreferences = AuthPreferences(this)
-        mAuthPreferences.authToken?.let {
-            Timber.e("Ngan authToken: " + mAuthPreferences.authToken)
-            videosRepository.uploadVideo(
-                titleBody,
-                descriptionBody,
-                fileBody,
-                durationBody,
-                visibilityBody,
-                it
-            )
-
-            startServerSocket()
-        }
-    }
-
-    private fun startServerSocket() {
-        try {
-            mSocket = IO.socket("${BASE_URL}:${PORT}/")
-            Timber.e("Ngan %s", "socketId: " + mSocket.id())
-            mSocket.connect()
-            mSocket.on(Socket.EVENT_CONNECT, onConnect)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            Timber.e("fail %s", "Failed to connect")
-        }
-    }
-
-    private var onConnect = Emitter.Listener {
-        runOnUiThread {
-            progressBar.visibility = View.VISIBLE
-        }
-        Timber.e("Ngan %s", "On connect")
-        mSocket.on(UPLOAD_TO_S3, onUpload)
-    }
-    
-    private var onUpload = Emitter.Listener { args ->
-        Timber.e("Ngan %s", "Progress: " + args[0])
-        if (args != null) {
-            if (args[0] != null) {
-                val progress = args[0] as Int
-                runOnUiThread {
-                    progressBar.progress = progress
-                }
-                if (progress >= 100)
-                    finishUploading()
-            }
-        }
-    }
-
-    private fun finishUploading() {
-        mSocket.off()
-        runOnUiThread {
-            progressBar.visibility = View.GONE
-            finish()
-            super.onBackPressed()
-        }
-    }
-    
-    override fun onDestroy() {
-        super.onDestroy()
-        if (::mSocket.isInitialized) {
-            mSocket.off()
-            mSocket.disconnect()
         }
     }
     
