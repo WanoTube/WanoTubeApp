@@ -3,9 +3,10 @@ package com.wanotube.wanotubeapp.database
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.wanotube.wanotubeapp.domain.Account
-import com.wanotube.wanotubeapp.domain.User
 import com.wanotube.wanotubeapp.domain.Video
+import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Locale
 
 /**
  * Database entities go in this file. These are responsible for reading and writing
