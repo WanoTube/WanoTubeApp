@@ -5,10 +5,10 @@ import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Multipart
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Path
-import retrofit2.http.Query
 
 interface IVideoService {
     @Headers("isDisableAuthorization:true")
@@ -28,10 +28,12 @@ interface IVideoService {
         @Part video: MultipartBody.Part,
         @Part duration: MultipartBody.Part,
         ): Call<NetworkVideo>
-    
+
+    @Headers("isDisableAuthorization:true")
     @Multipart
-    @POST("videos/upload")
+    @PATCH("videos/update")
     fun updateVideo(
+        @Part id: MultipartBody.Part,
         @Part title: MultipartBody.Part,
         @Part description: MultipartBody.Part,
         @Part url: MultipartBody.Part,

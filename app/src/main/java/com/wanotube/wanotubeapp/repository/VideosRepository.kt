@@ -83,13 +83,15 @@ class VideosRepository(private val database: VideosDatabase) {
     }
 
 
-    fun updateVideo(title: String,
+    fun updateVideo(id: String,
+                    title: String,
                     description: String,
                     url: String,
                     size: String,
                     duration: String,
                     visibility: String): Call<NetworkVideo> {
 
+        val idBody = MultipartBody.Part.createFormData("id", id)
         val titleBody = MultipartBody.Part.createFormData("title", title)
         val descriptionBody = MultipartBody.Part.createFormData("description", description)
         val urlBody = MultipartBody.Part.createFormData("url", url)
@@ -100,6 +102,7 @@ class VideosRepository(private val database: VideosDatabase) {
         val videoService: IVideoService =
             ServiceGenerator.createService(IVideoService::class.java)
         return videoService.updateVideo(
+            idBody,
             titleBody,
             descriptionBody,
             urlBody,

@@ -1,6 +1,7 @@
 package com.wanotube.wanotubeapp.ui.edit
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -23,6 +24,7 @@ import com.wanotube.wanotubeapp.domain.Video
 import com.wanotube.wanotubeapp.network.NetworkVideo
 import com.wanotube.wanotubeapp.network.asDatabaseModel
 import com.wanotube.wanotubeapp.repository.VideosRepository
+import com.wanotube.wanotubeapp.ui.watch.WatchActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -102,7 +104,7 @@ class EditInfoActivity: WanoTubeActivity(), AdapterView.OnItemSelectedListener  
 
     public override fun onResume() {
         super.onResume()
-        hideSystemUi()
+//        hideSystemUi()
         //Android API level 24 and lower requires you to wait as long as possible until you grab resources, so you wait until onResume before initializing the player.
         if ((Util.SDK_INT < 24 || player == null)) {
             initializePlayer()
@@ -129,12 +131,14 @@ class EditInfoActivity: WanoTubeActivity(), AdapterView.OnItemSelectedListener  
     // Support full-screen
     @SuppressLint("InlinedApi")
     private fun hideSystemUi() {
-        viewBinding.videoView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LOW_PROFILE
+        viewBinding.videoView.systemUiVisibility = (
+                View.SYSTEM_UI_FLAG_LOW_PROFILE
                 or View.SYSTEM_UI_FLAG_FULLSCREEN
                 or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                 or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION)
+                or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+        )
     }
 
     private fun initializePlayer() {
@@ -226,6 +230,7 @@ class EditInfoActivity: WanoTubeActivity(), AdapterView.OnItemSelectedListener  
         if (!::video.isInitialized)
             return
         val resCall = videosRepository.updateVideo(
+            video.id,
             titleText.text.toString(),
             descriptionText.text.toString(),
             video.url,
@@ -262,7 +267,10 @@ class EditInfoActivity: WanoTubeActivity(), AdapterView.OnItemSelectedListener  
     }
     
     private fun finishActivity() {
-        finish()
-        onBackPressed()
+        if (!::video.isInitialized)
+            return
+        val intent = Intent(this, WatchActivity::class.java)
+        intent.putExtra("VIDEO_ID", video.id)
+        startActivity(intent)
     }
 }
