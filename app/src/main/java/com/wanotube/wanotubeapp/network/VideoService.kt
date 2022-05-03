@@ -7,6 +7,7 @@ import retrofit2.http.Headers
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface IVideoService {
@@ -15,16 +16,16 @@ interface IVideoService {
     fun getVideos(): Call<NetworkVideoContainer>
 
     @Headers("isDisableAuthorization:true")
-    @GET("videos/")
-    fun getVideo(@Query("id") id: String): Call<NetworkVideo>
+    @GET("videos/{id}")
+    fun getVideo(@Path("id") id: String): Call<NetworkVideo>
 
     @Multipart
     @POST("videos/upload")
     fun uploadVideo(
         @Part title: MultipartBody.Part,
+        @Part size: MultipartBody.Part,
         @Part description: MultipartBody.Part,
         @Part video: MultipartBody.Part,
         @Part duration: MultipartBody.Part,
-        @Part visibility: MultipartBody.Part
         ): Call<NetworkVideo>
 }

@@ -35,8 +35,6 @@ class NetworkVideo {
     val url: String = ""
     @SerializedName("title")
     val title: String = ""
-    @SerializedName("updated")
-    val updated: String = ""
     @SerializedName("description")
     val description: String  = ""
     @SerializedName("thumbnail_url")
@@ -52,7 +50,7 @@ class NetworkVideo {
     @SerializedName("visibility")
     val visibility: Int = 0
     @SerializedName("duration")
-    val duration: String = ""
+    val duration: Int = 0
     @SerializedName("author_id")
     val author_id: String = ""
     @SerializedName("type")
@@ -101,7 +99,6 @@ fun NetworkVideoContainer.asDatabaseModel(): List<DatabaseVideo> {
             url = it.url,
             title = it.title,
             description = it.description,
-            updated = it.updated,
             thumbnail = it.thumbnail,
             size = it.size,
             totalViews = it.total_views,
@@ -120,7 +117,6 @@ fun NetworkVideo.asDatabaseModel(): DatabaseVideo {
         url = url,
         title = title,
         description = description,
-        updated = updated,
         thumbnail = thumbnail,
         size = size,
         totalViews = total_views,

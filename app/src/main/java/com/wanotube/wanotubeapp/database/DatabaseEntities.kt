@@ -22,7 +22,6 @@ data class DatabaseVideo constructor(
     val id: String,
     val url: String,
     val title: String,
-    val updated: String,
     val description: String,
     val thumbnail: String,
     val size: Long,
@@ -30,7 +29,7 @@ data class DatabaseVideo constructor(
     val totalLikes: Long,
     val totalComments: Long,
     val visibility: Int,
-    val duration: String,
+    val duration: Int,
     val authorId: String)
 
 @Entity
@@ -73,7 +72,6 @@ fun List<DatabaseVideo>.asDomainModel(): List<Video> {
             url = it.url,
             title = it.title,
             description = it.description,
-            updated = it.updated,
             thumbnail = it.thumbnail,
             size = it.size,
             totalViews = it.totalViews,
@@ -83,6 +81,22 @@ fun List<DatabaseVideo>.asDomainModel(): List<Video> {
             duration = it.duration,
             authorId = it.authorId)
     }
+}
+
+fun DatabaseVideo.asDomainModel(): Video {
+    return Video(
+        id = id,
+        url = url,
+        title = title,
+        description = description,
+        thumbnail = thumbnail,
+        size = size,
+        totalViews = totalViews,
+        totalLikes = totalLikes,
+        totalComments = totalComments,
+        visibility = visibility,
+        duration = duration,
+        authorId = authorId)
 }
 
 fun DatabaseAccount.asDomainModel(): Account {

@@ -60,33 +60,25 @@ class VideosRepository(private val database: VideosDatabase) {
         }
     }
     
+    fun getVideo(videoId: String): Call<NetworkVideo> {
+        val videoService: IVideoService =
+            ServiceGenerator.createService(IVideoService::class.java)
+        return videoService.getVideo(videoId)
+    }
+    
     fun uploadVideo(title: MultipartBody.Part,
+                    size: MultipartBody.Part,
                     description: MultipartBody.Part,
                     video: MultipartBody.Part,
                     duration: MultipartBody.Part,
-                    visibility: MultipartBody.Part,
-                    token: String){
-        CoroutineScope(Dispatchers.IO).launch {
-
-            val videoService: IVideoService =
-                ServiceGenerator.createService(IVideoService::class.java, token)
-            val responseBodyCall: Call<NetworkVideo> = videoService.uploadVideo(
-                title, 
-                description, 
-                video, 
-                duration,
-                visibility)
-            responseBodyCall.enqueue(object : Callback<NetworkVideo> {
-                override fun onResponse(
-                    call: Call<NetworkVideo>,
-                    response: Response<NetworkVideo>
-                ) {
-                    Timber.e("Result: %s", "Status Code: " +response.code())
-                }
-                override fun onFailure(call: Call<NetworkVideo>?, t: Throwable?) {
-                    Timber.e("Failed: %s", t.toString())
-                }
-            })
-        }
+                    token: String): Call<NetworkVideo> {
+        val videoService: IVideoService =
+            ServiceGenerator.createService(IVideoService::class.java, token)
+        return videoService.uploadVideo(
+            title,
+            size,
+            description,
+            video,
+            duration)
     }
 }

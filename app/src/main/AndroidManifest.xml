@@ -17,8 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WanoTubeApp"
         android:usesCleartextTraffic="true">
-        <service
-            android:name="com.wanotube.wanotubeapp.network.authentication.AuthenticatorService" >
+        <service android:name=".network.authentication.AuthenticatorService">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
@@ -27,22 +26,27 @@
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
+
+        <activity
+            android:name=".ui.edit.EditInfoActivity"
+            android:exported="false"
+            android:windowSoftInputMode="stateVisible|adjustPan" />
         <activity
             android:name=".ui.watch.WatchActivity"
-            android:windowSoftInputMode="stateVisible|adjustPan"
-            android:exported="false" />
-        <activity 
+            android:exported="false"
+            android:windowSoftInputMode="stateVisible|adjustPan" />
+        <activity
             android:name=".ui.edit.ShortUploadActivity"
             android:windowSoftInputMode="stateVisible|adjustPan" />
-        <activity 
+        <activity
             android:name=".ui.edit.EditActivity"
             android:windowSoftInputMode="stateVisible|adjustPan" />
-        <activity 
+        <activity
             android:name=".ui.edit.UploadActivity"
             android:windowSoftInputMode="stateVisible|adjustPan" />
-        <activity 
+        <activity
             android:name=".ui.login.LoginActivity"
-            android:windowSoftInputMode="stateVisible|adjustPan"/>
+            android:windowSoftInputMode="stateVisible|adjustPan" />
         <activity
             android:name=".MainActivity"
             android:windowSoftInputMode="stateVisible|adjustPan">
