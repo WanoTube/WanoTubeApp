@@ -19,13 +19,17 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NavUtils
 import com.wanotube.wanotubeapp.database.getDatabase
+import com.wanotube.wanotubeapp.network.NetworkVideo
+import com.wanotube.wanotubeapp.network.asDatabaseModel
 import com.wanotube.wanotubeapp.network.authentication.AccountUtils
 import com.wanotube.wanotubeapp.network.authentication.AuthPreferences
 import com.wanotube.wanotubeapp.repository.VideosRepository
+import com.wanotube.wanotubeapp.ui.edit.EditInfoActivity
 import com.wanotube.wanotubeapp.ui.edit.UploadActivity
 import com.wanotube.wanotubeapp.ui.login.LoginActivity
 import com.wanotube.wanotubeapp.util.Constant
@@ -36,6 +40,9 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 import java.io.File
@@ -179,9 +186,10 @@ abstract class WanoTubeActivity : AppCompatActivity(){
                 "duration", setDuration(file).toString())
 
         val mAuthPreferences = AuthPreferences(this)
+        val context = this
         mAuthPreferences.authToken?.let {
             Timber.e("Wanotube authToken: " + mAuthPreferences.authToken)
-            videosRepository.uploadVideo(
+            val responseBodyCall = videosRepository.uploadVideo(
                 titleBody,
                 sizeBody,
                 descriptionBody,
@@ -189,8 +197,30 @@ abstract class WanoTubeActivity : AppCompatActivity(){
                 durationBody,
                 it
             )
+            responseBodyCall.enqueue(object : Callback<NetworkVideo> {
+                override fun onResponse(
+                    call: Call<NetworkVideo>,
+                    response: Response<NetworkVideo>
+                ) {
+                    Timber.e("Result Status Code:  %s", response.code())
+                    if (response.code() == 200) {
+                        val body = response.body()?.asDatabaseModel()
+                        Timber.e("Result: %s", body)
+                        if (body != null) {
+                            val intent = Intent(context, EditInfoActivity::class.java)
+                            intent.putExtra("VIDEO_ID", body.id)
+                            context.startActivity(intent)
+                        }
+                    } else {
+                        Toast.makeText(context, "Upload unsuccessfully, please try again :( ", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                override fun onFailure(call: Call<NetworkVideo>?, t: Throwable?) {
+                    Timber.e("Failed: %s", t.toString())
+                }
+            })
+            startServerSocket()
         }
-        startServerSocket()
     }
 
     fun startServerSocket() {
@@ -297,12 +327,6 @@ abstract class WanoTubeActivity : AppCompatActivity(){
                 window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
             }
         }
-    }
-
-    fun openUploadActivity(videoId: String) {
-        val intent = Intent(baseContext, UploadActivity::class.java)
-        intent.putExtra("VIDEO_ID", videoId)
-        startActivity(intent)
     }
     
     override fun onDestroy() {

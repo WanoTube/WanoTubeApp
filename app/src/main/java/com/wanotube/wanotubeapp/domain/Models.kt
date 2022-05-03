@@ -18,7 +18,6 @@ data class Video(
     val id: String,
     val url: String,
     val title: String,
-    val updated: String,
     val description: String,
     val thumbnail: String,
     val size: Long,
@@ -26,7 +25,7 @@ data class Video(
     val totalLikes: Long,
     val totalComments: Long,
     val visibility: Int,
-    val duration: String,
+    val duration: Int,
     val authorId: String
 ) {
     /**

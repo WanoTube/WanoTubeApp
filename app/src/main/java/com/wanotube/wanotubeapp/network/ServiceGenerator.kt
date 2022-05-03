@@ -51,17 +51,17 @@ object ServiceGenerator {
                 httpClient.addInterceptor(noConnectionInterceptor)
             }
             
-            val authInterceptor = authToken?.let { AuthenticationInterceptor(it) }
             if (!TextUtils.isEmpty(authToken) && authToken != null) {
+                val authInterceptor = AuthenticationInterceptor(authToken)
                 if (!httpClient.interceptors().contains(authInterceptor as Interceptor)) {
                     httpClient.addInterceptor(authInterceptor)
                 }
             }
             
-            val serverErrorInterception = ServerErrorInterception()
-            if (!httpClient.interceptors().contains(serverErrorInterception as Interceptor)) {
-                httpClient.addInterceptor(serverErrorInterception)
-            }
+//            val serverErrorInterception = ServerErrorInterception()
+//            if (!httpClient.interceptors().contains(serverErrorInterception as Interceptor)) {
+//                httpClient.addInterceptor(serverErrorInterception)
+//            }
 
             builder.client(httpClient.build())
             retrofit = builder.build()

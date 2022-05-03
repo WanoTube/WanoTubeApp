@@ -42,14 +42,27 @@ import androidx.transition.Transition
 import androidx.transition.TransitionManager
 import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.WanoTubeActivity
+import com.wanotube.wanotubeapp.WanotubeApp
+import com.wanotube.wanotubeapp.database.asDomainModel
+import com.wanotube.wanotubeapp.database.getDatabase
 import com.wanotube.wanotubeapp.databinding.ActivityWatchBinding
 import com.wanotube.wanotubeapp.domain.Video
+import com.wanotube.wanotubeapp.network.NetworkVideo
+import com.wanotube.wanotubeapp.network.asDatabaseModel
+import com.wanotube.wanotubeapp.repository.VideosRepository
 import com.wanotube.wanotubeapp.util.Constant
 import com.wanotube.wanotubeapp.viewmodels.WanoTubeViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import timber.log.Timber
 
 class WatchActivity : WanoTubeActivity() {
     private lateinit var binding: ActivityWatchBinding
-
+    private lateinit var videosRepository: VideosRepository
     private lateinit var videoLayout: RelativeLayout
     private lateinit var videoView: VideoView
     private lateinit var forwardImg: ImageView
@@ -85,6 +98,7 @@ class WatchActivity : WanoTubeActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        videosRepository = VideosRepository(getDatabase(application))
 
         binding = ActivityWatchBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -121,18 +135,41 @@ class WatchActivity : WanoTubeActivity() {
 
         binding.lifecycleOwner = this
         
-        val videoId = intent.getStringExtra("VIDEO_ID")
         videoViewModel.playlist.observe(this) {
             it?.let {
                 adapter.data = it
-
-                currentVideo = it.find { 
-                    video -> videoId == video.id
-                }
-                if (currentVideo != null)
-                    initVideo()
             }
-        } 
+        }
+
+        getVideo()
+    }
+    
+    private fun getVideo() {
+        val videoId = intent.getStringExtra("VIDEO_ID")
+
+        CoroutineScope(Dispatchers.IO).launch {
+            val responseBodyCall = videosRepository.getVideo(videoId)
+            responseBodyCall.enqueue(object : Callback<NetworkVideo> {
+                override fun onResponse(
+                    call: Call<NetworkVideo>?,
+                    response: Response<NetworkVideo?>?
+                ) {
+                    if (response != null) {
+                        if (response.code() == 200) {
+                            currentVideo = response.body()?.asDatabaseModel()?.asDomainModel()
+                            Timber.e("currentVideo: %s", currentVideo)
+                            if (currentVideo != null)
+                                initVideo()
+                        } else {
+                            Toast.makeText(WanotubeApp.context, "Find video unsuccessfully, please try again :( ", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+                override fun onFailure(call: Call<NetworkVideo>?, t: Throwable?) {
+                    Timber.e("Failed: error: %s", t.toString())
+                }
+            })
+        }
     }
 
     private fun initLayouts(binding: ActivityWatchBinding) {
@@ -339,6 +376,13 @@ class WatchActivity : WanoTubeActivity() {
     }
 
     private fun initVideo() {
+        binding.title.text = currentVideo?.title
+        binding.subtitle.text = currentVideo?.totalViews.toString() + " views"
+        //TODO: Author's name is user's name not authorId
+        binding.authorName.text = currentVideo?.authorId
+        binding.totalLikes.text = currentVideo?.totalLikes.toString()
+        binding.totalComments.text = currentVideo?.totalComments.toString()
+
         videoView.setVideoURI(Uri.parse(currentVideo?.url ?: ""))
         if (videoView.isPlaying)
             watchProgressBar.visibility = View.VISIBLE

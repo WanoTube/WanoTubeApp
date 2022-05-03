@@ -255,6 +255,7 @@
                             android:layout_marginEnd="20dp"
                             android:orientation="vertical">
                             <TextView
+                                android:id="@+id/title"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:textStyle="bold"
@@ -262,6 +263,7 @@
                                 android:text="Title"
                                 android:textColor="@color/black"/>
                             <TextView
+                                android:id="@+id/subtitle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="300"
@@ -283,6 +285,7 @@
                                     android:src="@drawable/like"/>
 
                                 <TextView
+                                    android:id="@+id/total_likes"
                                     android:layout_width="50dp"
                                     android:layout_height="wrap_content"
                                     android:text="22N">
@@ -297,6 +300,7 @@
                                     android:layout_height="20dp"
                                     android:src="@drawable/comment"/>
                                 <TextView
+                                    android:id="@+id/total_comments"
                                     android:layout_width="50dp"
                                     android:layout_height="wrap_content"
                                     android:text="22N"/>
@@ -308,10 +312,6 @@
                                     android:layout_width="50dp"
                                     android:layout_height="20dp"
                                     android:src="@drawable/share"/>
-                                <TextView
-                                    android:layout_width="50dp"
-                                    android:layout_height="wrap_content"
-                                    android:text="22N"/>
                             </LinearLayout>
                         </LinearLayout>
                         <View style="@style/Divider.Horizontal"/>
@@ -338,15 +338,16 @@
                                     android:orientation="vertical">
 
                                     <TextView
+                                        android:id="@+id/author_name"
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
                                         android:textStyle="bold"
                                         android:textColor="@color/black"
-                                        android:text="Author's name"/>
+                                        android:text="@string/author_s_name"/>
                                     <TextView
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
-                                        android:text="Author's followers"/>
+                                        android:text="@string/author_s_followers"/>
                                 </LinearLayout>
                             </LinearLayout>
 
@@ -358,7 +359,8 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Follow"
-                                    android:backgroundTint="@color/black">
+                                    android:textColor="@color/white"
+                                    android:backgroundTint="@color/dark_pink">
                                 </Button>
                             </LinearLayout>
                         </LinearLayout>
@@ -424,7 +426,7 @@
 
                 <ScrollView
                     android:id="@+id/comment_list"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@xml/shape">

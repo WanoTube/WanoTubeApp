@@ -32,4 +32,6 @@
     <string name="log_out">Log Out</string>
     <string name="your_description">Your description</string>
     <string name="description">Description</string>
+    <string name="author_s_name">Author\'s name</string>
+    <string name="author_s_followers">Author\'s followers</string>
 </resources>
