@@ -34,4 +34,8 @@
     <string name="description">Description</string>
     <string name="author_s_name">Author\'s name</string>
     <string name="author_s_followers">Author\'s followers</string>
+    <string name="create_a_short">Create a Short</string>
+    <string name="upload_a_video">Upload a video</string>
+    <string name="edit_video">Edit video</string>
+    <string name="delete_video">Delete video</string>
 </resources>

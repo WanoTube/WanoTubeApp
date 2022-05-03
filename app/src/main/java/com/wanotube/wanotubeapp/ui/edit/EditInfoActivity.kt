@@ -1,22 +1,26 @@
 package com.wanotube.wanotubeapp.ui.edit
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.util.Util
 import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.WanoTubeActivity
 import com.wanotube.wanotubeapp.WanotubeApp
 import com.wanotube.wanotubeapp.database.asDomainModel
 import com.wanotube.wanotubeapp.database.getDatabase
+import com.wanotube.wanotubeapp.databinding.ActivityEditVideoInfoBinding
 import com.wanotube.wanotubeapp.domain.Video
 import com.wanotube.wanotubeapp.network.NetworkVideo
 import com.wanotube.wanotubeapp.network.asDatabaseModel
 import com.wanotube.wanotubeapp.repository.VideosRepository
-import com.wanotube.wanotubeapp.util.stringForTime
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -33,15 +37,22 @@ class EditInfoActivity: WanoTubeActivity() {
     
     private lateinit var titleText: EditText
     private lateinit var descriptionText: EditText
-    private lateinit var durationText: TextView
+    
+    private val viewBinding by lazy(LazyThreadSafetyMode.NONE) {
+        ActivityEditVideoInfoBinding.inflate(layoutInflater)
+    }
+    
+    private var player: SimpleExoPlayer? = null
+    private var playWhenReady = true
+    private var currentWindow = 0
+    private var playbackPosition = 0L
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit_video_info)
+        setContentView(viewBinding.root)
         
-        titleText = findViewById(R.id.video_title)
-        descriptionText = findViewById(R.id.video_description)
-        durationText = findViewById(R.id.duration)
+        titleText = viewBinding.videoTitle
+        descriptionText = viewBinding.videoDescription
 
         videosRepository = VideosRepository(getDatabase(application))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -52,6 +63,82 @@ class EditInfoActivity: WanoTubeActivity() {
         initComponents()
     }
 
+    public override fun onStart() {
+        super.onStart()
+        //Support multiple windows
+        if (Util.SDK_INT >= 24) {
+            initializePlayer()
+        }
+    }
+
+    public override fun onResume() {
+        super.onResume()
+        hideSystemUi()
+        //Android API level 24 and lower requires you to wait as long as possible until you grab resources, so you wait until onResume before initializing the player.
+        if ((Util.SDK_INT < 24 || player == null)) {
+            initializePlayer()
+        }
+    }
+
+    public override fun onPause() {
+        super.onPause()
+        
+        // SDK < 24 No guarantee of onStop being called so we call releasePlayer whenever onPause
+        // SDK >= 24 Guarantee being called, in paused state the activity is still visible
+        if (Util.SDK_INT < 24) {
+            releasePlayer()
+        }
+    }
+
+
+    public override fun onStop() {
+        super.onStop()
+        if (Util.SDK_INT >= 24) {
+            releasePlayer()
+        }
+    }
+
+    // Support full-screen
+    @SuppressLint("InlinedApi")
+    private fun hideSystemUi() {
+        viewBinding.videoView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LOW_PROFILE
+                or View.SYSTEM_UI_FLAG_FULLSCREEN
+                or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION)
+    }
+
+    private fun initializePlayer() {
+        if (!::video.isInitialized)
+            return 
+        player = SimpleExoPlayer.Builder(this)
+            .build()
+            .also { exoPlayer ->
+                viewBinding.videoView.player = exoPlayer
+                val mediaItem = MediaItem.fromUri(video.url)
+                exoPlayer.setMediaItem(mediaItem)
+
+                //playWhenReady tells the player whether to start playing as soon as all resources for playback have been acquired. Because playWhenReady is initially true, playback starts automatically the first time the app is run.
+                exoPlayer.playWhenReady = playWhenReady
+                //seekTo tells the player to seek to a certain position within a specific window.
+                //Both currentWindow and playbackPosition are initialized to zero so that playback starts from the very start the first time the app is run.
+                exoPlayer.seekTo(currentWindow, playbackPosition)
+                //prepare tells the player to acquire all the resources required for playback.
+                exoPlayer.prepare()
+            }
+    }
+    
+    private fun releasePlayer() {
+        player?.run {
+            playbackPosition = this.currentPosition
+            currentWindow = this.currentWindowIndex
+            playWhenReady = this.playWhenReady
+            release()
+        }
+        player = null
+    }
+    
     private fun getVideo() {
         CoroutineScope(Dispatchers.IO).launch {
             val responseBodyCall = videosRepository.getVideo(videoId)
@@ -66,6 +153,9 @@ class EditInfoActivity: WanoTubeActivity() {
                             Timber.e("Result: %s", databaseVideo)
                             if (databaseVideo != null) {
                                 video = databaseVideo.asDomainModel()
+                                if (Util.SDK_INT >= 24) {
+                                    initializePlayer()
+                                }
                             }
                         } else {
                             Toast.makeText(WanotubeApp.context, "Find video unsuccessfully, please try again :( ", Toast.LENGTH_SHORT).show()
@@ -84,7 +174,6 @@ class EditInfoActivity: WanoTubeActivity() {
             return
         titleText.setText(video.title)
         descriptionText.setText(video.description)
-        durationText.text = stringForTime(video.duration.toFloat())
     }
     
     override fun customActionBar() {

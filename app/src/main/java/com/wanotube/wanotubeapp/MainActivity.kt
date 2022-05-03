@@ -12,7 +12,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.navigation.NavigationBarView.LABEL_VISIBILITY_UNLABELED
 import com.wanotube.wanotubeapp.databinding.ActivityMainBinding
-import com.wanotube.wanotubeapp.ui.edit.UploadActivity
 import com.wanotube.wanotubeapp.ui.home.HomeFragment
 import com.wanotube.wanotubeapp.ui.manage.ManagementFragment
 import com.wanotube.wanotubeapp.ui.profile.ProfileFragment
@@ -118,7 +117,6 @@ class MainActivity : WanoTubeActivity(), IEventListener {
                     val videoFullPath = uriPathHelper.getPath(this, data.data!!)
                     if (videoFullPath != null) {
                         uploadVideo(videoFullPath)
-//                        loadUploadActivity(videoFullPath)
                     }
                 }
             }
@@ -132,18 +130,21 @@ class MainActivity : WanoTubeActivity(), IEventListener {
     private fun showBottomSheetDialog() {
         val bottomSheetDialog = BottomSheetDialog(this)
         bottomSheetDialog.apply {
-            setContentView(R.layout.bottom_sheet_dialog_layout)
+            setContentView(R.layout.choose_video_dialog_layout)
             findViewById<LinearLayout>(R.id.upload_video)?.setOnClickListener {
-                openGalleryForVideo()
-                bottomSheetDialog.dismiss()
+                chooseVideoForUploadNormalVideo(bottomSheetDialog)
             }
             findViewById<LinearLayout>(R.id.create_short)?.setOnClickListener {
-                openGalleryForVideo()
-                bottomSheetDialog.dismiss()
+                chooseVideoForUploadNormalVideo(bottomSheetDialog)
             }
             show()
         }
 
+    }
+    
+    private fun chooseVideoForUploadNormalVideo(bottomSheetDialog: BottomSheetDialog) {
+        openGalleryForVideo()
+        bottomSheetDialog.dismiss()
     }
 }
 
