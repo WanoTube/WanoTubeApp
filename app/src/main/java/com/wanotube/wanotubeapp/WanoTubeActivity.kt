@@ -246,12 +246,21 @@ abstract class WanoTubeActivity : AppCompatActivity(){
         Timber.e("Video's upload progress %s", "Progress: " + args[0])
         if (args != null) {
             if (args[0] != null) {
-                val progress = args[0] as Int
-                runOnUiThread {
-                    progressBar.progress = progress
+                if (args[0] is Int) {
+                    val progress = args[0] as Int
+                    runOnUiThread {
+                        progressBar.progress = progress
+                    }
+                    if (progress >= 100)
+                        finishUploading()
+                } else if (args[0] is Float) {
+                    val progress = args[0] as Float
+                    runOnUiThread {
+                        progressBar.progress = progress.toInt()
+                    }
+                    if (progress >= 100f)
+                        finishUploading()
                 }
-                if (progress >= 100)
-                    finishUploading()
             }
         }
     }

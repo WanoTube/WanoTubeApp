@@ -24,8 +24,8 @@ object ServiceGenerator {
 //        .setLevel(HttpLoggingInterceptor.Level.BODY)
     
     private val httpClient: OkHttpClient.Builder = OkHttpClient.Builder()
-        .connectTimeout(3, TimeUnit.MINUTES)
-        .readTimeout(3, TimeUnit.MINUTES)
+        .connectTimeout(5, TimeUnit.MINUTES)
+        .readTimeout(5, TimeUnit.MINUTES)
     
 //    fun <S> createService(
 //        serviceClass: Class<S>?,
