@@ -197,7 +197,7 @@ abstract class WanoTubeActivity : AppCompatActivity(){
                 durationBody,
                 it
             )
-            responseBodyCall.enqueue(object : Callback<NetworkVideo> {
+            responseBodyCall?.enqueue(object : Callback<NetworkVideo> {
                 override fun onResponse(
                     call: Call<NetworkVideo>,
                     response: Response<NetworkVideo>

@@ -13,11 +13,11 @@ import retrofit2.http.Path
 interface IVideoService {
     @Headers("isDisableAuthorization:true")
     @GET("videos/public")
-    fun getVideos(): Call<NetworkVideoContainer>
+    fun getVideos(): Call<NetworkVideoContainer>?
 
     @Headers("isDisableAuthorization:true")
     @GET("videos/{id}")
-    fun getVideo(@Path("id") id: String): Call<NetworkVideo>
+    fun getVideo(@Path("id") id: String): Call<NetworkVideo>?
 
     @Multipart
     @POST("videos/upload")
@@ -27,7 +27,7 @@ interface IVideoService {
         @Part description: MultipartBody.Part,
         @Part video: MultipartBody.Part,
         @Part duration: MultipartBody.Part,
-        ): Call<NetworkVideo>
+        ): Call<NetworkVideo>?
 
     @Headers("isDisableAuthorization:true")
     @Multipart
@@ -40,5 +40,5 @@ interface IVideoService {
         @Part size: MultipartBody.Part,
         @Part duration: MultipartBody.Part,
         @Part visibility: MultipartBody.Part,
-        ): Call<NetworkVideo>
+        ): Call<NetworkVideo>?
 }

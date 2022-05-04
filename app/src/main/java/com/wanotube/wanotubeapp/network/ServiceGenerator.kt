@@ -38,13 +38,13 @@ object ServiceGenerator {
 //        return retrofit.create(serviceClass)
 //    }
     
-    fun <S> createService(serviceClass: Class<S>?): S {
+    fun <S> createService(serviceClass: Class<S>?): S? {
         return createService(serviceClass, null)
     }
 
     fun <S> createService(
         serviceClass: Class<S>?, authToken: String?,
-    ): S {
+    ): S? {
         try {
             val noConnectionInterceptor = NoConnectionInterceptor()
             if (!httpClient.interceptors().contains(noConnectionInterceptor as Interceptor)) {
@@ -65,9 +65,10 @@ object ServiceGenerator {
 
             builder.client(httpClient.build())
             retrofit = builder.build()
+            return retrofit.create(serviceClass)
         } catch (error: Exception) {
             Timber.e("Error: %s", error.message)
+            return null
         }
-        return retrofit.create(serviceClass)
     }
 }

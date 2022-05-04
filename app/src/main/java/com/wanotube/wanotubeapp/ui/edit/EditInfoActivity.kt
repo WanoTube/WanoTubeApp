@@ -178,7 +178,7 @@ class EditInfoActivity: WanoTubeActivity(), AdapterView.OnItemSelectedListener  
     private fun getVideo() {
         CoroutineScope(Dispatchers.IO).launch {
             val responseBodyCall = videosRepository.getVideo(videoId)
-            responseBodyCall.enqueue(object : Callback<NetworkVideo> {
+            responseBodyCall?.enqueue(object : Callback<NetworkVideo> {
                 override fun onResponse(
                     call: Call<NetworkVideo>?,
                     response: Response<NetworkVideo?>?
@@ -240,7 +240,7 @@ class EditInfoActivity: WanoTubeActivity(), AdapterView.OnItemSelectedListener  
         )
         
         val context = this
-        resCall.enqueue(object : Callback<NetworkVideo> {
+        resCall?.enqueue(object : Callback<NetworkVideo> {
             override fun onResponse(
                 call: Call<NetworkVideo>,
                 response: Response<NetworkVideo>

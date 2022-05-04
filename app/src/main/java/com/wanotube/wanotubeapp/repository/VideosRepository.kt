@@ -37,10 +37,10 @@ class VideosRepository(private val database: VideosDatabase) {
      */
     fun refreshVideos() {
         CoroutineScope(Dispatchers.IO).launch {
-            val videoService: IVideoService =
+            val videoService: IVideoService? =
                 ServiceGenerator.createService(IVideoService::class.java, "auth-token")
-            val responseBodyCall: Call<NetworkVideoContainer> = videoService.getVideos()
-            responseBodyCall.enqueue(object : Callback<NetworkVideoContainer> {
+            val responseBodyCall: Call<NetworkVideoContainer>? = videoService?.getVideos()
+            responseBodyCall?.enqueue(object : Callback<NetworkVideoContainer> {
                 override fun onResponse(
                     call: Call<NetworkVideoContainer>?,
                     response: Response<NetworkVideoContainer?>?
@@ -60,10 +60,10 @@ class VideosRepository(private val database: VideosDatabase) {
         }
     }
     
-    fun getVideo(videoId: String): Call<NetworkVideo> {
-        val videoService: IVideoService =
+    fun getVideo(videoId: String): Call<NetworkVideo>? {
+        val videoService: IVideoService? =
             ServiceGenerator.createService(IVideoService::class.java)
-        return videoService.getVideo(videoId)
+        return videoService?.getVideo(videoId)
     }
     
     fun uploadVideo(title: MultipartBody.Part,
@@ -71,10 +71,10 @@ class VideosRepository(private val database: VideosDatabase) {
                     description: MultipartBody.Part,
                     video: MultipartBody.Part,
                     duration: MultipartBody.Part,
-                    token: String): Call<NetworkVideo> {
-        val videoService: IVideoService =
+                    token: String): Call<NetworkVideo>? {
+        val videoService: IVideoService? =
             ServiceGenerator.createService(IVideoService::class.java, token)
-        return videoService.uploadVideo(
+        return videoService?.uploadVideo(
             title,
             size,
             description,
@@ -89,7 +89,7 @@ class VideosRepository(private val database: VideosDatabase) {
                     url: String,
                     size: String,
                     duration: String,
-                    visibility: String): Call<NetworkVideo> {
+                    visibility: String): Call<NetworkVideo>? {
 
         val idBody = MultipartBody.Part.createFormData("id", id)
         val titleBody = MultipartBody.Part.createFormData("title", title)
@@ -99,9 +99,9 @@ class VideosRepository(private val database: VideosDatabase) {
         val durationBody = MultipartBody.Part.createFormData("duration", duration)
         val visibilityBody = MultipartBody.Part.createFormData("visibility" ,visibility)
 
-        val videoService: IVideoService =
+        val videoService: IVideoService? =
             ServiceGenerator.createService(IVideoService::class.java)
-        return videoService.updateVideo(
+        return videoService?.updateVideo(
             idBody,
             titleBody,
             descriptionBody,

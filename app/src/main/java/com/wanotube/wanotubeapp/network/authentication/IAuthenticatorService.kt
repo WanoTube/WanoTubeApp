@@ -19,5 +19,5 @@ interface IAuthenticatorService {
      * @param password
      * @return Access token
      */
-    suspend fun login(email: String, password: String): Call<LoginResult>
+    suspend fun login(email: String, password: String): Call<LoginResult>?
 }
