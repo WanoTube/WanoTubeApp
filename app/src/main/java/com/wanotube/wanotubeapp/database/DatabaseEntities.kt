@@ -31,6 +31,7 @@ data class DatabaseVideo constructor(
     val visibility: Int,
     val duration: Int,
     val authorId: String,
+    val type: String,
     val createdAt: String,
     val updatedAt: String
 )
@@ -83,6 +84,7 @@ fun List<DatabaseVideo>.asDomainModel(): List<Video> {
             visibility = it.visibility,
             duration = it.duration,
             authorId = it.authorId,
+            type = it.type,
             createdAt = convertStringToDate(it.createdAt),
             updatedAt = convertStringToDate(it.updatedAt))
     }
@@ -102,6 +104,7 @@ fun DatabaseVideo.asDomainModel(): Video {
         visibility = visibility,
         duration = duration,
         authorId = authorId,
+        type = type,
         createdAt = convertStringToDate(createdAt),
         updatedAt = convertStringToDate(updatedAt))
 }

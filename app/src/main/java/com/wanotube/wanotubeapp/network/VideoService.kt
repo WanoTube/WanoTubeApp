@@ -27,6 +27,7 @@ interface IVideoService {
         @Part description: MultipartBody.Part,
         @Part video: MultipartBody.Part,
         @Part duration: MultipartBody.Part,
+        @Part type: MultipartBody.Part,
         ): Call<NetworkVideo>?
 
     @Headers("isDisableAuthorization:true")

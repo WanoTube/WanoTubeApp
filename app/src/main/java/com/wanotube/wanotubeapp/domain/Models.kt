@@ -27,6 +27,7 @@ data class Video(
     val visibility: Int,
     val duration: Int,
     val authorId: String,
+    val type: String,
     val createdAt: Date,
     val updatedAt: Date 
 ) {

@@ -1,7 +1,10 @@
 package com.wanotube.wanotubeapp.repository
 
+import android.media.MediaMetadataRetriever
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
+import com.wanotube.wanotubeapp.WanotubeApp.Companion.context
 import com.wanotube.wanotubeapp.database.VideosDatabase
 import com.wanotube.wanotubeapp.database.asDomainModel
 import com.wanotube.wanotubeapp.domain.Video
@@ -13,11 +16,15 @@ import com.wanotube.wanotubeapp.network.asDatabaseModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import timber.log.Timber
+import java.io.File
 
 /**
  * Repository for fetching wanotube videos from the network and storing them on disk
@@ -66,20 +73,62 @@ class VideosRepository(private val database: VideosDatabase) {
         return videoService?.getVideo(videoId)
     }
     
-    fun uploadVideo(title: MultipartBody.Part,
-                    size: MultipartBody.Part,
-                    description: MultipartBody.Part,
-                    video: MultipartBody.Part,
-                    duration: MultipartBody.Part,
-                    token: String): Call<NetworkVideo>? {
+    private fun setDuration(file: File): Int {
+        val retriever = MediaMetadataRetriever()
+        retriever.setDataSource(context, Uri.fromFile(file))
+        val time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
+        val timeInMillis = time.toFloat()
+        retriever.release()
+        return (timeInMillis*1000).toInt()
+    }
+    
+    fun uploadVideo(file: File,
+                    token: String,
+                    isUploadNormalVideo: Boolean): Call<NetworkVideo>? {
+        val videoBody: RequestBody = file.asRequestBody("video/*".toMediaTypeOrNull())
+
+        val video = MultipartBody.Part.createFormData(
+                "video",
+                file.name,
+                videoBody
+            )
+
+        val title = MultipartBody.Part.createFormData(
+                "title",
+                file.name
+            )
+
+        val size = MultipartBody.Part.createFormData(
+                "size",
+//                (file.length() / 1024).toString() //KB
+                file.length().toString()//Byte
+            )
+
+        val description = MultipartBody.Part.createFormData(
+                "description",
+                ""
+            )
+
+        val duration = MultipartBody.Part.createFormData(
+                "duration", setDuration(file).toString())
+
+        val videoType = if (isUploadNormalVideo) VideoType.NORMAL
+                        else VideoType.SHORT
+        
+        val type = MultipartBody.Part.createFormData(
+                "type", videoType.name)
+
         val videoService: IVideoService? =
             ServiceGenerator.createService(IVideoService::class.java, token)
+        
         return videoService?.uploadVideo(
             title,
             size,
             description,
             video,
-            duration)
+            duration,
+            type
+        )
     }
 
 
@@ -109,5 +158,11 @@ class VideosRepository(private val database: VideosDatabase) {
             sizeBody,
             durationBody,
             visibilityBody)
+    }
+    
+    companion object {
+        enum class VideoType {
+            NORMAL, SHORT 
+        }
     }
 }
