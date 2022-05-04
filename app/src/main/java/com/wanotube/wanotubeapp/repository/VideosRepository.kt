@@ -38,7 +38,7 @@ class VideosRepository(private val database: VideosDatabase) {
     fun refreshVideos() {
         CoroutineScope(Dispatchers.IO).launch {
             val videoService: IVideoService? =
-                ServiceGenerator.createService(IVideoService::class.java, "auth-token")
+                ServiceGenerator.createService(IVideoService::class.java)
             val responseBodyCall: Call<NetworkVideoContainer>? = videoService?.getVideos()
             responseBodyCall?.enqueue(object : Callback<NetworkVideoContainer> {
                 override fun onResponse(
