@@ -26,7 +26,9 @@ data class Video(
     val totalComments: Long,
     val visibility: Int,
     val duration: Int,
-    val authorId: String
+    val authorId: String,
+    val createdAt: Date,
+    val updatedAt: Date 
 ) {
     /**
      * Short description is used for displaying truncated descriptions in the UI

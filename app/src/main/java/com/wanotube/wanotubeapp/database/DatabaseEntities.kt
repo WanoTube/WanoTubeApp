@@ -4,9 +4,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.wanotube.wanotubeapp.domain.Account
 import com.wanotube.wanotubeapp.domain.Video
-import java.text.SimpleDateFormat
+import com.wanotube.wanotubeapp.util.convertStringToDate
 import java.util.Date
-import java.util.Locale
 
 /**
  * Database entities go in this file. These are responsible for reading and writing
@@ -31,7 +30,10 @@ data class DatabaseVideo constructor(
     val totalComments: Long,
     val visibility: Int,
     val duration: Int,
-    val authorId: String)
+    val authorId: String,
+    val createdAt: String,
+    val updatedAt: String
+)
 
 @Entity
 data class DatabaseUser constructor(
@@ -80,7 +82,9 @@ fun List<DatabaseVideo>.asDomainModel(): List<Video> {
             totalComments = it.totalComments,
             visibility = it.visibility,
             duration = it.duration,
-            authorId = it.authorId)
+            authorId = it.authorId,
+            createdAt = convertStringToDate(it.createdAt),
+            updatedAt = convertStringToDate(it.updatedAt))
     }
 }
 
@@ -97,7 +101,9 @@ fun DatabaseVideo.asDomainModel(): Video {
         totalComments = totalComments,
         visibility = visibility,
         duration = duration,
-        authorId = authorId)
+        authorId = authorId,
+        createdAt = convertStringToDate(createdAt),
+        updatedAt = convertStringToDate(updatedAt))
 }
 
 fun DatabaseAccount.asDomainModel(): Account {

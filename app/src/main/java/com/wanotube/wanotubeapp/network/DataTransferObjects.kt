@@ -60,9 +60,9 @@ class NetworkVideo {
     @SerializedName("type")
     val type: String = ""
     @SerializedName("created_at")
-    val created_at: String = ""
+    val createdAt: String = ""
     @SerializedName("updated_at")
-    val updated_at: String = ""
+    val updatedAt: String = ""
 }
 
 class NetworkUser {
@@ -110,7 +110,9 @@ fun NetworkVideoContainer.asDatabaseModel(): List<DatabaseVideo> {
             totalComments = it.totalComments,
             visibility = it.visibility,
             duration = it.duration,
-            authorId = it.authorId
+            authorId = it.authorId,
+            updatedAt = it.updatedAt,
+            createdAt = it.createdAt
         )
     }
 }
@@ -128,7 +130,9 @@ fun NetworkVideo.asDatabaseModel(): DatabaseVideo {
         totalComments = totalComments,
         visibility = visibility,
         duration = duration,
-        authorId = authorId
+        authorId = authorId,
+        updatedAt = updatedAt,
+        createdAt = createdAt
     )
 }
 
