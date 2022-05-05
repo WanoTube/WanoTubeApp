@@ -50,6 +50,8 @@ class ManagementFragment : Fragment() {
 
         binding.videoManagementList.apply {
             this.adapter = adapter
+            binding.managementShimmerViewContainer.startShimmer()
+            
             val topBottomMargin = resources.getDimensionPixelSize(R.dimen.component_large_margin)
             val leftRightMargin = resources.getDimensionPixelSize(R.dimen.component_margin)
 
@@ -66,6 +68,9 @@ class ManagementFragment : Fragment() {
         videoViewModel.playlist.observe(viewLifecycleOwner) {
             it?.let {
                 adapter.data = it
+                binding.managementShimmerViewContainer.stopShimmer()
+                binding.managementShimmerViewContainer.visibility = View.GONE
+                binding.videoManagementList.visibility = View.VISIBLE
             }
         }
 

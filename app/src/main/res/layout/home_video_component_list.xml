@@ -25,8 +25,8 @@
 
         <ImageView
             android:id="@+id/avatar_user"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="@dimen/avatar_height"
+            android:layout_height="@dimen/avatar_height"
             android:contentDescription="@string/user_avatar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -36,7 +36,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="@dimen/component_medium_margin"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/avatar_user"
@@ -47,14 +47,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/video_component_title_height"
                 android:layout_marginStart="@dimen/component_margin"
-                tools:text="Video's Title" />
+                tools:text="@string/video_s_title" />
 
             <TextView
                 android:id="@+id/subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/video_component_title_height"
                 android:layout_marginStart="@dimen/component_margin"
-                tools:text="Video's subtitle" />
+                tools:text="@string/video_s_title" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
