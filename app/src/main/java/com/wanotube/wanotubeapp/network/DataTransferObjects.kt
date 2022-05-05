@@ -3,6 +3,10 @@ package com.wanotube.wanotubeapp.network
 import com.google.gson.annotations.SerializedName
 import com.wanotube.wanotubeapp.database.DatabaseAccount
 import com.wanotube.wanotubeapp.database.DatabaseVideo
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.util.Date
+import java.util.Locale
 
 /**
  * DataTransferObjects go in this file. These are responsible for parsing responses from the server
@@ -30,7 +34,7 @@ class NetworkVideoContainer {
  */
 class NetworkVideo {
     @SerializedName("_id")
-    var _id: String = ""
+    var id: String = ""
     @SerializedName("url")
     val url: String = ""
     @SerializedName("title")
@@ -42,23 +46,23 @@ class NetworkVideo {
     @SerializedName("size")
     val size: Long = 0
     @SerializedName("total_views")
-    val total_views: Long = 0
+    val totalViews: Long = 0
     @SerializedName("total_likes")
-    val total_likes: Long = 0
+    val totalLikes: Long = 0
     @SerializedName("total_comments")
-    val total_comments: Long = 0
+    val totalComments: Long = 0
     @SerializedName("visibility")
     val visibility: Int = 0
     @SerializedName("duration")
     val duration: Int = 0
     @SerializedName("author_id")
-    val author_id: String = ""
+    val authorId: String = ""
     @SerializedName("type")
-    val type: String = ""
+    val type: String = "NORMAL"
     @SerializedName("created_at")
-    val created_at: String = ""
+    val createdAt: String = ""
     @SerializedName("updated_at")
-    val updated_at: String = ""
+    val updatedAt: String = ""
 }
 
 class NetworkUser {
@@ -95,60 +99,43 @@ class LoginResult {
 fun NetworkVideoContainer.asDatabaseModel(): List<DatabaseVideo> {
     return videos.map {
         DatabaseVideo(
-            id = it._id,
+            id = it.id,
             url = it.url,
             title = it.title,
             description = it.description,
             thumbnail = it.thumbnail,
             size = it.size,
-            totalViews = it.total_views,
-            totalLikes = it.total_likes,
-            totalComments = it.total_comments,
+            totalViews = it.totalViews,
+            totalLikes = it.totalLikes,
+            totalComments = it.totalComments,
             visibility = it.visibility,
             duration = it.duration,
-            authorId = it.author_id
+            authorId = it.authorId,
+            type = it.type,
+            updatedAt = it.updatedAt,
+            createdAt = it.createdAt
         )
     }
 }
 
 fun NetworkVideo.asDatabaseModel(): DatabaseVideo {
     return DatabaseVideo(
-        id = _id,
+        id = id,
         url = url,
         title = title,
         description = description,
         thumbnail = thumbnail,
         size = size,
-        totalViews = total_views,
-        totalLikes = total_likes,
-        totalComments = total_comments,
+        totalViews = totalViews,
+        totalLikes = totalLikes,
+        totalComments = totalComments,
         visibility = visibility,
         duration = duration,
-        authorId = author_id
+        authorId = authorId,
+        type = type,
+        updatedAt = updatedAt,
+        createdAt = createdAt
     )
-}
-
-class NetworkUserContainer {
-    @SerializedName("_id")
-    var id: String = ""
-    @SerializedName("first_name")
-    var firstName: String = ""
-    @SerializedName("last_name")
-    var lastName: String = ""
-    @SerializedName("gender")
-    var gender: String = ""
-    @SerializedName("birth_date")
-    var birthDate: String = ""
-    @SerializedName("phone_number")
-    var phoneNumber: String = ""
-    @SerializedName("country")
-    var country: String = ""
-    @SerializedName("avatar")
-    var avatar: String = ""
-    @SerializedName("created_at")
-    var createdAt: String = ""
-    @SerializedName("updated_at")
-    var updatedAt: String = ""
 }
 
 fun NetworkAccount.asDatabaseModel(): DatabaseAccount {

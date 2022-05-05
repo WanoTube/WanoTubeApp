@@ -12,7 +12,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.navigation.NavigationBarView.LABEL_VISIBILITY_UNLABELED
 import com.wanotube.wanotubeapp.databinding.ActivityMainBinding
-import com.wanotube.wanotubeapp.ui.edit.UploadActivity
 import com.wanotube.wanotubeapp.ui.home.HomeFragment
 import com.wanotube.wanotubeapp.ui.manage.ManagementFragment
 import com.wanotube.wanotubeapp.ui.profile.ProfileFragment
@@ -25,6 +24,7 @@ class MainActivity : WanoTubeActivity(), IEventListener {
     private lateinit var  currentFragment: Fragment
     private lateinit var binding: ActivityMainBinding
     private var  currentFragmentId: Int = R.id.home
+    private var isUploadNormalVideo = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -117,8 +117,7 @@ class MainActivity : WanoTubeActivity(), IEventListener {
                     val uriPathHelper = URIPathHelper()
                     val videoFullPath = uriPathHelper.getPath(this, data.data!!)
                     if (videoFullPath != null) {
-                        uploadVideo(videoFullPath)
-//                        loadUploadActivity(videoFullPath)
+                        uploadVideo(videoFullPath, isUploadNormalVideo)
                     }
                 }
             }
@@ -132,18 +131,22 @@ class MainActivity : WanoTubeActivity(), IEventListener {
     private fun showBottomSheetDialog() {
         val bottomSheetDialog = BottomSheetDialog(this)
         bottomSheetDialog.apply {
-            setContentView(R.layout.bottom_sheet_dialog_layout)
+            setContentView(R.layout.choose_video_dialog_layout)
             findViewById<LinearLayout>(R.id.upload_video)?.setOnClickListener {
-                openGalleryForVideo()
-                bottomSheetDialog.dismiss()
+                chooseVideoForUploadNormalVideo(bottomSheetDialog, true)
             }
             findViewById<LinearLayout>(R.id.create_short)?.setOnClickListener {
-                openGalleryForVideo()
-                bottomSheetDialog.dismiss()
+                chooseVideoForUploadNormalVideo(bottomSheetDialog, false)
             }
             show()
         }
 
+    }
+    
+    private fun chooseVideoForUploadNormalVideo(bottomSheetDialog: BottomSheetDialog, isUploadNormalVideo: Boolean) {
+        openGalleryForVideo()
+        bottomSheetDialog.dismiss()
+        isUploadNormalVideo
     }
 }
 

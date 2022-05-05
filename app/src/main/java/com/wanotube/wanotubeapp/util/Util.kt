@@ -1,6 +1,9 @@
 package com.wanotube.wanotubeapp.util
 
+import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Formatter
+import java.util.Locale
 
 private val PUNCTUATION = listOf(", ", "; ", ": ", " ")
 
@@ -53,4 +56,8 @@ fun stringForTime(timeMs: Float): String {
     } else {
         mFormatter.format("%02d:%02d", minutes, seconds).toString()
     }
+}
+
+fun convertStringToDate(dateString: String): Date {
+    return SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH).parse(dateString)
 }

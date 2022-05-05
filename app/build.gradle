@@ -88,6 +88,14 @@ dependencies {
         exclude group: 'org.json', module: 'json'
     }
     
+    //shimmer for unobtrusive loading indicator by Facebook
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
+    
+    def exoplayer_version = "2.12.0"
+    implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer_version"
+    implementation "com.google.android.exoplayer:exoplayer-dash:$exoplayer_version"
+    implementation "com.google.android.exoplayer:exoplayer-ui:$exoplayer_version"
+    
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'

@@ -10,7 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.wanotube.wanotubeapp.IEventListener
 import com.wanotube.wanotubeapp.R
-import com.wanotube.wanotubeapp.databinding.FragmentHomeBinding
+import com.wanotube.wanotubeapp.databinding.FragmentManagementBinding
 import com.wanotube.wanotubeapp.util.MarginItemDecoration
 import com.wanotube.wanotubeapp.viewmodels.WanoTubeViewModel
 
@@ -31,8 +31,8 @@ class ManagementFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding: FragmentHomeBinding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_home, container, false
+        val binding: FragmentManagementBinding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_management, container, false
         )
 
         val application = requireNotNull(this.activity).application
@@ -48,8 +48,10 @@ class ManagementFragment : Fragment() {
 
         val adapter = ManagementAdapter(listener)
 
-        binding.videoList.apply {
+        binding.videoManagementList.apply {
             this.adapter = adapter
+            binding.managementShimmerViewContainer.startShimmer()
+            
             val topBottomMargin = resources.getDimensionPixelSize(R.dimen.component_large_margin)
             val leftRightMargin = resources.getDimensionPixelSize(R.dimen.component_margin)
 
@@ -66,6 +68,9 @@ class ManagementFragment : Fragment() {
         videoViewModel.playlist.observe(viewLifecycleOwner) {
             it?.let {
                 adapter.data = it
+                binding.managementShimmerViewContainer.stopShimmer()
+                binding.managementShimmerViewContainer.visibility = View.GONE
+                binding.videoManagementList.visibility = View.VISIBLE
             }
         }
 

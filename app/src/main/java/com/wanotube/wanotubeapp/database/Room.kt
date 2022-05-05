@@ -10,6 +10,8 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 
 @Dao
 interface VideoDao {
@@ -20,19 +22,35 @@ interface VideoDao {
     fun insertAll(videos: List<DatabaseVideo>)
 }
 
-@Database(entities = [DatabaseVideo::class], version = 1)
-abstract class VideosDatabase: RoomDatabase() {
-    abstract val videoDao: VideoDao
+@Dao
+interface AccountDao {
+    @Query("SELECT * FROM DatabaseAccount")
+    fun getAccounts(): LiveData<List<DatabaseAccount>>
 }
 
-private lateinit var INSTANCE: VideosDatabase
+@Database(entities = [DatabaseVideo::class, DatabaseAccount::class], version = 2, exportSchema = false)
+abstract class AppDatabase: RoomDatabase() {
+    abstract val videoDao: VideoDao
+    abstract val accountDao: AccountDao
+}
 
-fun getDatabase(context: Context): VideosDatabase {
-    synchronized(VideosDatabase::class.java) {
+private lateinit var INSTANCE: AppDatabase
+
+fun getDatabase(context: Context): AppDatabase {
+//    val MIGRATION_1_2: Migration = object : Migration(1,2) {
+//        override fun migrate(database: SupportSQLiteDatabase) {
+//            // Since we didn't alter the table, there's nothing else to do here.
+//        }
+//    }
+    synchronized(AppDatabase::class.java) {
         if (!::INSTANCE.isInitialized) {
             INSTANCE = Room.databaseBuilder(context.applicationContext,
-                    VideosDatabase::class.java,
-                    "videos").build()
+                    AppDatabase::class.java,
+                    "videos")
+//                .fallbackToDestructiveMigration()
+//                .allowMainThreadQueries()
+//                .addMigrations(MIGRATION_1_2)
+                .build()
         }
     }
     return INSTANCE

@@ -3,8 +3,8 @@ package com.wanotube.wanotubeapp.database
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.wanotube.wanotubeapp.domain.Account
-import com.wanotube.wanotubeapp.domain.User
 import com.wanotube.wanotubeapp.domain.Video
+import com.wanotube.wanotubeapp.util.convertStringToDate
 import java.util.Date
 
 /**
@@ -30,7 +30,11 @@ data class DatabaseVideo constructor(
     val totalComments: Long,
     val visibility: Int,
     val duration: Int,
-    val authorId: String)
+    val authorId: String,
+    val type: String,
+    val createdAt: String,
+    val updatedAt: String
+)
 
 @Entity
 data class DatabaseUser constructor(
@@ -79,7 +83,10 @@ fun List<DatabaseVideo>.asDomainModel(): List<Video> {
             totalComments = it.totalComments,
             visibility = it.visibility,
             duration = it.duration,
-            authorId = it.authorId)
+            authorId = it.authorId,
+            type = it.type,
+            createdAt = convertStringToDate(it.createdAt),
+            updatedAt = convertStringToDate(it.updatedAt))
     }
 }
 
@@ -96,7 +103,10 @@ fun DatabaseVideo.asDomainModel(): Video {
         totalComments = totalComments,
         visibility = visibility,
         duration = duration,
-        authorId = authorId)
+        authorId = authorId,
+        type = type,
+        createdAt = convertStringToDate(createdAt),
+        updatedAt = convertStringToDate(updatedAt))
 }
 
 fun DatabaseAccount.asDomainModel(): Account {

@@ -149,7 +149,7 @@ class WatchActivity : WanoTubeActivity() {
 
         CoroutineScope(Dispatchers.IO).launch {
             val responseBodyCall = videosRepository.getVideo(videoId)
-            responseBodyCall.enqueue(object : Callback<NetworkVideo> {
+            responseBodyCall?.enqueue(object : Callback<NetworkVideo> {
                 override fun onResponse(
                     call: Call<NetworkVideo>?,
                     response: Response<NetworkVideo?>?

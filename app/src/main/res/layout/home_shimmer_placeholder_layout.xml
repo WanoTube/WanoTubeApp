@@ -2,36 +2,35 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/thumbnail_video"
+    <View
+        android:background="@color/placeholder_color"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/video_thumbnail_height"
+        android:layout_height="@dimen/home_shimmer_video_height"
         android:contentDescription="@string/video_thumbnail"
+        android:layout_marginTop="@dimen/home_shimmer_video_margin"
+        android:layout_marginBottom="@dimen/home_shimmer_video_margin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/ic_slow_motion" />
-
+        app:layout_constraintTop_toTopOf="parent" />
+    
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/layout_start_margin"
         android:layout_marginEnd="@dimen/layout_end_margin">
-
-        <ImageView
-            android:id="@+id/avatar_user"
+        <View
+            android:id="@+id/placeholder_avatar"
+            android:background="@drawable/circle_shape"
             android:layout_width="@dimen/avatar_height"
             android:layout_height="@dimen/avatar_height"
             android:contentDescription="@string/user_avatar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/ic_slow_motion" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -39,22 +38,22 @@
             android:layout_marginStart="@dimen/component_medium_margin"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/avatar_user"
-            app:layout_constraintTop_toTopOf="@+id/avatar_user">
-
-            <TextView
-                android:id="@+id/title"
+            app:layout_constraintStart_toEndOf="@+id/placeholder_avatar"
+            app:layout_constraintTop_toTopOf="@+id/placeholder_avatar">
+            
+            <View
+                android:background="@color/placeholder_color"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/video_component_title_height"
+                android:layout_height="@dimen/shimmer_title_height"
                 android:layout_marginStart="@dimen/component_margin"
-                tools:text="@string/video_s_title" />
+                android:contentDescription="@string/video_s_title" />
 
-            <TextView
-                android:id="@+id/subtitle"
+            <View
+                android:background="@color/placeholder_color"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/video_component_title_height"
-                android:layout_marginStart="@dimen/component_margin"
-                tools:text="@string/video_s_title" />
+                android:layout_height="@dimen/shimmer_title_height"
+                android:layout_marginTop="@dimen/component_margin"
+                android:layout_marginStart="@dimen/component_margin"/>
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

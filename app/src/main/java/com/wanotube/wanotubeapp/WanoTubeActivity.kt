@@ -4,8 +4,6 @@ import android.accounts.AccountManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.media.MediaMetadataRetriever
-import android.net.Uri
 import android.os.Bundle
 import android.view.Gravity
 import android.view.MenuItem
@@ -36,10 +34,6 @@ import com.wanotube.wanotubeapp.util.Constant
 import io.socket.client.IO
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.asRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -140,64 +134,22 @@ abstract class WanoTubeActivity : AppCompatActivity(){
         return ret
     }
 
-
-    private fun setDuration(file: File): Int {
-        val retriever = MediaMetadataRetriever()
-        retriever.setDataSource(this, Uri.fromFile(file))
-        val time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
-        val timeInMillis = time.toFloat()
-        retriever.release()
-        return (timeInMillis*1000).toInt()
-    }
-
-    fun uploadVideo(filePath: String) {
+    
+    fun uploadVideo(filePath: String, isUploadNormalVideo: Boolean) {
         val videosRepository = VideosRepository(getDatabase(application))
 
         val file = File(filePath)
-        val videoBody: RequestBody = file.asRequestBody("video/*".toMediaTypeOrNull())
-        val fileBody: MultipartBody.Part =
-            MultipartBody.Part.createFormData(
-                "video",
-                file.name,
-                videoBody
-            )
-
-        val titleBody: MultipartBody.Part =
-            MultipartBody.Part.createFormData(
-                "title",
-                file.name
-            )
         
-        val sizeBody: MultipartBody.Part =
-            MultipartBody.Part.createFormData(
-                "size",
-//                (file.length() / 1024).toString() //KB
-                file.length().toString()//Byte
-            )
-        
-        val descriptionBody: MultipartBody.Part =
-            MultipartBody.Part.createFormData(
-                "description",
-                ""
-            )
-
-        val durationBody: MultipartBody.Part =
-            MultipartBody.Part.createFormData(
-                "duration", setDuration(file).toString())
-
         val mAuthPreferences = AuthPreferences(this)
         val context = this
         mAuthPreferences.authToken?.let {
             Timber.e("Wanotube authToken: " + mAuthPreferences.authToken)
             val responseBodyCall = videosRepository.uploadVideo(
-                titleBody,
-                sizeBody,
-                descriptionBody,
-                fileBody,
-                durationBody,
-                it
+                file,
+                it,
+                isUploadNormalVideo
             )
-            responseBodyCall.enqueue(object : Callback<NetworkVideo> {
+            responseBodyCall?.enqueue(object : Callback<NetworkVideo> {
                 override fun onResponse(
                     call: Call<NetworkVideo>,
                     response: Response<NetworkVideo>
@@ -246,12 +198,21 @@ abstract class WanoTubeActivity : AppCompatActivity(){
         Timber.e("Video's upload progress %s", "Progress: " + args[0])
         if (args != null) {
             if (args[0] != null) {
-                val progress = args[0] as Int
-                runOnUiThread {
-                    progressBar.progress = progress
+                if (args[0] is Int) {
+                    val progress = args[0] as Int
+                    runOnUiThread {
+                        progressBar.progress = progress
+                    }
+                    if (progress >= 100)
+                        finishUploading()
+                } else if (args[0] is Float) {
+                    val progress = args[0] as Float
+                    runOnUiThread {
+                        progressBar.progress = progress.toInt()
+                    }
+                    if (progress >= 100f)
+                        finishUploading()
                 }
-                if (progress >= 100)
-                    finishUploading()
             }
         }
     }

@@ -54,7 +54,7 @@ class LoginTabFragment : Fragment() {
     private suspend fun login(email: String, password: String) {
         val responseBodyCall = AccountUtils.mServerAuthenticator.login(email, password)
 
-        responseBodyCall.enqueue(object : Callback<LoginResult> {
+        responseBodyCall?.enqueue(object : Callback<LoginResult> {
             override fun onResponse(
                 call: Call<LoginResult>?,
                 response: Response<LoginResult?>?,

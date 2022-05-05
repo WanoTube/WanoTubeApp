@@ -12,13 +12,13 @@ class MyAuthenticatorService : IAuthenticatorService {
         return null
     }
 
-    override suspend fun login(email: String, password: String): Call<LoginResult> {
-        val userService: IUserService =
+    override suspend fun login(email: String, password: String): Call<LoginResult>? {
+        val userService: IUserService? =
             ServiceGenerator.createService(IUserService::class.java)
 
         val emailBodyPart: MultipartBody.Part = MultipartBody.Part.createFormData("email", email)
         val passwordBodyPart: MultipartBody.Part = MultipartBody.Part.createFormData("password", password)
 
-        return userService.login(emailBodyPart, passwordBodyPart)
+        return userService?.login(emailBodyPart, passwordBodyPart)
     }
 }

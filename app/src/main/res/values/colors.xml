@@ -16,4 +16,5 @@
     <color name="tab_background_selected">@color/dark_pink</color>
     <color name="tab_background_unselected">@color/pink</color>
     <color name="dark_background">#50000000</color>
+    <color name="placeholder_color">#FFDFDCDF</color>
 </resources>
