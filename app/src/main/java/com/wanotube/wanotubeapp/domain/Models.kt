@@ -26,7 +26,8 @@ data class Video(
     val totalComments: Long,
     val visibility: Int,
     val duration: Int,
-    val authorId: String,
+    val authorId: String, // userId when getVideos()
+    val user: Account, // store user's account of each video when getVideo()
     val type: String,
     val createdAt: Date,
     val updatedAt: Date 
