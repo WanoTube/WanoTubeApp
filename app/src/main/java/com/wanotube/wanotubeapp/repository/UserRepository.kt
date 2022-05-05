@@ -1,6 +1,6 @@
 package com.wanotube.wanotubeapp.repository
 
-import com.wanotube.wanotubeapp.database.VideosDatabase
+import com.wanotube.wanotubeapp.database.AppDatabase
 
-class UserRepository(private val database: VideosDatabase) {
+class UserRepository(private val database: AppDatabase) {
 }

@@ -5,7 +5,7 @@ import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.wanotube.wanotubeapp.WanotubeApp.Companion.context
-import com.wanotube.wanotubeapp.database.VideosDatabase
+import com.wanotube.wanotubeapp.database.AppDatabase
 import com.wanotube.wanotubeapp.database.asDomainModel
 import com.wanotube.wanotubeapp.domain.Video
 import com.wanotube.wanotubeapp.network.NetworkVideo
@@ -29,7 +29,7 @@ import java.io.File
 /**
  * Repository for fetching wanotube videos from the network and storing them on disk
  */
-class VideosRepository(private val database: VideosDatabase) {
+class VideosRepository(private val database: AppDatabase) {
     val videos: LiveData<List<Video>> = Transformations.map(database.videoDao.getVideos()) {
         it.asDomainModel()
     }
