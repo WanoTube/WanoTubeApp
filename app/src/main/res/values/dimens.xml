@@ -25,4 +25,7 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="avatar_size">25dp</dimen>
     <dimen name="thumbnail_size">50dp</dimen>
+    <dimen name="home_shimmer_video_margin">25dp</dimen>
+    <dimen name="home_shimmer_video_height">219dp</dimen>
+    <dimen name="home_shimmer_avatar_height">50dp</dimen>
 </resources>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <View
+        android:background="@color/placeholder_color"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/home_shimmer_video_height"
+        android:contentDescription="@string/video_thumbnail"
+        android:layout_marginTop="@dimen/home_shimmer_video_margin"
+        android:layout_marginBottom="@dimen/home_shimmer_video_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/layout_start_margin"
+        android:layout_marginEnd="@dimen/layout_end_margin">
+        <View
+            android:id="@+id/placeholder_avatar"
+            android:background="@drawable/circle_shape"
+            android:layout_width="@dimen/home_shimmer_avatar_height"
+            android:layout_height="@dimen/home_shimmer_avatar_height"
+            android:contentDescription="@string/user_avatar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/component_medium_margin"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/placeholder_avatar"
+            app:layout_constraintTop_toTopOf="@+id/placeholder_avatar">
+
+
+            <View
+                android:background="@color/placeholder_color"
+                android:layout_width="match_parent"
+                android:layout_height="18dp"
+                android:layout_marginStart="@dimen/component_margin"
+                android:contentDescription="@string/video_s_title" />
+
+            <View
+                android:background="@color/placeholder_color"
+                android:layout_width="match_parent"
+                android:layout_height="18dp"
+                android:layout_marginTop="@dimen/component_margin"
+                android:layout_marginStart="@dimen/component_margin"/>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

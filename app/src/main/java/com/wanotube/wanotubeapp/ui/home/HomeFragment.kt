@@ -49,15 +49,19 @@ class HomeFragment : Fragment() {
         val adapter = HomeAdapter(listener)
 
         binding.videoList.adapter = adapter
+        
+        binding.homeShimmerViewContainer.startShimmer()
 
         videoViewModel.playlist.observe(viewLifecycleOwner) {
             it?.let {
                 adapter.data = it
+                binding.homeShimmerViewContainer.stopShimmer()
+                binding.homeShimmerViewContainer.visibility = View.GONE
+                binding.videoList.visibility = View.VISIBLE
             }
         }
 
         binding.lifecycleOwner = this
-
 
         return binding.root
     }
