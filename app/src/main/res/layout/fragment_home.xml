@@ -8,7 +8,7 @@
          click handlers, and state variables. -->
     <data>
         <variable
-            name="videoViewModel"
+            name="viewModel"
             type="com.wanotube.wanotubeapp.viewmodels.WanoTubeViewModel" />
     </data>
     <FrameLayout

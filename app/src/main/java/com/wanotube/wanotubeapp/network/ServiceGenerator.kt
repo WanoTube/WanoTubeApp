@@ -46,10 +46,10 @@ object ServiceGenerator {
         serviceClass: Class<S>?, authToken: String?,
     ): S? {
         try {
-            val noConnectionInterceptor = NoConnectionInterceptor()
-            if (!httpClient.interceptors().contains(noConnectionInterceptor as Interceptor)) {
-                httpClient.addInterceptor(noConnectionInterceptor)
-            }
+//            val noConnectionInterceptor = NoConnectionInterceptor()
+//            if (!httpClient.interceptors().contains(noConnectionInterceptor as Interceptor)) {
+//                httpClient.addInterceptor(noConnectionInterceptor)
+//            }
             
             if (!TextUtils.isEmpty(authToken) && authToken != null) {
                 val authInterceptor = AuthenticationInterceptor(authToken)

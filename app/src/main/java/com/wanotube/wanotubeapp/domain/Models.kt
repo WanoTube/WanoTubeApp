@@ -54,7 +54,7 @@ data class Account (
     val username: String,
     val isAdmin: Boolean,
     val avatar: String,
-    val channelId: String) {}
+    val userId: String) {}
 
 data class Comment (
     val id: String,

@@ -39,12 +39,12 @@ class HomeFragment : Fragment() {
 
         val viewModelFactory = WanoTubeViewModel.WanoTubeViewModelFactory(application)
 
-        val videoViewModel =
+        val viewModel =
             ViewModelProvider(
                 this, viewModelFactory
             ).get(WanoTubeViewModel::class.java)
 
-        binding.videoViewModel = videoViewModel
+        binding.viewModel = viewModel
 
         val adapter = HomeAdapter(listener)
 
@@ -52,7 +52,7 @@ class HomeFragment : Fragment() {
         
         binding.homeShimmerViewContainer.startShimmer()
 
-        videoViewModel.playlist.observe(viewLifecycleOwner) {
+        viewModel.playlist.observe(viewLifecycleOwner) {
             it?.let {
                 adapter.data = it
                 binding.homeShimmerViewContainer.stopShimmer()

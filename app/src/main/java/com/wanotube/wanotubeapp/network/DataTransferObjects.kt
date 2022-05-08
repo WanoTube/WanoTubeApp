@@ -1,12 +1,10 @@
 package com.wanotube.wanotubeapp.network
 
+import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import com.wanotube.wanotubeapp.database.DatabaseAccount
 import com.wanotube.wanotubeapp.database.DatabaseVideo
-import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.util.Date
-import java.util.Locale
+import com.wanotube.wanotubeapp.ui.home.UserId
 
 /**
  * DataTransferObjects go in this file. These are responsible for parsing responses from the server
@@ -65,27 +63,62 @@ class NetworkVideo {
     val updatedAt: String = ""
 }
 
-class NetworkUser {
-    @SerializedName("email")
-    val email: String = ""
-    @SerializedName("password")
-    val password: String = ""
-}
-
 class NetworkAccount {
     @SerializedName("_id")
-    val id: String = ""
+    @Expose
+    var id: String = ""
+
     @SerializedName("username")
-    val username: String = ""
-    @SerializedName("is_admin")
-    val isAdmin: Boolean = false
-    @SerializedName("avatar")
-    val avatar: String = ""
-    @SerializedName("channel_id")
-    val channelId: String = ""
+    @Expose
+    var username: String = ""
+
     @SerializedName("email")
-    val email: String = ""
+    @Expose
+    var email: String = ""
+
+    @SerializedName("is_admin")
+    @Expose
+    var isAdmin: Boolean = false
+
+    @SerializedName("user_id")
+    @Expose
+    var userId: UserId? = null
+
+    @SerializedName("followers")
+    @Expose
+    var followers: List<Any>? = null
+
+    @SerializedName("followings")
+    @Expose
+    var followings: List<Any>? = null
+
+    @SerializedName("members")
+    @Expose
+    var members: List<Any>? = null
+
+    @SerializedName("blocked_accounts")
+    @Expose
+    var blockedAccounts: List<Any>? = null
+
+    @SerializedName("watched_history")
+    @Expose
+    var watchedHistory: List<Any>? = null
+
+    @SerializedName("created_at")
+    @Expose
+    var createdAt: String? = null
+
+    @SerializedName("updated_at")
+    @Expose
+    var updatedAt: String? = null
+
+    @SerializedName("__v")
+    @Expose
+    var v: Int? = null
 }
+
+
+
 
 class LoginResult {
     @SerializedName("token")
@@ -142,8 +175,69 @@ fun NetworkAccount.asDatabaseModel(): DatabaseAccount {
     return DatabaseAccount(
         id = id,
         username = username,
-        avatar = avatar,
-        channelId = channelId,
+        avatar = userId?.avatar.toString(),
+        userId = userId?.id.toString(),
         isAdmin = isAdmin
     )
 }
+
+class UserResult {
+    @SerializedName("user")
+    @Expose
+    var user: NetworkUser? = null
+
+    @SerializedName("channel_id")
+    @Expose
+    var channelId: String? = null
+
+    @SerializedName("username")
+    @Expose
+    var username: String? = null
+}
+
+class NetworkUser {
+    @SerializedName("_id")
+    @Expose
+    var id: String? = null
+
+    @SerializedName("first_name")
+    @Expose
+    var firstName: String? = null
+
+    @SerializedName("last_name")
+    @Expose
+    var lastName: String? = null
+
+    @SerializedName("gender")
+    @Expose
+    var gender: String? = null
+
+    @SerializedName("birth_date")
+    @Expose
+    var birthDate: String? = null
+
+    @SerializedName("phone_number")
+    @Expose
+    var phoneNumber: String? = null
+
+    @SerializedName("country")
+    @Expose
+    var country: String? = null
+
+    @SerializedName("avatar")
+    @Expose
+    var avatar: String? = null
+
+    @SerializedName("created_at")
+    @Expose
+    var createdAt: String? = null
+
+    @SerializedName("updated_at")
+    @Expose
+    var updatedAt: String? = null
+
+    @SerializedName("__v")
+    @Expose
+    var v: Int? = null
+}
+

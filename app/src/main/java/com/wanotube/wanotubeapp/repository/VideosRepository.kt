@@ -16,6 +16,7 @@ import com.wanotube.wanotubeapp.network.asDatabaseModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -42,7 +43,7 @@ class VideosRepository(private val database: AppDatabase) {
      * function is now safe to call from any thread including the Main thread.
      *
      */
-    fun refreshVideos() {
+    fun refreshVideos(channelRepository: ChannelRepository) {
         CoroutineScope(Dispatchers.IO).launch {
             val videoService: IVideoService? =
                 ServiceGenerator.createService(IVideoService::class.java)
@@ -56,6 +57,11 @@ class VideosRepository(private val database: AppDatabase) {
                     val videoModel = response?.body()?.asDatabaseModel()
                     CoroutineScope(Dispatchers.IO).launch {
                         if (videoModel != null) {
+                            withContext(Dispatchers.Main) {
+                                videoModel.forEach {
+                                    channelRepository.addChannelByUserId(it.authorId)
+                                }
+                            }
                             database.videoDao.insertAll(videoModel)
                         }
                     }

@@ -1,8 +1,14 @@
 package com.wanotube.wanotubeapp.viewmodels
 
 import android.app.Application
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.wanotube.wanotubeapp.database.getDatabase
+import com.wanotube.wanotubeapp.repository.ChannelRepository
 import com.wanotube.wanotubeapp.repository.VideosRepository
 import kotlinx.coroutines.launch
 import java.io.IOException
@@ -23,11 +29,15 @@ class WanoTubeViewModel(application: Application) : AndroidViewModel(application
      * The data source this ViewModel will fetch results from.
      */
     private val videosRepository = VideosRepository(getDatabase(application))
+    private val channelRepository = ChannelRepository(getDatabase(application))
 
     /**
      * A playlist of videos displayed on the screen.
      */
     val playlist = videosRepository.videos
+    val channels = channelRepository.channels
+    
+    var isInitialized = false
 
     /**
      * Event triggered for network error. This is private to avoid exposing a
@@ -59,7 +69,10 @@ class WanoTubeViewModel(application: Application) : AndroidViewModel(application
      * init{} is called immediately when this ViewModel is created.
      */
     init {
-        refreshDataFromRepository()
+        if (!isInitialized) {
+            isInitialized = true
+            refreshDataFromRepository()
+        }
     }
 
     /**
@@ -69,7 +82,7 @@ class WanoTubeViewModel(application: Application) : AndroidViewModel(application
     private fun refreshDataFromRepository() {
         viewModelScope.launch {
             try {
-                videosRepository.refreshVideos()
+                videosRepository.refreshVideos(channelRepository)
                 _eventNetworkError.value = false
                 _isNetworkErrorShown.value = false
 

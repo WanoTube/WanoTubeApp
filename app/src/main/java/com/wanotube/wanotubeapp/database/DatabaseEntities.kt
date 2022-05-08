@@ -55,8 +55,8 @@ data class DatabaseAccount constructor(
     val id: String,
     val username: String,
     val isAdmin: Boolean,
-    val avatar: String,
-    val channelId: String)
+    var avatar: String,
+    val userId: String)
 
 @Entity
 data class DatabaseComment constructor(
@@ -115,6 +115,19 @@ fun DatabaseAccount.asDomainModel(): Account {
         username = username,
         isAdmin = isAdmin,
         avatar = avatar,
-        channelId = channelId
+        userId = userId
     )
+}
+
+@JvmName("asDomainModelDatabaseAccount")
+fun List<DatabaseAccount>.asDomainModel(): List<Account> {
+    return map {
+        Account(
+            id = it.id,
+            username = it.username,
+            isAdmin = it.isAdmin,
+            avatar = it.avatar,
+            userId = it.userId
+        )
+    }
 }

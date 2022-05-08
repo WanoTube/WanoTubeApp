@@ -11,7 +11,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.wanotube.wanotubeapp.IEventListener
 import com.wanotube.wanotubeapp.R
+import com.wanotube.wanotubeapp.database.getDatabase
 import com.wanotube.wanotubeapp.domain.Video
+import com.wanotube.wanotubeapp.repository.ChannelRepository
 import com.wanotube.wanotubeapp.ui.watch.WatchActivity
 
 class HomeAdapter(iEventListener: IEventListener) : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
@@ -40,6 +42,7 @@ class HomeAdapter(iEventListener: IEventListener) : RecyclerView.Adapter<HomeAda
     ){
 
         private var listener: IEventListener = listener
+        private lateinit var channelRepository : ChannelRepository
         private val titleView: TextView = itemView.findViewById(R.id.title)
         private val subtitleView: TextView = itemView.findViewById(R.id.subtitle)
 
@@ -47,10 +50,21 @@ class HomeAdapter(iEventListener: IEventListener) : RecyclerView.Adapter<HomeAda
         private val avatarView: ImageView = itemView.findViewById(R.id.avatar_user)
 
         fun bind(item: Video) {
-            titleView.text = item.title
-            val subtitle = item.authorId + "  " + item.totalViews + " views"
-            subtitleView.text = subtitle
+            val context = thumbnailVideoView.context
 
+            if (!::channelRepository.isInitialized) {
+                channelRepository = ChannelRepository(getDatabase(context))
+            }
+            
+            val channel = channelRepository.channels.value?.find {
+                it.userId == item.authorId
+            }
+            if (channel != null) {
+                val subtitle = channel.username + "  " + item.totalViews + " views"
+                subtitleView.text = subtitle
+            }
+            titleView.text = item.title
+            
             Glide.with(thumbnailVideoView.context)
                 .load(item.thumbnail)
                 .override(480, 269)
@@ -61,7 +75,6 @@ class HomeAdapter(iEventListener: IEventListener) : RecyclerView.Adapter<HomeAda
                 .circleCrop()
                 .into(avatarView)
 
-            val context = thumbnailVideoView.context
             thumbnailVideoView.setOnClickListener{
                 val intent = Intent(context, WatchActivity::class.java)
                 intent.putExtra("VIDEO_ID", item.id)
