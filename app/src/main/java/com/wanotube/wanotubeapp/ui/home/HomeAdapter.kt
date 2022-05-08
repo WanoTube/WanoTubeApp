@@ -62,6 +62,11 @@ class HomeAdapter(iEventListener: IEventListener) : RecyclerView.Adapter<HomeAda
             if (channel != null) {
                 val subtitle = channel.username + "  " + item.totalViews + " views"
                 subtitleView.text = subtitle
+
+                Glide.with(avatarView.context)
+                    .load(channel.avatar)
+                    .circleCrop()
+                    .into(avatarView)
             }
             titleView.text = item.title
             
@@ -70,10 +75,6 @@ class HomeAdapter(iEventListener: IEventListener) : RecyclerView.Adapter<HomeAda
                 .override(480, 269)
                 .centerCrop()
                 .into(thumbnailVideoView)
-            Glide.with(avatarView.context)
-                .load(item.thumbnail)
-                .circleCrop()
-                .into(avatarView)
 
             thumbnailVideoView.setOnClickListener{
                 val intent = Intent(context, WatchActivity::class.java)

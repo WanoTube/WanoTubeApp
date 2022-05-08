@@ -11,10 +11,13 @@ interface IChannelService {
     fun getUserByUserId(@Path("id") userId: String): Call<UserResult>?
 
     @Headers("isDisableAuthorization:true")
-    @GET("channels/{id}/videos")
-    fun getVideosByChannelId(@Path("id") channelId: String): Call<NetworkAccount>?
-
-    @Headers("isDisableAuthorization:true")
     @GET("channels/{id}/info")
     fun getChannel(@Path("id") channelId: String): Call<NetworkAccount>?
+    
+    @Headers("isDisableAuthorization:true")
+    @GET("channels/{id}/videos")
+    fun getPublicVideosByChannelId(@Path("id") channelId: String): Call<NetworkVideoContainer>?
+
+    @GET("channels/videos")
+    fun getAllVideosByChannelId(): Call<NetworkVideoContainer>?
 }

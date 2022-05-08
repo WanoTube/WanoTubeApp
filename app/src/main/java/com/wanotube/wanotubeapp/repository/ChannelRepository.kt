@@ -2,14 +2,17 @@ package com.wanotube.wanotubeapp.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
+import com.wanotube.wanotubeapp.WanotubeApp.Companion.context
 import com.wanotube.wanotubeapp.database.AppDatabase
 import com.wanotube.wanotubeapp.database.asDomainModel
 import com.wanotube.wanotubeapp.domain.Account
 import com.wanotube.wanotubeapp.network.IChannelService
 import com.wanotube.wanotubeapp.network.NetworkAccount
+import com.wanotube.wanotubeapp.network.NetworkVideoContainer
 import com.wanotube.wanotubeapp.network.ServiceGenerator
 import com.wanotube.wanotubeapp.network.UserResult
 import com.wanotube.wanotubeapp.network.asDatabaseModel
+import com.wanotube.wanotubeapp.network.authentication.AuthPreferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -59,6 +62,7 @@ class ChannelRepository(private val database: AppDatabase) {
                 ) {
                     var channelBodyModel = response?.body()?.asDatabaseModel()
                     if (channelBodyModel != null) {
+                        channelBodyModel.avatar = userInfo.user?.avatar.toString()
                         CoroutineScope(Dispatchers.IO).launch {
                             database.accountDao.insert(channelBodyModel)
                         }
@@ -69,5 +73,21 @@ class ChannelRepository(private val database: AppDatabase) {
                 }
             })
         }
+    }
+
+    suspend fun getPublicVideosByChannelId(channelId: String): Call<NetworkVideoContainer>? {
+        return ServiceGenerator.createService(IChannelService::class.java)
+            ?.getPublicVideosByChannelId(channelId)
+    }
+    
+    suspend fun getAllVideosByChannelId(): Call<NetworkVideoContainer>? {
+        val mAuthPreferences = context?.let { AuthPreferences(it) }
+        if (mAuthPreferences != null) {
+            mAuthPreferences.authToken?.let {
+                return ServiceGenerator.createService(IChannelService::class.java, it)
+                    ?.getAllVideosByChannelId()
+            }
+        }
+        return null
     }
 }
