@@ -46,10 +46,12 @@ import com.wanotube.wanotubeapp.WanotubeApp
 import com.wanotube.wanotubeapp.database.asDomainModel
 import com.wanotube.wanotubeapp.database.getDatabase
 import com.wanotube.wanotubeapp.databinding.ActivityWatchBinding
+import com.wanotube.wanotubeapp.domain.Account
 import com.wanotube.wanotubeapp.domain.User
 import com.wanotube.wanotubeapp.domain.Video
 import com.wanotube.wanotubeapp.network.NetworkVideoWatch
 import com.wanotube.wanotubeapp.network.asDatabaseModel
+import com.wanotube.wanotubeapp.repository.ChannelRepository
 import com.wanotube.wanotubeapp.repository.VideosRepository
 import com.wanotube.wanotubeapp.util.Constant
 import com.wanotube.wanotubeapp.viewmodels.WanoTubeViewModel
@@ -63,7 +65,6 @@ import timber.log.Timber
 
 class WatchActivity : WanoTubeActivity() {
     private lateinit var binding: ActivityWatchBinding
-    private lateinit var videosRepository: VideosRepository
     private lateinit var videoLayout: RelativeLayout
     private lateinit var videoView: VideoView
     private lateinit var forwardImg: ImageView
@@ -90,9 +91,16 @@ class WatchActivity : WanoTubeActivity() {
     private lateinit var firstCommentSection: LinearLayout
     private lateinit var commentListView: ScrollView
     private lateinit var videoInfoView: ScrollView
-    
+
+    private lateinit var videosRepository: VideosRepository
+    private lateinit var channelRepository: ChannelRepository
+
     private var currentVideo: Video? = null
     private var currentUser: User? = null
+    private var currentAccount: Account? = null
+
+    private var channelId = ""
+    private var username = ""
 
     private var check = 0
     private val isMaximise = true
@@ -101,7 +109,8 @@ class WatchActivity : WanoTubeActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         videosRepository = VideosRepository(getDatabase(application))
-
+        channelRepository = ChannelRepository(getDatabase(application))
+        
         binding = ActivityWatchBinding.inflate(layoutInflater)
         setContentView(binding.root)
         
@@ -159,8 +168,9 @@ class WatchActivity : WanoTubeActivity() {
                     if (response != null) {
                         if (response.code() == 200) {
                             currentVideo = response.body()?.asDatabaseModel()?.asDomainModel()
-                            currentUser = response.body()?.user?.asDatabaseModel()?.asDomainModel()
-                            Timber.e("currentVideo: %s", currentVideo)
+                            channelId = response.body()?.user?.channelId.toString()
+                            username = response.body()?.user?.username.toString()
+
                             if (currentVideo != null)
                                 initVideo()
                         } else {
@@ -381,8 +391,7 @@ class WatchActivity : WanoTubeActivity() {
     private fun initVideo() {
         binding.title.text = currentVideo?.title
         binding.subtitle.text = currentVideo?.totalViews.toString() + " views"
-        //TODO: Author's name is user's name not authorId
-//        binding.authorName.text = currentUser.firstName
+        binding.authorName.text = username
         binding.totalLikes.text = currentVideo?.totalLikes.toString()
         binding.totalComments.text = currentVideo?.totalComments.toString()
 

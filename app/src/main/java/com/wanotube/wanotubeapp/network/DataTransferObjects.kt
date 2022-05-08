@@ -89,8 +89,7 @@ class NetworkVideoWatch {
     @SerializedName("duration")
     val duration: Int = 0
     @SerializedName("user")
-    @Expose
-    var user: UserId? = null    
+    var user: UserWatch? = null    
     @SerializedName("type")
     val type: String = "NORMAL"
     @SerializedName("created_at")
@@ -265,6 +264,19 @@ class UserId {
     @Expose
     var v: Int? = null
 }
+
+
+class UserWatch {
+    @SerializedName("avatar")
+    @Expose
+    var avatar: String? = null
+    @SerializedName("username")
+    @Expose
+    var username: String? = null
+    @SerializedName("channel_id")
+    @Expose
+    var channelId: String? = null
+}
 /**
  * Convert Network results to database objects
  */
@@ -333,7 +345,7 @@ fun NetworkVideoWatch.asDatabaseModel(): DatabaseVideo {
         totalComments = totalComments,
         visibility = visibility,
         duration = duration,
-        authorId = user?.id.toString(),
+        authorId = "",
         type = type,
         updatedAt = updatedAt,
         createdAt = createdAt
