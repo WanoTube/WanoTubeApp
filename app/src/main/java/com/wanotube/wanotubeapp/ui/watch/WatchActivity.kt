@@ -46,8 +46,9 @@ import com.wanotube.wanotubeapp.WanotubeApp
 import com.wanotube.wanotubeapp.database.asDomainModel
 import com.wanotube.wanotubeapp.database.getDatabase
 import com.wanotube.wanotubeapp.databinding.ActivityWatchBinding
+import com.wanotube.wanotubeapp.domain.User
 import com.wanotube.wanotubeapp.domain.Video
-import com.wanotube.wanotubeapp.network.NetworkVideo
+import com.wanotube.wanotubeapp.network.NetworkVideoWatch
 import com.wanotube.wanotubeapp.network.asDatabaseModel
 import com.wanotube.wanotubeapp.repository.VideosRepository
 import com.wanotube.wanotubeapp.util.Constant
@@ -91,7 +92,8 @@ class WatchActivity : WanoTubeActivity() {
     private lateinit var videoInfoView: ScrollView
     
     private var currentVideo: Video? = null
-    
+    private var currentUser: User? = null
+
     private var check = 0
     private val isMaximise = true
     private var countdownTimer: CountDownTimer? = null
@@ -149,14 +151,15 @@ class WatchActivity : WanoTubeActivity() {
 
         CoroutineScope(Dispatchers.IO).launch {
             val responseBodyCall = videosRepository.getVideo(videoId)
-            responseBodyCall?.enqueue(object : Callback<NetworkVideo> {
+            responseBodyCall?.enqueue(object : Callback<NetworkVideoWatch> {
                 override fun onResponse(
-                    call: Call<NetworkVideo>?,
-                    response: Response<NetworkVideo?>?
+                    call: Call<NetworkVideoWatch>?,
+                    response: Response<NetworkVideoWatch?>?
                 ) {
                     if (response != null) {
                         if (response.code() == 200) {
                             currentVideo = response.body()?.asDatabaseModel()?.asDomainModel()
+                            currentUser = response.body()?.user?.asDatabaseModel()?.asDomainModel()
                             Timber.e("currentVideo: %s", currentVideo)
                             if (currentVideo != null)
                                 initVideo()
@@ -165,7 +168,7 @@ class WatchActivity : WanoTubeActivity() {
                         }
                     }
                 }
-                override fun onFailure(call: Call<NetworkVideo>?, t: Throwable?) {
+                override fun onFailure(call: Call<NetworkVideoWatch>?, t: Throwable?) {
                     Timber.e("Failed: error: %s", t.toString())
                 }
             })
@@ -379,7 +382,7 @@ class WatchActivity : WanoTubeActivity() {
         binding.title.text = currentVideo?.title
         binding.subtitle.text = currentVideo?.totalViews.toString() + " views"
         //TODO: Author's name is user's name not authorId
-        binding.authorName.text = currentVideo?.authorId
+//        binding.authorName.text = currentUser.firstName
         binding.totalLikes.text = currentVideo?.totalLikes.toString()
         binding.totalComments.text = currentVideo?.totalComments.toString()
 

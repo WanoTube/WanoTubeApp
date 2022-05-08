@@ -3,6 +3,7 @@ package com.wanotube.wanotubeapp.database
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.wanotube.wanotubeapp.domain.Account
+import com.wanotube.wanotubeapp.domain.User
 import com.wanotube.wanotubeapp.domain.Video
 import com.wanotube.wanotubeapp.util.convertStringToDate
 import java.util.Date
@@ -130,4 +131,17 @@ fun List<DatabaseAccount>.asDomainModel(): List<Account> {
             userId = it.userId
         )
     }
+}
+
+fun DatabaseUser.asDomainModel(): User {
+    return User(
+        id = id,
+        firstName = firstName,
+        lastName = lastName,
+        gender = gender,
+        birthDate = birthDate,
+        phoneNumber = phoneNumber,
+        country = country,
+        description = ""
+    )
 }

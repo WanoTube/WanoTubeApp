@@ -12,6 +12,7 @@ import com.wanotube.wanotubeapp.network.NetworkVideo
 import com.wanotube.wanotubeapp.network.NetworkVideoContainer
 import com.wanotube.wanotubeapp.network.ServiceGenerator
 import com.wanotube.wanotubeapp.network.IVideoService
+import com.wanotube.wanotubeapp.network.NetworkVideoWatch
 import com.wanotube.wanotubeapp.network.asDatabaseModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -74,7 +75,7 @@ class VideosRepository(private val database: AppDatabase) {
         }
     }
     
-    fun getVideo(videoId: String): Call<NetworkVideo>? {
+    fun getVideo(videoId: String): Call<NetworkVideoWatch>? {
         val videoService: IVideoService? =
             ServiceGenerator.createService(IVideoService::class.java)
         return videoService?.getVideo(videoId)
