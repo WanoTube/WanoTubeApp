@@ -135,7 +135,7 @@ class WatchActivity : WanoTubeActivity() {
 
         binding.lifecycleOwner = this
         
-        videoViewModel.playlist.observe(this) {
+        videoViewModel.allPublicVideos.observe(this) {
             it?.let {
                 adapter.data = it
             }

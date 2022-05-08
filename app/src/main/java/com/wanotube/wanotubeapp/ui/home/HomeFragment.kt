@@ -58,7 +58,7 @@ class HomeFragment : Fragment() {
             }
         }
         
-        viewModel.playlist.observe(viewLifecycleOwner) {
+        viewModel.allPublicVideos.observe(viewLifecycleOwner) {
             it?.let {
                 adapter.data = it
                 binding.homeShimmerViewContainer.stopShimmer()

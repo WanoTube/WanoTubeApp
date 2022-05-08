@@ -34,7 +34,7 @@ class WanoTubeViewModel(application: Application) : AndroidViewModel(application
     /**
      * A playlist of videos displayed on the screen.
      */
-    val playlist = videosRepository.videos
+    val allPublicVideos = videosRepository.videos
     val channels = channelRepository.channels
     
     var isInitialized = false
@@ -88,7 +88,7 @@ class WanoTubeViewModel(application: Application) : AndroidViewModel(application
 
             } catch (networkError: IOException) {
                 // Show a Toast error message and hide the progress bar.
-                if(playlist.value.isNullOrEmpty())
+                if(allPublicVideos.value.isNullOrEmpty())
                     _eventNetworkError.value = true
             }
         }

@@ -18,6 +18,12 @@ interface VideoDao {
     @Query("SELECT * FROM DatabaseVideo")
     fun getVideos(): LiveData<List<DatabaseVideo>>
 
+    @Query("SELECT * FROM DatabaseVideo WHERE authorId =:userId")
+    fun getAllVideoByAuthorId(userId: String): LiveData<List<DatabaseVideo>> //userId not channelId
+
+    @Query("SELECT * FROM DatabaseVideo WHERE authorId =:userId AND visibility = 0")
+    fun getAllPublicVideoByAuthorId(userId: String): LiveData<List<DatabaseVideo>> //userId not channelId
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(videos: List<DatabaseVideo>)
 }

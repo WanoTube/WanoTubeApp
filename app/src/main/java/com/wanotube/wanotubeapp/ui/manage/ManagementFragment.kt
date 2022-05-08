@@ -12,7 +12,7 @@ import com.wanotube.wanotubeapp.IEventListener
 import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.databinding.FragmentManagementBinding
 import com.wanotube.wanotubeapp.util.MarginItemDecoration
-import com.wanotube.wanotubeapp.viewmodels.WanoTubeViewModel
+import com.wanotube.wanotubeapp.viewmodels.ChannelViewModel
 
 class ManagementFragment : Fragment() {
 
@@ -37,14 +37,14 @@ class ManagementFragment : Fragment() {
 
         val application = requireNotNull(this.activity).application
 
-        val viewModelFactory = WanoTubeViewModel.WanoTubeViewModelFactory(application)
+        val viewModelFactory = ChannelViewModel.ChannelViewModelFactory(application)
 
-        val videoViewModel =
+        val channelViewModel =
             ViewModelProvider(
                 this, viewModelFactory
-            ).get(WanoTubeViewModel::class.java)
+            ).get(ChannelViewModel::class.java)
 
-        binding.videoViewModel = videoViewModel
+        binding.channelViewModel = channelViewModel
 
         val adapter = ManagementAdapter(listener)
 
@@ -65,7 +65,7 @@ class ManagementFragment : Fragment() {
             )
         }
 
-        videoViewModel.playlist.observe(viewLifecycleOwner) {
+        channelViewModel.currentChannelVideos.observe(viewLifecycleOwner) {
             it?.let {
                 adapter.data = it
                 binding.managementShimmerViewContainer.stopShimmer()

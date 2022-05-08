@@ -31,6 +31,7 @@ import java.io.File
  * Repository for fetching wanotube videos from the network and storing them on disk
  */
 class VideosRepository(private val database: AppDatabase) {
+    //All public videos
     val videos: LiveData<List<Video>> = Transformations.map(database.videoDao.getVideos()) {
         it.asDomainModel()
     }

@@ -35,7 +35,7 @@ class ShortsFragment : Fragment() {
 
         binding.shortVideoList.adapter = adapter
 
-        videoViewModel.playlist.observe(viewLifecycleOwner) {
+        videoViewModel.allPublicVideos.observe(viewLifecycleOwner) {
             it?.let {
                 adapter.data = it
             }
