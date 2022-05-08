@@ -52,6 +52,12 @@ class HomeFragment : Fragment() {
         
         binding.homeShimmerViewContainer.startShimmer()
 
+        viewModel.channels.observe(viewLifecycleOwner) {
+            it?.let {
+                adapter.channels = it
+            }
+        }
+        
         viewModel.playlist.observe(viewLifecycleOwner) {
             it?.let {
                 adapter.data = it

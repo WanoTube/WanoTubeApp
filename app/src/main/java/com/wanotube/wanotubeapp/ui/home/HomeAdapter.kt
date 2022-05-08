@@ -11,9 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.wanotube.wanotubeapp.IEventListener
 import com.wanotube.wanotubeapp.R
-import com.wanotube.wanotubeapp.database.getDatabase
+import com.wanotube.wanotubeapp.domain.Account
 import com.wanotube.wanotubeapp.domain.Video
-import com.wanotube.wanotubeapp.repository.ChannelRepository
 import com.wanotube.wanotubeapp.ui.watch.WatchActivity
 
 class HomeAdapter(iEventListener: IEventListener) : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
@@ -25,12 +24,18 @@ class HomeAdapter(iEventListener: IEventListener) : RecyclerView.Adapter<HomeAda
             field = value
             notifyDataSetChanged()
         }
+    
+    var channels = listOf<Account>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     override fun getItemCount() = data.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
-        holder.bind(item)
+        holder.bind(item, channels)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -42,21 +47,16 @@ class HomeAdapter(iEventListener: IEventListener) : RecyclerView.Adapter<HomeAda
     ){
 
         private var listener: IEventListener = listener
-        private lateinit var channelRepository : ChannelRepository
         private val titleView: TextView = itemView.findViewById(R.id.title)
         private val subtitleView: TextView = itemView.findViewById(R.id.subtitle)
 
         private val thumbnailVideoView: ImageView = itemView.findViewById(R.id.thumbnail_video)
         private val avatarView: ImageView = itemView.findViewById(R.id.avatar_user)
 
-        fun bind(item: Video) {
+        fun bind(item: Video, channels: List<Account>) {
             val context = thumbnailVideoView.context
 
-            if (!::channelRepository.isInitialized) {
-                channelRepository = ChannelRepository(getDatabase(context))
-            }
-            
-            val channel = channelRepository.channels.value?.find {
+            val channel = channels.find {
                 it.userId == item.authorId
             }
             if (channel != null) {
