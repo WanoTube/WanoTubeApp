@@ -276,6 +276,27 @@ class UserWatch {
     @SerializedName("channel_id")
     @Expose
     var channelId: String? = null
+    @SerializedName("_doc")
+    @Expose
+    var doc: Doc? = null
+}
+
+class Doc {
+    @SerializedName("_id")
+    @Expose
+    var id: String? = null
+    @SerializedName("username")
+    @Expose
+    var username: String? = null
+    @SerializedName("email")
+    @Expose
+    var email: String? = null
+    @SerializedName("is_admin")
+    @Expose
+    var isAdmin: String? = null
+    @SerializedName("user_id")
+    @Expose
+    var user: UserId? = null
 }
 /**
  * Convert Network results to database objects

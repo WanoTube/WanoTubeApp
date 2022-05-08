@@ -170,7 +170,7 @@ class WatchActivity : WanoTubeActivity() {
                             currentVideo = response.body()?.asDatabaseModel()?.asDomainModel()
                             channelId = response.body()?.user?.channelId.toString()
                             username = response.body()?.user?.username.toString()
-
+                            currentUser = response.body()?.user?.doc?.user?.asDatabaseModel()?.asDomainModel()
                             if (currentVideo != null)
                                 initVideo()
                         } else {
