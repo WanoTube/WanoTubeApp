@@ -51,6 +51,7 @@ import com.wanotube.wanotubeapp.domain.User
 import com.wanotube.wanotubeapp.domain.Video
 import com.wanotube.wanotubeapp.network.NetworkVideoWatch
 import com.wanotube.wanotubeapp.network.asDatabaseModel
+import com.wanotube.wanotubeapp.network.authentication.AuthPreferences
 import com.wanotube.wanotubeapp.repository.ChannelRepository
 import com.wanotube.wanotubeapp.repository.VideosRepository
 import com.wanotube.wanotubeapp.util.Constant
@@ -345,8 +346,15 @@ class WatchActivity : WanoTubeActivity() {
             val commentText = binding.commentEditText.text.toString()
             binding.commentEditText.text.clear()
 
+            //TODO: Send comment
             Toast.makeText(this, commentText, Toast.LENGTH_SHORT).show()
-
+            //TODO: Get userId from authPreferences
+//            val mAuthPreferences = AuthPreferences(this)
+//            currentVideo?.id?.let { videoId ->
+//                videosRepository.sendComment(commentText,
+//                    videoId, userId)
+//            }
+            
             binding.btnSendComment.visibility = View.GONE
 
             applicationContext?.let { it1 -> hideKeyboardFrom(
