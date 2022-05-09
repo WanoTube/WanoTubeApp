@@ -27,6 +27,7 @@
         <entry key="app/src/main/res/layout/activity_watch.xml" value="0.10885416666666667" />
         <entry key="app/src/main/res/layout/bottom_sheet_dialog_layout.xml" value="0.1" />
         <entry key="app/src/main/res/layout/choose_video_dialog_layout.xml" value="0.11096014492753623" />
+        <entry key="app/src/main/res/layout/comment_component_list.xml" value="0.787828947368421" />
         <entry key="app/src/main/res/layout/fragment_following.xml" value="0.15052083333333333" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.19841987499292346" />
         <entry key="app/src/main/res/layout/fragment_login_tab.xml" value="0.1" />

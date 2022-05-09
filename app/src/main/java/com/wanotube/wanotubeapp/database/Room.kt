@@ -40,10 +40,20 @@ interface AccountDao {
     fun insert(account: DatabaseAccount)
 }
 
-@Database(entities = [DatabaseVideo::class, DatabaseAccount::class], version = 2, exportSchema = false)
+@Dao
+interface CommentDao {
+    @Query("SELECT * FROM DatabaseComment")
+    fun getComments(): LiveData<List<DatabaseComment>>
+    
+    @Insert(onConflict = OnConflictStrategy.IGNORE) //TODO: Check this
+    fun insert(comment: DatabaseComment)
+}
+
+@Database(entities = [DatabaseVideo::class, DatabaseAccount::class, DatabaseComment::class], version = 3, exportSchema = false)
 abstract class AppDatabase: RoomDatabase() {
     abstract val videoDao: VideoDao
     abstract val accountDao: AccountDao
+    abstract val commentDao: CommentDao
 }
 
 private lateinit var INSTANCE: AppDatabase
@@ -51,11 +61,20 @@ private lateinit var INSTANCE: AppDatabase
 fun getDatabase(context: Context): AppDatabase {
     val MIGRATION_1_2: Migration = object : Migration(1,2) {
         override fun migrate(database: SupportSQLiteDatabase) {
-
             database.execSQL("CREATE TABLE `DatabaseAccount` (`id` TEXT NOT NULL, `isAdmin` INTEGER NOT NULL, " +
                     "`avatar` TEXT NOT NULL," +
                     "`userId` TEXT NOT NULL," +
                     "`username` TEXT NOT NULL," +
+                    "PRIMARY KEY(`id`))")
+
+        }
+    }
+
+    val MIGRATION_2_3: Migration = object : Migration(1,2) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL("CREATE TABLE `DatabaseComment` (`id` TEXT NOT NULL, `content` TEXT NOT NULL, " +
+                    "`authorId` TEXT NOT NULL," +
+                    "`videoId` TEXT NOT NULL," +
                     "PRIMARY KEY(`id`))")
 
         }
@@ -67,7 +86,7 @@ fun getDatabase(context: Context): AppDatabase {
                     "videos")
                 .fallbackToDestructiveMigration()
                 .allowMainThreadQueries()
-                .addMigrations(MIGRATION_1_2)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
                 .build()
         }
     }

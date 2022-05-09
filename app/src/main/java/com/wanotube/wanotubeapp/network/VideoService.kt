@@ -42,13 +42,4 @@ interface IVideoService {
         @Part duration: MultipartBody.Part,
         @Part visibility: MultipartBody.Part,
         ): Call<NetworkVideo>?
-
-    @Headers("isDisableAuthorization:true")
-    @Multipart
-    @POST("videos/comment")
-    fun sendComment(
-        @Part content: MultipartBody.Part,
-        @Part videoId: MultipartBody.Part,
-        @Part authorId: MultipartBody.Part
-    ): Call<NetworkVideo>?
 }

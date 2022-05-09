@@ -3,6 +3,7 @@ package com.wanotube.wanotubeapp.database
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.wanotube.wanotubeapp.domain.Account
+import com.wanotube.wanotubeapp.domain.Comment
 import com.wanotube.wanotubeapp.domain.User
 import com.wanotube.wanotubeapp.domain.Video
 import com.wanotube.wanotubeapp.util.convertStringToDate
@@ -70,6 +71,7 @@ data class DatabaseComment constructor(
 /**
  * Map DatabaseVideos to domain entities
  */
+@JvmName("asDomainModelDatabaseVideo")
 fun List<DatabaseVideo>.asDomainModel(): List<Video> {
     return map {
         Video(
@@ -143,5 +145,25 @@ fun DatabaseUser.asDomainModel(): User {
         phoneNumber = phoneNumber,
         country = country,
         description = ""
+    )
+}
+
+@JvmName("asDomainModelDatabaseComment")
+fun List<DatabaseComment>.asDomainModel(): List<Comment> {
+    return map {
+        Comment(
+            id = it.id,
+            authorId = it.authorId,
+            videoId = it.videoId,
+            content = it.content)
+    }
+}
+
+fun DatabaseComment.asDomainModel(): Comment {
+    return Comment(
+        id = id,
+        authorId = authorId,
+        videoId = videoId,
+        content = content
     )
 }

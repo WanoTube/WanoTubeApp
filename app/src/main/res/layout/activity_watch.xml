@@ -7,6 +7,9 @@
         <variable
             name="videoViewModel"
             type="com.wanotube.wanotubeapp.viewmodels.WanoTubeViewModel" />
+        <variable
+            name="commentViewModel"
+            type="com.wanotube.wanotubeapp.viewmodels.CommentViewModel" />
     </data>
     <FrameLayout
         android:id="@+id/activity_watch"
@@ -398,28 +401,17 @@
                                     android:layout_margin="8dp"
                                     android:gravity="center"
                                     android:orientation="horizontal">
-                                    <ImageView
-                                        android:layout_width="30dp"
-                                        android:layout_height="30dp"
-                                        android:src="@drawable/user">
-                                    </ImageView>
-                                    <TextView
-                                        android:layout_marginStart="8dp"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:text="Broooo"
-                                        android:textColor="@color/black">
-                                    </TextView>
+<!--                                    -->
+<!--                                    <androidx.recyclerview.widget.RecyclerView-->
+<!--                                        android:id="@+id/all_comments"-->
+<!--                                        android:layout_width="match_parent"-->
+<!--                                        android:layout_height="match_parent"-->
+<!--                                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />-->
+
                                 </LinearLayout>
                             </LinearLayout>
                         </LinearLayout>
                         <View style="@style/Divider.Horizontal.Thick"/>
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/recommend_video_list"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
                     </LinearLayout>
 
                 </ScrollView>
@@ -537,22 +529,16 @@
                         <View style="@style/Divider.Horizontal"/>
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_margin="8dp"
                             android:gravity="center"
                             android:orientation="horizontal">
-                            <ImageView
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
-                                android:src="@drawable/user">
-                            </ImageView>
-                            <TextView
-                                android:layout_marginStart="8dp"
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/all_comments"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="Broooo"
-                                android:textColor="@color/black">
-                            </TextView>
+                                android:layout_height="match_parent"
+                                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
                         </LinearLayout>
 
 

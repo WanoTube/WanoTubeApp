@@ -5,24 +5,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.wanotube.wanotubeapp.R
-import com.wanotube.wanotubeapp.domain.Video
+import com.wanotube.wanotubeapp.domain.Comment
 
 class WatchAdapter : RecyclerView.Adapter<WatchAdapter.ViewHolder>() {
 
-    var data =  listOf<Video>()
+    var comments =  listOf<Comment>()
         set(value) {
             field = value
             notifyDataSetChanged()
         }
 
-    override fun getItemCount() = data.size
+    override fun getItemCount() = comments.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = data[position]
+        val item = comments[position]
         holder.bind(item)
     }
 
@@ -33,39 +31,23 @@ class WatchAdapter : RecyclerView.Adapter<WatchAdapter.ViewHolder>() {
 
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView){
 
-        private val titleView: TextView = itemView.findViewById(R.id.title)
-        private val subtitleView: TextView = itemView.findViewById(R.id.subtitle)
+        private val commentContentView: TextView = itemView.findViewById(R.id.comment_content)
+        private val avatarView: ImageView = itemView.findViewById(R.id.avatar)
 
-        private val thumbnailVideoView: ImageView = itemView.findViewById(R.id.thumbnail_video)
-        private val avatarView: ImageView = itemView.findViewById(R.id.avatar_user)
-
-        fun bind(item: Video) {
-            titleView.text = item.title
-            val subtitle = item.authorId + "  " + item.totalViews + " views"
-            subtitleView.text = subtitle
-
-            Glide.with(thumbnailVideoView.context)
-                .load(item.thumbnail)
-                .override(480, 269)
-                .centerCrop()
-                .into(thumbnailVideoView)
-            Glide.with(avatarView.context)
-                .load(item.thumbnail)
-                .circleCrop()
-                .into(avatarView)
-
-            thumbnailVideoView.setOnClickListener{
-                itemView.findNavController().navigate(
-                    R.id.fragment_watch
-                )
-            }
+        fun bind(item: Comment) {
+            commentContentView.text = item.content
+            
+//            Glide.with(avatarView.context)
+//                .load(item.thumbnail)
+//                .circleCrop()
+//                .into(avatarView)
         }
 
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater
-                    .inflate(R.layout.home_video_component_list, parent, false)
+                    .inflate(R.layout.comment_component_list, parent, false)
                 return ViewHolder(view)
             }
         }

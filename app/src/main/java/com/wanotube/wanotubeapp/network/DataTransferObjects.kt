@@ -3,6 +3,7 @@ package com.wanotube.wanotubeapp.network
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import com.wanotube.wanotubeapp.database.DatabaseAccount
+import com.wanotube.wanotubeapp.database.DatabaseComment
 import com.wanotube.wanotubeapp.database.DatabaseUser
 import com.wanotube.wanotubeapp.database.DatabaseVideo
 import com.wanotube.wanotubeapp.util.convertStringToDate
@@ -298,6 +299,27 @@ class Doc {
     @Expose
     var user: UserId? = null
 }
+
+class NetworkComment {
+    @SerializedName("_id")
+    @Expose
+    var id: String? = null
+    @SerializedName("content")
+    @Expose
+    var content: String? = null
+    @SerializedName("author_id")
+    @Expose
+    var authorId: String? = null
+    @SerializedName("video_id")
+    @Expose
+    var videoId: String? = null
+}
+
+class NetworkCommentContainer {
+    @SerializedName("comments")
+    @Expose
+    var comments: List<NetworkComment> = listOf()
+}
 /**
  * Convert Network results to database objects
  */
@@ -385,4 +407,24 @@ fun UserId.asDatabaseModel(): DatabaseUser {
         avatar = avatar.toString(),
         description = ""
     )
+}
+
+fun NetworkComment.asDatabaseModel(): DatabaseComment {
+    return DatabaseComment(
+        id = id.toString(),
+        content = content.toString(),
+        authorId = authorId.toString(),
+        videoId = videoId.toString()
+    )
+}
+
+fun NetworkCommentContainer.asDatabaseModel(): List<DatabaseComment> {
+    return comments.map {
+        DatabaseComment(
+            id = it.id.toString(),
+            content = it.content.toString(),
+            authorId = it.authorId.toString(),
+            videoId = it.videoId.toString()
+        )
+    }
 }

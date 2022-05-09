@@ -168,21 +168,6 @@ class VideosRepository(private val database: AppDatabase) {
             visibilityBody)
     }
     
-    fun sendComment(content: String, videoId: String, authorId: String): Call<NetworkVideo>? {
-        val videoService: IVideoService? =
-            ServiceGenerator.createService(IVideoService::class.java)
-
-        val contentBody = MultipartBody.Part.createFormData("content", content)
-        val videoIdBody = MultipartBody.Part.createFormData("video_id", videoId)
-        val authorIdBody = MultipartBody.Part.createFormData("author_id", authorId)
-
-        return videoService?.sendComment(
-            contentBody,
-            videoIdBody,
-            authorIdBody
-        )
-    }
-    
     companion object {
         enum class VideoType {
             NORMAL, SHORT 

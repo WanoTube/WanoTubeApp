@@ -51,11 +51,10 @@ import com.wanotube.wanotubeapp.domain.User
 import com.wanotube.wanotubeapp.domain.Video
 import com.wanotube.wanotubeapp.network.NetworkVideoWatch
 import com.wanotube.wanotubeapp.network.asDatabaseModel
-import com.wanotube.wanotubeapp.network.authentication.AuthPreferences
-import com.wanotube.wanotubeapp.repository.ChannelRepository
+import com.wanotube.wanotubeapp.repository.CommentRepository
 import com.wanotube.wanotubeapp.repository.VideosRepository
 import com.wanotube.wanotubeapp.util.Constant
-import com.wanotube.wanotubeapp.viewmodels.WanoTubeViewModel
+import com.wanotube.wanotubeapp.viewmodels.CommentViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -94,8 +93,10 @@ class WatchActivity : WanoTubeActivity() {
     private lateinit var videoInfoView: ScrollView
 
     private lateinit var videosRepository: VideosRepository
-    private lateinit var channelRepository: ChannelRepository
+    private lateinit var commentRepository: CommentRepository
 
+    private lateinit var adapter: WatchAdapter
+    
     private var currentVideo: Video? = null
     private var currentUser: User? = null
     private var currentAccount: Account? = null
@@ -110,7 +111,7 @@ class WatchActivity : WanoTubeActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         videosRepository = VideosRepository(getDatabase(application))
-        channelRepository = ChannelRepository(getDatabase(application))
+        commentRepository = CommentRepository(getDatabase(application))
         
         binding = ActivityWatchBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -132,24 +133,24 @@ class WatchActivity : WanoTubeActivity() {
     }
 
     private fun initAdapter() {
-        val viewModelFactory = WanoTubeViewModel.WanoTubeViewModelFactory(application)
+        val viewModelFactory = CommentViewModel.CommentViewModelFactory(application)
 
-        val videoViewModel =
+        val commentViewModel =
             ViewModelProvider(
                 this, viewModelFactory
-            ).get(WanoTubeViewModel::class.java)
+            ).get(CommentViewModel::class.java)
 
-        binding.videoViewModel = videoViewModel
+        binding.commentViewModel = commentViewModel
 
-        val adapter = WatchAdapter()
+        adapter = WatchAdapter()
 
-        binding.recommendVideoList.adapter = adapter
+        binding.allComments.adapter = adapter
 
         binding.lifecycleOwner = this
-        
-        videoViewModel.allPublicVideos.observe(this) {
+
+        commentViewModel.comments.observe(this) {
             it?.let {
-                adapter.data = it
+                adapter.comments = it
             }
         }
 
@@ -343,25 +344,24 @@ class WatchActivity : WanoTubeActivity() {
         })
 
         binding.btnSendComment.setOnClickListener {
-            val commentText = binding.commentEditText.text.toString()
-            binding.commentEditText.text.clear()
+            if (checkTokenAvailable()) {
+                val commentText = binding.commentEditText.text.toString()
+                binding.commentEditText.text.clear()
+                currentVideo?.id?.let { videoId ->
+                    commentRepository.sendComment(commentText, videoId, adapter)
+                }
 
-            //TODO: Send comment
-            Toast.makeText(this, commentText, Toast.LENGTH_SHORT).show()
-            //TODO: Get userId from authPreferences
-//            val mAuthPreferences = AuthPreferences(this)
-//            currentVideo?.id?.let { videoId ->
-//                videosRepository.sendComment(commentText,
-//                    videoId, userId)
-//            }
+                binding.btnSendComment.visibility = View.GONE
+
+                applicationContext?.let { it1 -> hideKeyboardFrom(
+                    it1,
+                    binding.commentEditText
+                ) }
+
+            } else {
+                openLoginActivity()
+            }
             
-            binding.btnSendComment.visibility = View.GONE
-
-            applicationContext?.let { it1 -> hideKeyboardFrom(
-                it1,
-                binding.commentEditText
-            ) }
-
         }
     }
 
