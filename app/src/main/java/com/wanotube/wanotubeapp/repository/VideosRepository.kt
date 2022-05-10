@@ -138,8 +138,7 @@ class VideosRepository(private val database: AppDatabase) {
             type
         )
     }
-
-
+    
     fun updateVideo(id: String,
                     title: String,
                     description: String,
@@ -166,6 +165,32 @@ class VideosRepository(private val database: AppDatabase) {
             sizeBody,
             durationBody,
             visibilityBody)
+    }
+
+    fun likeVideo(targetId: String) {
+        val targetIdBody = MultipartBody.Part.createFormData("target_id", targetId)
+        val videoService: IVideoService? =
+            ServiceGenerator.createService(IVideoService::class.java)
+        val response = videoService?.likeVideo(targetIdBody)
+        response?.enqueue(object : Callback<NetworkVideo> {
+            override fun onResponse(
+                call: Call<NetworkVideo>?,
+                response: Response<NetworkVideo?>?
+            ) {
+                val videoModel = response?.body()?.asDatabaseModel()
+                CoroutineScope(Dispatchers.IO).launch {
+                    if (videoModel != null) {
+                        database.videoDao.insert(videoModel)
+//                        withContext(Dispatchers.Main) {
+//                            adapter.notifyDataSetChanged()
+//                        }
+                    }
+                }
+            }
+            override fun onFailure(call: Call<NetworkVideo>?, t: Throwable?) {
+                Timber.e("Failed: error: %s", t.toString())
+            }
+        })
     }
     
     companion object {

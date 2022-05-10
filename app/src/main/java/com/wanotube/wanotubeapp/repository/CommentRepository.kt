@@ -11,7 +11,7 @@ import com.wanotube.wanotubeapp.network.objects.NetworkComment
 import com.wanotube.wanotubeapp.network.ServiceGenerator
 import com.wanotube.wanotubeapp.network.asDatabaseModel
 import com.wanotube.wanotubeapp.network.authentication.AuthPreferences
-import com.wanotube.wanotubeapp.ui.watch.WatchAdapter
+import com.wanotube.wanotubeapp.ui.watch.CommentAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -27,7 +27,7 @@ class CommentRepository(private val database: AppDatabase) {
         it.asDomainModel()
     }
 
-    fun sendComment(content: String, videoId: String, adapter: WatchAdapter){
+    fun sendComment(content: String, videoId: String, adapter: CommentAdapter){
         val mAuthPreferences = context?.let { AuthPreferences(it) }
         mAuthPreferences?.authToken?.let {
             val commentService: ICommentService? =

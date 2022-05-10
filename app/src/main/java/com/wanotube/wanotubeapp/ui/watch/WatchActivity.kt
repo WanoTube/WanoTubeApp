@@ -91,7 +91,7 @@ class WatchActivity : WanoTubeActivity() {
     private lateinit var videosRepository: VideosRepository
     private lateinit var commentRepository: CommentRepository
 
-    private lateinit var adapter: WatchAdapter
+    private lateinit var adapter: CommentAdapter
     
     private var currentVideo: Video? = null
     private var currentUser: User? = null
@@ -99,6 +99,7 @@ class WatchActivity : WanoTubeActivity() {
 
     private var channelId = ""
     private var username = ""
+    private var videoId = ""
 
     private var check = 0
     private val isMaximise = true
@@ -129,7 +130,7 @@ class WatchActivity : WanoTubeActivity() {
     }
 
     private fun initAdapter() {
-        val videoId = intent.getStringExtra("VIDEO_ID")
+        videoId = intent.getStringExtra("VIDEO_ID")
 
         val viewModelFactory = CommentViewModel.CommentViewModelFactory(application)
 
@@ -140,7 +141,7 @@ class WatchActivity : WanoTubeActivity() {
 
         binding.commentViewModel = commentViewModel
 
-        adapter = WatchAdapter()
+        adapter = CommentAdapter()
 
         binding.allComments.adapter = adapter
 
@@ -157,10 +158,10 @@ class WatchActivity : WanoTubeActivity() {
             }
         }
 
-        getVideo(videoId)
+        getVideo()
     }
     
-    private fun getVideo(videoId: String) {
+    private fun getVideo() {
 
         CoroutineScope(Dispatchers.IO).launch {
             val responseBodyCall = videosRepository.getVideo(videoId)
@@ -372,7 +373,7 @@ class WatchActivity : WanoTubeActivity() {
 
     private fun handleLike() {
         binding.likeButton.setOnClickListener { 
-            
+            videosRepository.likeVideo(videoId)
         }
     }
     

@@ -45,4 +45,9 @@ interface IVideoService {
         @Part duration: MultipartBody.Part,
         @Part visibility: MultipartBody.Part,
         ): Call<NetworkVideo>?
+
+    @Headers("isDisableAuthorization:true")
+    @Multipart
+    @POST("videos/like")
+    fun likeVideo(@Part targetId: MultipartBody.Part): Call<NetworkVideo>?
 }

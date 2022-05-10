@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.domain.Comment
 
-class WatchAdapter : RecyclerView.Adapter<WatchAdapter.ViewHolder>() {
+class CommentAdapter : RecyclerView.Adapter<CommentAdapter.ViewHolder>() {
 
     var comments =  listOf<Comment>()
         set(value) {
