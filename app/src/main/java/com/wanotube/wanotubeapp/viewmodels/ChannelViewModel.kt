@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.wanotube.wanotubeapp.database.asDomainModel
 import com.wanotube.wanotubeapp.database.getDatabase
 import com.wanotube.wanotubeapp.domain.Video
-import com.wanotube.wanotubeapp.network.NetworkVideoContainer
+import com.wanotube.wanotubeapp.network.objects.NetworkVideoContainer
 import com.wanotube.wanotubeapp.network.asDatabaseModel
 import com.wanotube.wanotubeapp.repository.ChannelRepository
 import kotlinx.coroutines.CoroutineScope

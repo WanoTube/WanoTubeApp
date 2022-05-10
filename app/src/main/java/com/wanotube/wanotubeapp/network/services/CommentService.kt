@@ -1,5 +1,7 @@
-package com.wanotube.wanotubeapp.network
+package com.wanotube.wanotubeapp.network.services
 
+import com.wanotube.wanotubeapp.network.objects.NetworkComment
+import com.wanotube.wanotubeapp.network.objects.NetworkCommentContainer
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.GET

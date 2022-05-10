@@ -1,5 +1,8 @@
-package com.wanotube.wanotubeapp.network
+package com.wanotube.wanotubeapp.network.services
 
+import com.wanotube.wanotubeapp.network.objects.NetworkAccount
+import com.wanotube.wanotubeapp.network.objects.NetworkVideoContainer
+import com.wanotube.wanotubeapp.network.objects.UserResult
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Headers

@@ -1,5 +1,6 @@
-package com.wanotube.wanotubeapp.network
+package com.wanotube.wanotubeapp.network.services
 
+import com.wanotube.wanotubeapp.network.objects.LoginResult
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.Multipart

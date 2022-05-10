@@ -6,11 +6,11 @@ import com.wanotube.wanotubeapp.WanotubeApp.Companion.context
 import com.wanotube.wanotubeapp.database.AppDatabase
 import com.wanotube.wanotubeapp.database.asDomainModel
 import com.wanotube.wanotubeapp.domain.Account
-import com.wanotube.wanotubeapp.network.IChannelService
-import com.wanotube.wanotubeapp.network.NetworkAccount
-import com.wanotube.wanotubeapp.network.NetworkVideoContainer
+import com.wanotube.wanotubeapp.network.services.IChannelService
+import com.wanotube.wanotubeapp.network.objects.NetworkAccount
+import com.wanotube.wanotubeapp.network.objects.NetworkVideoContainer
 import com.wanotube.wanotubeapp.network.ServiceGenerator
-import com.wanotube.wanotubeapp.network.UserResult
+import com.wanotube.wanotubeapp.network.objects.UserResult
 import com.wanotube.wanotubeapp.network.asDatabaseModel
 import com.wanotube.wanotubeapp.network.authentication.AuthPreferences
 import kotlinx.coroutines.CoroutineScope

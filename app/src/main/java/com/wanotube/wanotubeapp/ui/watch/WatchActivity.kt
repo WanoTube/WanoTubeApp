@@ -45,7 +45,7 @@ import com.wanotube.wanotubeapp.databinding.ActivityWatchBinding
 import com.wanotube.wanotubeapp.domain.Account
 import com.wanotube.wanotubeapp.domain.User
 import com.wanotube.wanotubeapp.domain.Video
-import com.wanotube.wanotubeapp.network.NetworkVideoWatch
+import com.wanotube.wanotubeapp.network.objects.NetworkVideoWatch
 import com.wanotube.wanotubeapp.network.asDatabaseModel
 import com.wanotube.wanotubeapp.repository.CommentRepository
 import com.wanotube.wanotubeapp.repository.VideosRepository

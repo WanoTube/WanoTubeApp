@@ -8,11 +8,11 @@ import com.wanotube.wanotubeapp.WanotubeApp.Companion.context
 import com.wanotube.wanotubeapp.database.AppDatabase
 import com.wanotube.wanotubeapp.database.asDomainModel
 import com.wanotube.wanotubeapp.domain.Video
-import com.wanotube.wanotubeapp.network.NetworkVideo
-import com.wanotube.wanotubeapp.network.NetworkVideoContainer
+import com.wanotube.wanotubeapp.network.objects.NetworkVideo
+import com.wanotube.wanotubeapp.network.objects.NetworkVideoContainer
 import com.wanotube.wanotubeapp.network.ServiceGenerator
-import com.wanotube.wanotubeapp.network.IVideoService
-import com.wanotube.wanotubeapp.network.NetworkVideoWatch
+import com.wanotube.wanotubeapp.network.services.IVideoService
+import com.wanotube.wanotubeapp.network.objects.NetworkVideoWatch
 import com.wanotube.wanotubeapp.network.asDatabaseModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

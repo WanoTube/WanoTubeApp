@@ -1,4 +1,4 @@
-package com.wanotube.wanotubeapp.network
+package com.wanotube.wanotubeapp.network.interceptors
 
 import java.io.IOException
 
