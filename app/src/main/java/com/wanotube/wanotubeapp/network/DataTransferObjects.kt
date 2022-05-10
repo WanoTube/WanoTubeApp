@@ -307,12 +307,66 @@ class NetworkComment {
     @SerializedName("content")
     @Expose
     var content: String? = null
-    @SerializedName("author_id")
+    @SerializedName("user")
     @Expose
-    var authorId: String? = null
+    var user: NetworkCommentUser? = null
     @SerializedName("video_id")
     @Expose
     var videoId: String? = null
+}
+
+class NetworkCommentUser {
+    @SerializedName("_id")
+    @Expose
+    var id: String = ""
+
+    @SerializedName("username")
+    @Expose
+    var username: String = ""
+
+    @SerializedName("email")
+    @Expose
+    var email: String = ""
+
+    @SerializedName("is_admin")
+    @Expose
+    var isAdmin: Boolean = false
+
+    @SerializedName("user_id")
+    @Expose
+    var userId: String? = null
+
+    @SerializedName("followers")
+    @Expose
+    var followers: List<Any>? = null
+
+    @SerializedName("followings")
+    @Expose
+    var followings: List<Any>? = null
+
+    @SerializedName("members")
+    @Expose
+    var members: List<Any>? = null
+
+    @SerializedName("blocked_accounts")
+    @Expose
+    var blockedAccounts: List<Any>? = null
+
+    @SerializedName("watched_history")
+    @Expose
+    var watchedHistory: List<Any>? = null
+
+    @SerializedName("created_at")
+    @Expose
+    var createdAt: String? = null
+
+    @SerializedName("updated_at")
+    @Expose
+    var updatedAt: String? = null
+
+    @SerializedName("__v")
+    @Expose
+    var v: Int? = null
 }
 
 class NetworkCommentContainer {
@@ -413,8 +467,10 @@ fun NetworkComment.asDatabaseModel(): DatabaseComment {
     return DatabaseComment(
         id = id.toString(),
         content = content.toString(),
-        authorId = authorId.toString(),
-        videoId = videoId.toString()
+        authorId = user?.id.toString(),
+        videoId = videoId.toString(),
+        authorAvatar = "",
+        authorUsername = user?.username.toString()
     )
 }
 
@@ -423,8 +479,10 @@ fun NetworkCommentContainer.asDatabaseModel(): List<DatabaseComment> {
         DatabaseComment(
             id = it.id.toString(),
             content = it.content.toString(),
-            authorId = it.authorId.toString(),
-            videoId = it.videoId.toString()
+            authorId = it.user?.id.toString(),
+            videoId = it.videoId.toString(),
+            authorAvatar = "",
+            authorUsername = it.user?.username.toString()
         )
     }
 }

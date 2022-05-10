@@ -38,7 +38,7 @@ class WatchAdapter : RecyclerView.Adapter<WatchAdapter.ViewHolder>() {
 
         fun bind(item: Comment) {
             commentContentView.text = item.content
-            authorNameView.text = item.authorId
+            authorNameView.text = item.authorUsername
             
 //            Glide.with(avatarView.context)
 //                .load(item.thumbnail)

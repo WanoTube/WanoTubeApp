@@ -59,4 +59,6 @@ data class Comment (
     val id: String,
     val content: String,
     val authorId: String,
+    val authorUsername: String,
+    val authorAvatar: String,
     val videoId: String)

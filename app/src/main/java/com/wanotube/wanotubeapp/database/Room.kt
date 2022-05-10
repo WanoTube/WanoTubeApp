@@ -49,7 +49,7 @@ interface CommentDao {
     fun insert(comment: DatabaseComment)
 }
 
-@Database(entities = [DatabaseVideo::class, DatabaseAccount::class, DatabaseComment::class], version = 3, exportSchema = false)
+@Database(entities = [DatabaseVideo::class, DatabaseAccount::class, DatabaseComment::class], version = 4, exportSchema = false)
 abstract class AppDatabase: RoomDatabase() {
     abstract val videoDao: VideoDao
     abstract val accountDao: AccountDao
@@ -70,7 +70,7 @@ fun getDatabase(context: Context): AppDatabase {
         }
     }
 
-    val MIGRATION_2_3: Migration = object : Migration(1,2) {
+    val MIGRATION_2_3: Migration = object : Migration(2,3) {
         override fun migrate(database: SupportSQLiteDatabase) {
             database.execSQL("CREATE TABLE `DatabaseComment` (`id` TEXT NOT NULL, `content` TEXT NOT NULL, " +
                     "`authorId` TEXT NOT NULL," +
@@ -79,6 +79,13 @@ fun getDatabase(context: Context): AppDatabase {
 
         }
     }
+    val MIGRATION_3_4: Migration = object : Migration(3,4) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL("ALTER TABLE DatabaseComment ADD COLUMN authorUsername TEXT")
+            database.execSQL("ALTER TABLE DatabaseComment ADD COLUMN authorAvatar TEXT")
+        }
+    }
+    
     synchronized(AppDatabase::class.java) {
         if (!::INSTANCE.isInitialized) {
             INSTANCE = Room.databaseBuilder(context.applicationContext,
@@ -86,7 +93,7 @@ fun getDatabase(context: Context): AppDatabase {
                     "videos")
                 .fallbackToDestructiveMigration()
                 .allowMainThreadQueries()
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
                 .build()
         }
     }

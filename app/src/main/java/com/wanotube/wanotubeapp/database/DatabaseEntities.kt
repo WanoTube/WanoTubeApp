@@ -66,6 +66,8 @@ data class DatabaseComment constructor(
     val id: String,
     val content: String,
     val authorId: String,
+    val authorUsername: String? = "",
+    val authorAvatar: String? = "",
     val videoId: String)
 
 /**
@@ -155,6 +157,8 @@ fun List<DatabaseComment>.asDomainModel(): List<Comment> {
             id = it.id,
             authorId = it.authorId,
             videoId = it.videoId,
+            authorUsername = it.authorUsername.toString(),
+            authorAvatar = it.authorAvatar.toString(),
             content = it.content)
     }
 }
@@ -164,6 +168,8 @@ fun DatabaseComment.asDomainModel(): Comment {
         id = id,
         authorId = authorId,
         videoId = videoId,
-        content = content
+        content = content,
+        authorUsername = authorUsername.toString(),
+        authorAvatar = authorAvatar.toString()
     )
 }
