@@ -8,7 +8,6 @@ import com.wanotube.wanotubeapp.database.asDomainModel
 import com.wanotube.wanotubeapp.domain.Comment
 import com.wanotube.wanotubeapp.network.ICommentService
 import com.wanotube.wanotubeapp.network.NetworkComment
-import com.wanotube.wanotubeapp.network.NetworkCommentContainer
 import com.wanotube.wanotubeapp.network.ServiceGenerator
 import com.wanotube.wanotubeapp.network.asDatabaseModel
 import com.wanotube.wanotubeapp.network.authentication.AuthPreferences

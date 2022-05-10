@@ -14,7 +14,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.TypedValue
 import android.view.GestureDetector
-import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
@@ -37,9 +36,6 @@ import android.widget.Toast
 import android.widget.VideoView
 import androidx.appcompat.app.ActionBar
 import androidx.lifecycle.ViewModelProvider
-import androidx.transition.Slide
-import androidx.transition.Transition
-import androidx.transition.TransitionManager
 import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.WanoTubeActivity
 import com.wanotube.wanotubeapp.WanotubeApp
@@ -133,6 +129,8 @@ class WatchActivity : WanoTubeActivity() {
     }
 
     private fun initAdapter() {
+        val videoId = intent.getStringExtra("VIDEO_ID")
+
         val viewModelFactory = CommentViewModel.CommentViewModelFactory(application)
 
         val commentViewModel =
@@ -150,15 +148,19 @@ class WatchActivity : WanoTubeActivity() {
 
         commentViewModel.comments.observe(this) {
             it?.let {
-                adapter.comments = it
+                val videos = it.filter {
+                    video ->  video.videoId == videoId
+                }
+                adapter.comments = videos
+                binding.commentTotal.text = adapter.itemCount.toString()
+                binding.totalComments.text = adapter.itemCount.toString()
             }
         }
 
-        getVideo()
+        getVideo(videoId)
     }
     
-    private fun getVideo() {
-        val videoId = intent.getStringExtra("VIDEO_ID")
+    private fun getVideo(videoId: String) {
 
         CoroutineScope(Dispatchers.IO).launch {
             val responseBodyCall = videosRepository.getVideo(videoId)
@@ -314,21 +316,6 @@ class WatchActivity : WanoTubeActivity() {
         }
     }
 
-    private fun handleCommentSection() {
-
-        firstCommentSection.setOnClickListener {
-            toggleCommentSection(true)
-        }
-
-        videoInfoView.setOnClickListener {
-            toggleCommentSection(false)
-        }
-
-        binding.closeCommentList.setOnClickListener{
-            toggleCommentSection(false)
-        }
-    }
-
     private fun handleSendComment() {
         binding.commentEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
@@ -368,9 +355,6 @@ class WatchActivity : WanoTubeActivity() {
     private fun setClickListeners() {
 
         handleVideoPlayer()
-
-        handleCommentSection()
-
         handleSendComment()
 
 //        dismissControlFrame.setOnClickListener {
@@ -383,17 +367,6 @@ class WatchActivity : WanoTubeActivity() {
 //        showImgDown.setOnClickListener{
 //            showDown()
 //        }
-    }
-
-    private fun toggleCommentSection(show: Boolean) {
-        if ((!show && commentListView.visibility == View.VISIBLE) ||
-            show && commentListView.visibility == View.GONE) {
-            val transition: Transition = Slide(Gravity.BOTTOM)
-            transition.duration = 600
-            transition.addTarget(R.id.comment_list)
-            TransitionManager.beginDelayedTransition(videoInfoView, transition)
-            commentListView.visibility = if (show) View.VISIBLE else View.GONE
-        }
     }
 
     private fun initVideo() {

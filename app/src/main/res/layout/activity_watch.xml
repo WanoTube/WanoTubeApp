@@ -306,7 +306,7 @@
                                     android:id="@+id/total_comments"
                                     android:layout_width="50dp"
                                     android:layout_height="wrap_content"
-                                    android:text="22N"/>
+                                    android:text="@string/comment_total_default"/>
                             </LinearLayout>
                             <LinearLayout
                                 android:layout_width="100dp"
@@ -368,180 +368,110 @@
                             </LinearLayout>
                         </LinearLayout>
                         <View style="@style/Divider.Horizontal"/>
+                        <ScrollView
+                            android:id="@+id/comment_list"
+                            android:visibility="visible"
+                            android:layout_marginRight="18dp"
+                            android:layout_marginLeft="18dp"
 
-                        <LinearLayout
-                            android:id="@+id/first_comment"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="16dp">
+                            android:layout_height="match_parent">
+
                             <LinearLayout
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical">
+
                                 <LinearLayout
+                                    android:id="@+id/first_comment"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:orientation="horizontal">
-                                    <TextView
+                                    android:layout_marginLeft="16dp"
+                                    android:layout_marginRight="16dp"
+                                    android:layout_marginTop="16dp">
+                                    <LinearLayout
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:textColor="@color/black"
-                                        android:text="Comments"/>
+                                        android:orientation="vertical">
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:orientation="horizontal">
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:textColor="@color/black"
+                                                android:text="@string/comments"/>
 
-                                    <TextView
-                                        android:layout_marginStart="8dp"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="94"/>
+                                            <TextView
+                                                android:id="@+id/comment_total"
+                                                android:layout_marginStart="8dp"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="@string/comment_total_default"/>
+                                        </LinearLayout>
+                                    </LinearLayout>
                                 </LinearLayout>
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_margin="8dp"
-                                    android:gravity="center"
                                     android:orientation="horizontal">
-<!--                                    -->
-<!--                                    <androidx.recyclerview.widget.RecyclerView-->
-<!--                                        android:id="@+id/all_comments"-->
-<!--                                        android:layout_width="match_parent"-->
-<!--                                        android:layout_height="match_parent"-->
-<!--                                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />-->
-
-                                </LinearLayout>
-                            </LinearLayout>
-                        </LinearLayout>
-                        <View style="@style/Divider.Horizontal.Thick"/>
-                    </LinearLayout>
-
-                </ScrollView>
-
-                <ScrollView
-                    android:id="@+id/comment_list"
-                    android:visibility="gone"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@xml/shape">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="40dp"
-                            android:layout_height="5dp"
-                            android:layout_marginTop="5dp"
-                            android:background="#E5E5E5"
-                            android:layout_gravity="center">
-
-                        </LinearLayout>
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_gravity="center"
-                            android:layout_margin="8dp">
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textSize="@dimen/title_text_size"
-                                    android:text="Comments"
-                                    android:textStyle="bold"
-                                    android:textColor="@color/black"/>
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="8dp"
-                                    android:text="2"/>
-                            </LinearLayout>
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:gravity="end">
-                                <ImageView
-                                    android:id="@+id/close_comment_list"
-                                    android:layout_width="20dp"
-                                    android:layout_height="20dp"
-                                    android:layout_gravity="center"
-                                    android:src="@drawable/ic_close"/>
-                            </LinearLayout>
-
-                        </LinearLayout>
-                        <View style="@style/Divider.Horizontal"/>
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="#EAEAEA">
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="10dp"
-                                android:textColor="@color/black"
-                                android:text="@string/comment_guidelines"/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
-                            android:orientation="horizontal">
-                            <ImageView
-                                android:layout_width="@dimen/avatar_size"
-                                android:layout_height="@dimen/avatar_size"
-                                android:layout_gravity="center"
-                                android:src="@drawable/user"/>
-                            <TableLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:stretchColumns="1"
-                                android:shrinkColumns="0"
-                                android:orientation="horizontal">
-                                <TableRow
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content">
-                                    <EditText
-                                        android:id="@+id/comment_edit_text"
-                                        android:layout_column="1"
-                                        android:layout_marginStart="8dp"
-                                        android:layout_marginEnd="8dp"
-                                        android:textSize="@dimen/normal_text_size"
-                                        android:maxLength="2000"
-                                        android:imeOptions="actionSend|flagNoEnterAction"
-                                        android:inputType="textCapSentences"
-                                        android:hint="@string/comment_placeholder">
-                                    </EditText>
                                     <ImageView
-                                        android:id="@+id/btn_send_comment"
-                                        android:visibility="gone"
                                         android:layout_width="@dimen/avatar_size"
                                         android:layout_height="@dimen/avatar_size"
                                         android:layout_gravity="center"
-                                        android:src="@drawable/ic_send_comment"/>
-                                </TableRow>
-                            </TableLayout>
+                                        android:src="@drawable/user"/>
+                                    <TableLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:stretchColumns="1"
+                                        android:shrinkColumns="0"
+                                        android:orientation="horizontal">
+                                        <TableRow
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content">
+                                            <EditText
+                                                android:id="@+id/comment_edit_text"
+                                                android:layout_column="1"
+                                                android:layout_marginStart="8dp"
+                                                android:layout_marginEnd="8dp"
+                                                android:textSize="@dimen/normal_text_size"
+                                                android:maxLength="2000"
+                                                android:imeOptions="actionSend|flagNoEnterAction"
+                                                android:inputType="textCapSentences"
+                                                android:hint="@string/comment_placeholder">
+                                            </EditText>
+                                            <ImageView
+                                                android:id="@+id/btn_send_comment"
+                                                android:visibility="gone"
+                                                android:layout_width="@dimen/avatar_size"
+                                                android:layout_height="@dimen/avatar_size"
+                                                android:layout_gravity="center"
+                                                android:src="@drawable/ic_send_comment"/>
+                                        </TableRow>
+                                    </TableLayout>
 
-                        </LinearLayout>
-                        <View style="@style/Divider.Horizontal"/>
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_margin="8dp"
-                            android:gravity="center"
-                            android:orientation="horizontal">
+                                </LinearLayout>
+                                <View style="@style/Divider.Horizontal"/>
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="8dp"
+                                    android:gravity="center"
+                                    android:orientation="horizontal">
 
-                            <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/all_comments"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-                        </LinearLayout>
+                                    <androidx.recyclerview.widget.RecyclerView
+                                        android:id="@+id/all_comments"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                                </LinearLayout>
 
 
+                            </LinearLayout>
+                        </ScrollView>
                     </LinearLayout>
                 </ScrollView>
             </RelativeLayout>

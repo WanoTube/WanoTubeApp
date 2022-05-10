@@ -32,10 +32,13 @@ class WatchAdapter : RecyclerView.Adapter<WatchAdapter.ViewHolder>() {
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView){
 
         private val commentContentView: TextView = itemView.findViewById(R.id.comment_content)
+        private val authorNameView: TextView = itemView.findViewById(R.id.author_name)
+
         private val avatarView: ImageView = itemView.findViewById(R.id.avatar)
 
         fun bind(item: Comment) {
             commentContentView.text = item.content
+            authorNameView.text = item.authorId
             
 //            Glide.with(avatarView.context)
 //                .load(item.thumbnail)
