@@ -1,53 +1,17 @@
 package com.wanotube.wanotubeapp.database
 
-
 import android.content.Context
-import androidx.lifecycle.LiveData
-import androidx.room.Dao
 import androidx.room.Database
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-
-@Dao
-interface VideoDao {
-    @Query("SELECT * FROM DatabaseVideo")
-    fun getVideos(): LiveData<List<DatabaseVideo>>
-
-    @Query("SELECT * FROM DatabaseVideo WHERE authorId =:userId")
-    fun getAllVideoByAuthorId(userId: String): LiveData<List<DatabaseVideo>> //userId not channelId
-
-    @Query("SELECT * FROM DatabaseVideo WHERE authorId =:userId AND visibility = 0")
-    fun getAllPublicVideoByAuthorId(userId: String): LiveData<List<DatabaseVideo>> //userId not channelId
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(videos: List<DatabaseVideo>)
-}
-
-@Dao
-interface AccountDao {
-    @Query("SELECT * FROM DatabaseAccount")
-    fun getAccounts(): LiveData<List<DatabaseAccount>>
-
-    @Query("SELECT * FROM DatabaseAccount WHERE id =:id")
-    fun getAccount(id: String): LiveData<List<DatabaseAccount>>
-
-    @Insert(onConflict = OnConflictStrategy.IGNORE) //TODO: Check this
-    fun insert(account: DatabaseAccount)
-}
-
-@Dao
-interface CommentDao {
-    @Query("SELECT * FROM DatabaseComment")
-    fun getComments(): LiveData<List<DatabaseComment>>
-    
-    @Insert(onConflict = OnConflictStrategy.IGNORE) //TODO: Check this
-    fun insert(comment: DatabaseComment)
-}
+import com.wanotube.wanotubeapp.database.dao.AccountDao
+import com.wanotube.wanotubeapp.database.dao.CommentDao
+import com.wanotube.wanotubeapp.database.dao.VideoDao
+import com.wanotube.wanotubeapp.database.entity.DatabaseAccount
+import com.wanotube.wanotubeapp.database.entity.DatabaseComment
+import com.wanotube.wanotubeapp.database.entity.DatabaseVideo
 
 @Database(entities = [DatabaseVideo::class, DatabaseAccount::class, DatabaseComment::class], version = 4, exportSchema = false)
 abstract class AppDatabase: RoomDatabase() {

@@ -2,7 +2,7 @@ package com.wanotube.wanotubeapp.util
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson
-import com.wanotube.wanotubeapp.database.DatabaseAccount
+import com.wanotube.wanotubeapp.database.entity.DatabaseAccount
 
 class SourceTypeConverters {
 

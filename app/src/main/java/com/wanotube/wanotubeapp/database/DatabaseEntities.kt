@@ -2,73 +2,16 @@ package com.wanotube.wanotubeapp.database
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.wanotube.wanotubeapp.database.entity.DatabaseAccount
+import com.wanotube.wanotubeapp.database.entity.DatabaseComment
+import com.wanotube.wanotubeapp.database.entity.DatabaseUser
+import com.wanotube.wanotubeapp.database.entity.DatabaseVideo
 import com.wanotube.wanotubeapp.domain.Account
 import com.wanotube.wanotubeapp.domain.Comment
 import com.wanotube.wanotubeapp.domain.User
 import com.wanotube.wanotubeapp.domain.Video
 import com.wanotube.wanotubeapp.util.convertStringToDate
 import java.util.Date
-
-/**
- * Database entities go in this file. These are responsible for reading and writing
- * from the database.
- */
-
-
-/**
- * DatabaseVideo represents a video entity in the database
- */
-@Entity
-data class DatabaseVideo constructor(
-    @PrimaryKey
-    val id: String,
-    val url: String,
-    val title: String,
-    val description: String,
-    val thumbnail: String,
-    val size: Long,
-    val totalViews: Long,
-    val totalLikes: Long,
-    val totalComments: Long,
-    val visibility: Int,
-    val duration: Int,
-    val authorId: String,
-    val type: String,
-    val createdAt: String,
-    val updatedAt: String
-)
-
-@Entity
-data class DatabaseUser constructor(
-    @PrimaryKey
-    val id: String,
-    val firstName: String,
-    val lastName: String,
-    val gender: String,
-    val birthDate: Date,
-    val phoneNumber: String,
-    val country: String,
-    val avatar: String,
-    val description: String)
-
-@Entity
-data class DatabaseAccount constructor(
-    @PrimaryKey
-    val id: String,
-    val username: String,
-    val isAdmin: Boolean,
-    var avatar: String,
-    val userId: String)
-
-@Entity
-data class DatabaseComment constructor(
-    @PrimaryKey
-    val id: String,
-    val content: String,
-    val authorId: String,
-    val authorUsername: String? = "",
-    val authorAvatar: String? = "",
-    val videoId: String)
 
 /**
  * Map DatabaseVideos to domain entities

@@ -1,9 +1,9 @@
 package com.wanotube.wanotubeapp.network
 
-import com.wanotube.wanotubeapp.database.DatabaseAccount
-import com.wanotube.wanotubeapp.database.DatabaseComment
-import com.wanotube.wanotubeapp.database.DatabaseUser
-import com.wanotube.wanotubeapp.database.DatabaseVideo
+import com.wanotube.wanotubeapp.database.entity.DatabaseAccount
+import com.wanotube.wanotubeapp.database.entity.DatabaseComment
+import com.wanotube.wanotubeapp.database.entity.DatabaseUser
+import com.wanotube.wanotubeapp.database.entity.DatabaseVideo
 import com.wanotube.wanotubeapp.network.objects.NetworkAccount
 import com.wanotube.wanotubeapp.network.objects.NetworkComment
 import com.wanotube.wanotubeapp.network.objects.NetworkCommentContainer
