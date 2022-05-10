@@ -356,6 +356,7 @@ class WatchActivity : WanoTubeActivity() {
 
         handleVideoPlayer()
         handleSendComment()
+        handleLike()
 
 //        dismissControlFrame.setOnClickListener {
 //            dismissControls()
@@ -369,6 +370,12 @@ class WatchActivity : WanoTubeActivity() {
 //        }
     }
 
+    private fun handleLike() {
+        binding.likeButton.setOnClickListener { 
+            
+        }
+    }
+    
     private fun initVideo() {
         binding.title.text = currentVideo?.title
         binding.subtitle.text = currentVideo?.totalViews.toString() + " views"
