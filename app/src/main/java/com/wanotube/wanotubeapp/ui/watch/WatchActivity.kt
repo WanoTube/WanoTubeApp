@@ -35,6 +35,7 @@ import android.widget.TextView
 import android.widget.Toast
 import android.widget.VideoView
 import androidx.appcompat.app.ActionBar
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.WanoTubeActivity
@@ -47,6 +48,7 @@ import com.wanotube.wanotubeapp.domain.User
 import com.wanotube.wanotubeapp.domain.Video
 import com.wanotube.wanotubeapp.network.objects.NetworkVideoWatch
 import com.wanotube.wanotubeapp.network.asDatabaseModel
+import com.wanotube.wanotubeapp.repository.ChannelRepository
 import com.wanotube.wanotubeapp.repository.CommentRepository
 import com.wanotube.wanotubeapp.repository.VideosRepository
 import com.wanotube.wanotubeapp.util.Constant
@@ -54,6 +56,7 @@ import com.wanotube.wanotubeapp.viewmodels.CommentViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -90,6 +93,7 @@ class WatchActivity : WanoTubeActivity() {
 
     private lateinit var videosRepository: VideosRepository
     private lateinit var commentRepository: CommentRepository
+    private lateinit var channelRepository: ChannelRepository
 
     private lateinit var adapter: CommentAdapter
     
@@ -102,6 +106,7 @@ class WatchActivity : WanoTubeActivity() {
     private var videoId = ""
 
     private var check = 0
+    private var isVideoInsertedToDB = false
     private val isMaximise = true
     private var countdownTimer: CountDownTimer? = null
 
@@ -109,7 +114,8 @@ class WatchActivity : WanoTubeActivity() {
         super.onCreate(savedInstanceState)
         videosRepository = VideosRepository(getDatabase(application))
         commentRepository = CommentRepository(getDatabase(application))
-        
+        channelRepository = ChannelRepository(getDatabase(application))
+
         binding = ActivityWatchBinding.inflate(layoutInflater)
         setContentView(binding.root)
         
@@ -120,6 +126,7 @@ class WatchActivity : WanoTubeActivity() {
         initialiseSeekBar()
         setHandler()
         initAdapter()
+        getVideo()
     }
 
     override fun customActionBar() {
@@ -157,12 +164,9 @@ class WatchActivity : WanoTubeActivity() {
                 binding.totalComments.text = adapter.itemCount.toString()
             }
         }
-
-        getVideo()
     }
     
     private fun getVideo() {
-
         CoroutineScope(Dispatchers.IO).launch {
             val responseBodyCall = videosRepository.getVideo(videoId)
             responseBodyCall?.enqueue(object : Callback<NetworkVideoWatch> {
@@ -172,7 +176,15 @@ class WatchActivity : WanoTubeActivity() {
                 ) {
                     if (response != null) {
                         if (response.code() == 200) {
-                            currentVideo = response.body()?.asDatabaseModel()?.asDomainModel()
+                            val videoDatabase = response.body()?.asDatabaseModel()
+                            currentVideo = videoDatabase?.asDomainModel()
+                            if (!isVideoInsertedToDB) {
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    videosRepository.insertVideoToDatabase(videoDatabase!!)
+                                }
+                                isVideoInsertedToDB = true
+                            }
+                            
                             channelId = response.body()?.user?.channelId.toString()
                             username = response.body()?.user?.username.toString()
                             currentUser = response.body()?.user?.doc?.user?.asDatabaseModel()?.asDomainModel()
@@ -374,6 +386,23 @@ class WatchActivity : WanoTubeActivity() {
     private fun handleLike() {
         binding.likeButton.setOnClickListener { 
             videosRepository.likeVideo(videoId)
+        }
+
+        val observeOwner = this
+        CoroutineScope(Dispatchers.IO).launch {
+            val video = videosRepository.getVideoFromDatabase(videoId)
+            withContext(Dispatchers.Main) {
+                video.observe(observeOwner) { video -> 
+                    if (video != null) {
+                        if (isVideoInsertedToDB) {
+//                            Timber.e("Ngan %s", "video: $video")
+                            binding.totalLikes.text = video.totalLikes.toString()
+                        }
+                    } else {
+                        isVideoInsertedToDB = false
+                    }
+                }
+            }
         }
     }
     

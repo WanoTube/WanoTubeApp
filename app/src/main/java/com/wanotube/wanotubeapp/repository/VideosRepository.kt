@@ -7,6 +7,7 @@ import androidx.lifecycle.Transformations
 import com.wanotube.wanotubeapp.WanotubeApp.Companion.context
 import com.wanotube.wanotubeapp.database.AppDatabase
 import com.wanotube.wanotubeapp.database.asDomainModel
+import com.wanotube.wanotubeapp.database.entity.DatabaseVideo
 import com.wanotube.wanotubeapp.domain.Video
 import com.wanotube.wanotubeapp.network.objects.NetworkVideo
 import com.wanotube.wanotubeapp.network.objects.NetworkVideoContainer
@@ -79,6 +80,10 @@ class VideosRepository(private val database: AppDatabase) {
         val videoService: IVideoService? =
             ServiceGenerator.createService(IVideoService::class.java)
         return videoService?.getVideo(videoId)
+    }
+    
+    fun insertVideoToDatabase(video: DatabaseVideo) {
+        database.videoDao.insert(video)
     }
     
     private fun setDuration(file: File): Int {
@@ -178,12 +183,10 @@ class VideosRepository(private val database: AppDatabase) {
                 response: Response<NetworkVideo?>?
             ) {
                 val videoModel = response?.body()?.asDatabaseModel()
+                Timber.e("Ngan: videoModel.totalLikes: %s", videoModel?.totalLikes)
                 CoroutineScope(Dispatchers.IO).launch {
                     if (videoModel != null) {
-                        database.videoDao.insert(videoModel)
-//                        withContext(Dispatchers.Main) {
-//                            adapter.notifyDataSetChanged()
-//                        }
+                        database.videoDao.likeVideo(videoModel.totalLikes, videoModel.id)
                     }
                 }
             }
@@ -195,6 +198,10 @@ class VideosRepository(private val database: AppDatabase) {
     
     fun clearVideos() {
         database.videoDao.clearVideos()
+    }
+    
+    fun getVideoFromDatabase(videoId: String): LiveData<DatabaseVideo> {
+        return database.videoDao.getVideo(videoId)
     }
     
     companion object {

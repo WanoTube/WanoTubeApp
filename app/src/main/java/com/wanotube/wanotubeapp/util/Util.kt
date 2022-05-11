@@ -63,7 +63,7 @@ fun stringForTime(timeMs: Float): String {
 fun convertStringToDate(dateString: String?): Date {
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     var strDate = dateString
-    if (dateString == null)
+    if (dateString == "")
         strDate = LocalDateTime.now().format(formatter)
     return SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH).parse(strDate)
 }

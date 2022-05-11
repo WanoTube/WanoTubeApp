@@ -10,6 +10,9 @@ import com.wanotube.wanotubeapp.database.entity.DatabaseVideo
 
 @Dao
 interface VideoDao {
+    @Query("SELECT * FROM DatabaseVideo WHERE id=:videoId")
+    fun getVideo(videoId: String): LiveData<DatabaseVideo>
+
     @Query("SELECT * FROM DatabaseVideo")
     fun getVideos(): LiveData<List<DatabaseVideo>>
 
@@ -19,12 +22,15 @@ interface VideoDao {
     @Query("SELECT * FROM DatabaseVideo WHERE authorId =:userId AND visibility = 0")
     fun getAllPublicVideoByAuthorId(userId: String): LiveData<List<DatabaseVideo>> //userId not channelId
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertAll(videos: List<DatabaseVideo>)
     
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(video: DatabaseVideo)
     
     @Query("DELETE FROM DatabaseVideo")
     fun clearVideos()
+    
+    @Query("UPDATE DatabaseVideo SET totalLikes=:totalLikes WHERE id=:videoId")
+    fun likeVideo(totalLikes: Long, videoId: String)
 }
