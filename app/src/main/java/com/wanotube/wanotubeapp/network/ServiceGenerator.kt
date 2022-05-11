@@ -2,9 +2,7 @@ package com.wanotube.wanotubeapp.network
 
 import android.text.TextUtils
 import com.wanotube.wanotubeapp.network.authentication.AuthenticationInterceptor
-import com.wanotube.wanotubeapp.util.Constant.BASE_URL
-import com.wanotube.wanotubeapp.util.Constant.PORT
-import com.wanotube.wanotubeapp.util.Constant.VERSION
+import com.wanotube.wanotubeapp.util.Constant.FULL_URL
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -15,7 +13,7 @@ import java.util.concurrent.TimeUnit
 
 object ServiceGenerator {
     private val builder = Retrofit.Builder()
-        .baseUrl("$BASE_URL:$PORT$VERSION/")
+        .baseUrl(FULL_URL)
         .addConverterFactory(GsonConverterFactory.create())
     
     private var retrofit = builder.build()

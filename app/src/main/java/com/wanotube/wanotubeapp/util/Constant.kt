@@ -5,5 +5,12 @@ object Constant {
     const val BASE_URL = "http://localhost"
     const val PORT = 8000
     const val VERSION = "/v1"
+
+    const val FULL_URL = "${BASE_URL}:${PORT}${VERSION}/"
+    const val URL = "${BASE_URL}:${PORT}/"
+
+//    const val FULL_URL = "https://api.demo.o-redsky.xyz/v1/"
+//    const val URL = FULL_URL
+    
     const val TIME_OUT = 2500L
 }

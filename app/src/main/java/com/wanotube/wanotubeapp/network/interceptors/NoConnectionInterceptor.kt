@@ -7,7 +7,7 @@ import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
 import com.wanotube.wanotubeapp.WanotubeApp.Companion.context
-import com.wanotube.wanotubeapp.util.Constant
+import com.wanotube.wanotubeapp.util.Constant.FULL_URL
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.io.IOException
@@ -63,7 +63,7 @@ class NoConnectionInterceptor: Interceptor {
 
     private fun isServerAvailable(): Boolean {
         return try {
-            val ipAddr = InetAddress.getByName("${Constant.BASE_URL}:${Constant.PORT}${Constant.VERSION}/")
+            val ipAddr = InetAddress.getByName(FULL_URL)
             !ipAddr.equals("")
         } catch (e: Exception) {
             false
