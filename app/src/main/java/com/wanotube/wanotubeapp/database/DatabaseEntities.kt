@@ -2,73 +2,21 @@ package com.wanotube.wanotubeapp.database
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.wanotube.wanotubeapp.database.entity.DatabaseAccount
+import com.wanotube.wanotubeapp.database.entity.DatabaseComment
+import com.wanotube.wanotubeapp.database.entity.DatabaseUser
+import com.wanotube.wanotubeapp.database.entity.DatabaseVideo
 import com.wanotube.wanotubeapp.domain.Account
+import com.wanotube.wanotubeapp.domain.Comment
+import com.wanotube.wanotubeapp.domain.User
 import com.wanotube.wanotubeapp.domain.Video
 import com.wanotube.wanotubeapp.util.convertStringToDate
 import java.util.Date
 
 /**
- * Database entities go in this file. These are responsible for reading and writing
- * from the database.
- */
-
-
-/**
- * DatabaseVideo represents a video entity in the database
- */
-@Entity
-data class DatabaseVideo constructor(
-    @PrimaryKey
-    val id: String,
-    val url: String,
-    val title: String,
-    val description: String,
-    val thumbnail: String,
-    val size: Long,
-    val totalViews: Long,
-    val totalLikes: Long,
-    val totalComments: Long,
-    val visibility: Int,
-    val duration: Int,
-    val authorId: String,
-    val type: String,
-    val createdAt: String,
-    val updatedAt: String
-)
-
-@Entity
-data class DatabaseUser constructor(
-    @PrimaryKey
-    val id: String,
-    val firstName: String,
-    val lastName: String,
-    val gender: String,
-    val birthDate: Date,
-    val phoneNumber: String,
-    val country: String,
-    val avatar: String,
-    val description: String)
-
-@Entity
-data class DatabaseAccount constructor(
-    @PrimaryKey
-    val id: String,
-    val username: String,
-    val isAdmin: Boolean,
-    val avatar: String,
-    val channelId: String)
-
-@Entity
-data class DatabaseComment constructor(
-    @PrimaryKey
-    val id: String,
-    val content: String,
-    val authorId: String,
-    val videoId: String)
-
-/**
  * Map DatabaseVideos to domain entities
  */
+@JvmName("asDomainModelDatabaseVideo")
 fun List<DatabaseVideo>.asDomainModel(): List<Video> {
     return map {
         Video(
@@ -115,6 +63,56 @@ fun DatabaseAccount.asDomainModel(): Account {
         username = username,
         isAdmin = isAdmin,
         avatar = avatar,
-        channelId = channelId
+        userId = userId
+    )
+}
+
+@JvmName("asDomainModelDatabaseAccount")
+fun List<DatabaseAccount>.asDomainModel(): List<Account> {
+    return map {
+        Account(
+            id = it.id,
+            username = it.username,
+            isAdmin = it.isAdmin,
+            avatar = it.avatar,
+            userId = it.userId
+        )
+    }
+}
+
+fun DatabaseUser.asDomainModel(): User {
+    return User(
+        id = id,
+        firstName = firstName,
+        lastName = lastName,
+        gender = gender,
+        birthDate = birthDate,
+        phoneNumber = phoneNumber,
+        country = country,
+        description = ""
+    )
+}
+
+@JvmName("asDomainModelDatabaseComment")
+fun List<DatabaseComment>.asDomainModel(): List<Comment> {
+    return map {
+        Comment(
+            id = it.id,
+            authorId = it.authorId,
+            videoId = it.videoId,
+            authorUsername = it.authorUsername.toString(),
+            authorAvatar = it.authorAvatar.toString(),
+            content = it.content)
+    }
+}
+
+fun DatabaseComment.asDomainModel(): Comment {
+    return Comment(
+        id = id,
+        authorId = authorId,
+        videoId = videoId,
+        content = content,
+        authorUsername = authorUsername.toString(),
+        authorAvatar = authorAvatar.toString()
     )
 }

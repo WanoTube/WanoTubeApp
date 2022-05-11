@@ -46,18 +46,19 @@ data class User (
     val birthDate: Date,
     val phoneNumber: String,
     val country: String,
-    val description: String) {
-}
+    val description: String)
 
 data class Account (
     val id: String,
     val username: String,
     val isAdmin: Boolean,
     val avatar: String,
-    val channelId: String) {}
+    val userId: String)
 
 data class Comment (
     val id: String,
     val content: String,
     val authorId: String,
+    val authorUsername: String,
+    val authorAvatar: String,
     val videoId: String)

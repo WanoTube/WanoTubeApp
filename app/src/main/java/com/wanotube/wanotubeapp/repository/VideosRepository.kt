@@ -7,15 +7,18 @@ import androidx.lifecycle.Transformations
 import com.wanotube.wanotubeapp.WanotubeApp.Companion.context
 import com.wanotube.wanotubeapp.database.AppDatabase
 import com.wanotube.wanotubeapp.database.asDomainModel
+import com.wanotube.wanotubeapp.database.entity.DatabaseVideo
 import com.wanotube.wanotubeapp.domain.Video
-import com.wanotube.wanotubeapp.network.NetworkVideo
-import com.wanotube.wanotubeapp.network.NetworkVideoContainer
+import com.wanotube.wanotubeapp.network.objects.NetworkVideo
+import com.wanotube.wanotubeapp.network.objects.NetworkVideoContainer
 import com.wanotube.wanotubeapp.network.ServiceGenerator
-import com.wanotube.wanotubeapp.network.IVideoService
+import com.wanotube.wanotubeapp.network.services.IVideoService
+import com.wanotube.wanotubeapp.network.objects.NetworkVideoWatch
 import com.wanotube.wanotubeapp.network.asDatabaseModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -30,6 +33,7 @@ import java.io.File
  * Repository for fetching wanotube videos from the network and storing them on disk
  */
 class VideosRepository(private val database: AppDatabase) {
+    //All public videos
     val videos: LiveData<List<Video>> = Transformations.map(database.videoDao.getVideos()) {
         it.asDomainModel()
     }
@@ -42,7 +46,7 @@ class VideosRepository(private val database: AppDatabase) {
      * function is now safe to call from any thread including the Main thread.
      *
      */
-    fun refreshVideos() {
+    fun refreshVideos(channelRepository: ChannelRepository) {
         CoroutineScope(Dispatchers.IO).launch {
             val videoService: IVideoService? =
                 ServiceGenerator.createService(IVideoService::class.java)
@@ -56,6 +60,11 @@ class VideosRepository(private val database: AppDatabase) {
                     val videoModel = response?.body()?.asDatabaseModel()
                     CoroutineScope(Dispatchers.IO).launch {
                         if (videoModel != null) {
+                            withContext(Dispatchers.Main) {
+                                videoModel.forEach {
+                                    channelRepository.addChannelByUserId(it.authorId)
+                                }
+                            }
                             database.videoDao.insertAll(videoModel)
                         }
                     }
@@ -67,10 +76,14 @@ class VideosRepository(private val database: AppDatabase) {
         }
     }
     
-    fun getVideo(videoId: String): Call<NetworkVideo>? {
+    fun getVideo(videoId: String): Call<NetworkVideoWatch>? {
         val videoService: IVideoService? =
             ServiceGenerator.createService(IVideoService::class.java)
         return videoService?.getVideo(videoId)
+    }
+    
+    fun insertVideoToDatabase(video: DatabaseVideo) {
+        database.videoDao.insert(video)
     }
     
     private fun setDuration(file: File): Int {
@@ -130,8 +143,7 @@ class VideosRepository(private val database: AppDatabase) {
             type
         )
     }
-
-
+    
     fun updateVideo(id: String,
                     title: String,
                     description: String,
@@ -158,6 +170,37 @@ class VideosRepository(private val database: AppDatabase) {
             sizeBody,
             durationBody,
             visibilityBody)
+    }
+
+    fun likeVideo(targetId: String) {
+        val targetIdBody = MultipartBody.Part.createFormData("target_id", targetId)
+        val videoService: IVideoService? =
+            ServiceGenerator.createService(IVideoService::class.java)
+        val response = videoService?.likeVideo(targetIdBody)
+        response?.enqueue(object : Callback<NetworkVideo> {
+            override fun onResponse(
+                call: Call<NetworkVideo>?,
+                response: Response<NetworkVideo?>?
+            ) {
+                val videoModel = response?.body()?.asDatabaseModel()
+                CoroutineScope(Dispatchers.IO).launch {
+                    if (videoModel != null) {
+                        database.videoDao.likeVideo(videoModel.totalLikes, videoModel.id)
+                    }
+                }
+            }
+            override fun onFailure(call: Call<NetworkVideo>?, t: Throwable?) {
+                Timber.e("Failed: error: %s", t.toString())
+            }
+        })
+    }
+    
+    fun clearVideos() {
+        database.videoDao.clearVideos()
+    }
+    
+    fun getVideoFromDatabase(videoId: String): LiveData<DatabaseVideo> {
+        return database.videoDao.getVideo(videoId)
     }
     
     companion object {

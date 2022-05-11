@@ -1,6 +1,6 @@
 package com.wanotube.wanotubeapp.network.authentication
 
-import com.wanotube.wanotubeapp.network.LoginResult
+import com.wanotube.wanotubeapp.network.objects.LoginResult
 import retrofit2.Call
 
 interface IAuthenticatorService {

@@ -11,7 +11,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.wanotube.wanotubeapp.MainActivity
 import com.wanotube.wanotubeapp.R
-import com.wanotube.wanotubeapp.network.LoginResult
+import com.wanotube.wanotubeapp.network.objects.LoginResult
 import com.wanotube.wanotubeapp.network.authentication.AccountUtils
 import com.wanotube.wanotubeapp.network.authentication.AuthPreferences
 import kotlinx.coroutines.CoroutineScope

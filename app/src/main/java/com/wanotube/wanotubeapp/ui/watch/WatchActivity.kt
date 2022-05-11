@@ -14,7 +14,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.TypedValue
 import android.view.GestureDetector
-import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
@@ -36,25 +35,29 @@ import android.widget.TextView
 import android.widget.Toast
 import android.widget.VideoView
 import androidx.appcompat.app.ActionBar
+import androidx.core.app.ShareCompat
 import androidx.lifecycle.ViewModelProvider
-import androidx.transition.Slide
-import androidx.transition.Transition
-import androidx.transition.TransitionManager
 import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.WanoTubeActivity
 import com.wanotube.wanotubeapp.WanotubeApp
 import com.wanotube.wanotubeapp.database.asDomainModel
 import com.wanotube.wanotubeapp.database.getDatabase
 import com.wanotube.wanotubeapp.databinding.ActivityWatchBinding
+import com.wanotube.wanotubeapp.domain.Account
+import com.wanotube.wanotubeapp.domain.User
 import com.wanotube.wanotubeapp.domain.Video
-import com.wanotube.wanotubeapp.network.NetworkVideo
+import com.wanotube.wanotubeapp.network.objects.NetworkVideoWatch
 import com.wanotube.wanotubeapp.network.asDatabaseModel
+import com.wanotube.wanotubeapp.repository.ChannelRepository
+import com.wanotube.wanotubeapp.repository.CommentRepository
 import com.wanotube.wanotubeapp.repository.VideosRepository
 import com.wanotube.wanotubeapp.util.Constant
-import com.wanotube.wanotubeapp.viewmodels.WanoTubeViewModel
+import com.wanotube.wanotubeapp.util.Constant.PRODUCTION_WEB_URL
+import com.wanotube.wanotubeapp.viewmodels.CommentViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -62,7 +65,6 @@ import timber.log.Timber
 
 class WatchActivity : WanoTubeActivity() {
     private lateinit var binding: ActivityWatchBinding
-    private lateinit var videosRepository: VideosRepository
     private lateinit var videoLayout: RelativeLayout
     private lateinit var videoView: VideoView
     private lateinit var forwardImg: ImageView
@@ -89,16 +91,31 @@ class WatchActivity : WanoTubeActivity() {
     private lateinit var firstCommentSection: LinearLayout
     private lateinit var commentListView: ScrollView
     private lateinit var videoInfoView: ScrollView
+
+    private lateinit var videosRepository: VideosRepository
+    private lateinit var commentRepository: CommentRepository
+    private lateinit var channelRepository: ChannelRepository
+
+    private lateinit var adapter: CommentAdapter
     
     private var currentVideo: Video? = null
-    
+    private var currentUser: User? = null
+    private var currentAccount: Account? = null
+
+    private var channelId = ""
+    private var username = ""
+    private var videoId = ""
+
     private var check = 0
+    private var isVideoInsertedToDB = false
     private val isMaximise = true
     private var countdownTimer: CountDownTimer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         videosRepository = VideosRepository(getDatabase(application))
+        commentRepository = CommentRepository(getDatabase(application))
+        channelRepository = ChannelRepository(getDatabase(application))
 
         binding = ActivityWatchBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -110,6 +127,7 @@ class WatchActivity : WanoTubeActivity() {
         initialiseSeekBar()
         setHandler()
         initAdapter()
+        getVideo()
     }
 
     override fun customActionBar() {
@@ -120,44 +138,57 @@ class WatchActivity : WanoTubeActivity() {
     }
 
     private fun initAdapter() {
-        val viewModelFactory = WanoTubeViewModel.WanoTubeViewModelFactory(application)
+        videoId = intent.getStringExtra("VIDEO_ID")
 
-        val videoViewModel =
+        val viewModelFactory = CommentViewModel.CommentViewModelFactory(application)
+
+        val commentViewModel =
             ViewModelProvider(
                 this, viewModelFactory
-            ).get(WanoTubeViewModel::class.java)
+            ).get(CommentViewModel::class.java)
 
-        binding.videoViewModel = videoViewModel
+        binding.commentViewModel = commentViewModel
 
-        val adapter = WatchAdapter()
+        adapter = CommentAdapter()
 
-        binding.recommendVideoList.adapter = adapter
+        binding.allComments.adapter = adapter
 
         binding.lifecycleOwner = this
-        
-        videoViewModel.playlist.observe(this) {
+
+        commentViewModel.comments.observe(this) {
             it?.let {
-                adapter.data = it
+                val videos = it.filter {
+                    video ->  video.videoId == videoId
+                }
+                adapter.comments = videos
+                binding.commentTotal.text = adapter.itemCount.toString()
+                binding.totalComments.text = adapter.itemCount.toString()
             }
         }
-
-        getVideo()
     }
     
     private fun getVideo() {
-        val videoId = intent.getStringExtra("VIDEO_ID")
-
         CoroutineScope(Dispatchers.IO).launch {
             val responseBodyCall = videosRepository.getVideo(videoId)
-            responseBodyCall?.enqueue(object : Callback<NetworkVideo> {
+            responseBodyCall?.enqueue(object : Callback<NetworkVideoWatch> {
                 override fun onResponse(
-                    call: Call<NetworkVideo>?,
-                    response: Response<NetworkVideo?>?
+                    call: Call<NetworkVideoWatch>?,
+                    response: Response<NetworkVideoWatch?>?
                 ) {
                     if (response != null) {
                         if (response.code() == 200) {
-                            currentVideo = response.body()?.asDatabaseModel()?.asDomainModel()
-                            Timber.e("currentVideo: %s", currentVideo)
+                            val videoDatabase = response.body()?.asDatabaseModel()
+                            currentVideo = videoDatabase?.asDomainModel()
+                            if (!isVideoInsertedToDB) {
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    videosRepository.insertVideoToDatabase(videoDatabase!!)
+                                }
+                                isVideoInsertedToDB = true
+                            }
+                            
+                            channelId = response.body()?.user?.channelId.toString()
+                            username = response.body()?.user?.username.toString()
+                            currentUser = response.body()?.user?.doc?.user?.asDatabaseModel()?.asDomainModel()
                             if (currentVideo != null)
                                 initVideo()
                         } else {
@@ -165,7 +196,7 @@ class WatchActivity : WanoTubeActivity() {
                         }
                     }
                 }
-                override fun onFailure(call: Call<NetworkVideo>?, t: Throwable?) {
+                override fun onFailure(call: Call<NetworkVideoWatch>?, t: Throwable?) {
                     Timber.e("Failed: error: %s", t.toString())
                 }
             })
@@ -299,21 +330,6 @@ class WatchActivity : WanoTubeActivity() {
         }
     }
 
-    private fun handleCommentSection() {
-
-        firstCommentSection.setOnClickListener {
-            toggleCommentSection(true)
-        }
-
-        videoInfoView.setOnClickListener {
-            toggleCommentSection(false)
-        }
-
-        binding.closeCommentList.setOnClickListener{
-            toggleCommentSection(false)
-        }
-    }
-
     private fun handleSendComment() {
         binding.commentEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
@@ -329,28 +345,33 @@ class WatchActivity : WanoTubeActivity() {
         })
 
         binding.btnSendComment.setOnClickListener {
-            val commentText = binding.commentEditText.text.toString()
-            binding.commentEditText.text.clear()
+            if (checkTokenAvailable()) {
+                val commentText = binding.commentEditText.text.toString()
+                binding.commentEditText.text.clear()
+                currentVideo?.id?.let { videoId ->
+                    commentRepository.sendComment(commentText, videoId, adapter)
+                }
 
-            Toast.makeText(this, commentText, Toast.LENGTH_SHORT).show()
+                binding.btnSendComment.visibility = View.GONE
 
-            binding.btnSendComment.visibility = View.GONE
+                applicationContext?.let { it1 -> hideKeyboardFrom(
+                    it1,
+                    binding.commentEditText
+                ) }
 
-            applicationContext?.let { it1 -> hideKeyboardFrom(
-                it1,
-                binding.commentEditText
-            ) }
-
+            } else {
+                openLoginActivity()
+            }
+            
         }
     }
 
     private fun setClickListeners() {
 
         handleVideoPlayer()
-
-        handleCommentSection()
-
         handleSendComment()
+        handleLike()
+        handleShare()
 
 //        dismissControlFrame.setOnClickListener {
 //            dismissControls()
@@ -364,22 +385,42 @@ class WatchActivity : WanoTubeActivity() {
 //        }
     }
 
-    private fun toggleCommentSection(show: Boolean) {
-        if ((!show && commentListView.visibility == View.VISIBLE) ||
-            show && commentListView.visibility == View.GONE) {
-            val transition: Transition = Slide(Gravity.BOTTOM)
-            transition.duration = 600
-            transition.addTarget(R.id.comment_list)
-            TransitionManager.beginDelayedTransition(videoInfoView, transition)
-            commentListView.visibility = if (show) View.VISIBLE else View.GONE
+    private fun handleShare() {
+        binding.shareButton.setOnClickListener {
+            ShareCompat.IntentBuilder(this)
+                .setType("text/plain")
+                .setChooserTitle("Share URL")
+                .setText("$PRODUCTION_WEB_URL/watch/$videoId")
+                .startChooser();
         }
     }
+    
+    private fun handleLike() {
+        binding.likeButton.setOnClickListener { 
+            videosRepository.likeVideo(videoId)
+        }
 
+        val observeOwner = this
+        CoroutineScope(Dispatchers.IO).launch {
+            val video = videosRepository.getVideoFromDatabase(videoId)
+            withContext(Dispatchers.Main) {
+                video.observe(observeOwner) { video -> 
+                    if (video != null) {
+                        if (isVideoInsertedToDB) {
+                            binding.totalLikes.text = video.totalLikes.toString()
+                        }
+                    } else {
+                        isVideoInsertedToDB = false
+                    }
+                }
+            }
+        }
+    }
+    
     private fun initVideo() {
         binding.title.text = currentVideo?.title
         binding.subtitle.text = currentVideo?.totalViews.toString() + " views"
-        //TODO: Author's name is user's name not authorId
-        binding.authorName.text = currentVideo?.authorId
+        binding.authorName.text = username
         binding.totalLikes.text = currentVideo?.totalLikes.toString()
         binding.totalComments.text = currentVideo?.totalComments.toString()
 

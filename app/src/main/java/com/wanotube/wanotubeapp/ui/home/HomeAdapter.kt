@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.wanotube.wanotubeapp.IEventListener
 import com.wanotube.wanotubeapp.R
+import com.wanotube.wanotubeapp.domain.Account
 import com.wanotube.wanotubeapp.domain.Video
 import com.wanotube.wanotubeapp.ui.watch.WatchActivity
 
@@ -23,12 +24,18 @@ class HomeAdapter(iEventListener: IEventListener) : RecyclerView.Adapter<HomeAda
             field = value
             notifyDataSetChanged()
         }
+    
+    var channels = listOf<Account>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     override fun getItemCount() = data.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
-        holder.bind(item)
+        holder.bind(item, channels)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -46,22 +53,29 @@ class HomeAdapter(iEventListener: IEventListener) : RecyclerView.Adapter<HomeAda
         private val thumbnailVideoView: ImageView = itemView.findViewById(R.id.thumbnail_video)
         private val avatarView: ImageView = itemView.findViewById(R.id.avatar_user)
 
-        fun bind(item: Video) {
-            titleView.text = item.title
-            val subtitle = item.authorId + "  " + item.totalViews + " views"
-            subtitleView.text = subtitle
+        fun bind(item: Video, channels: List<Account>) {
+            val context = thumbnailVideoView.context
 
+            val channel = channels.find {
+                it.userId == item.authorId
+            }
+            if (channel != null) {
+                val subtitle = channel.username + "  " + item.totalViews + " views"
+                subtitleView.text = subtitle
+
+                Glide.with(avatarView.context)
+                    .load(channel.avatar)
+                    .circleCrop()
+                    .into(avatarView)
+            }
+            titleView.text = item.title
+            
             Glide.with(thumbnailVideoView.context)
                 .load(item.thumbnail)
                 .override(480, 269)
                 .centerCrop()
                 .into(thumbnailVideoView)
-            Glide.with(avatarView.context)
-                .load(item.thumbnail)
-                .circleCrop()
-                .into(avatarView)
 
-            val context = thumbnailVideoView.context
             thumbnailVideoView.setOnClickListener{
                 val intent = Intent(context, WatchActivity::class.java)
                 intent.putExtra("VIDEO_ID", item.id)

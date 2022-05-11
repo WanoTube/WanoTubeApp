@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
-            name="videoViewModel"
-            type="com.wanotube.wanotubeapp.viewmodels.WanoTubeViewModel" />
+            name="channelViewModel"
+            type="com.wanotube.wanotubeapp.viewmodels.ChannelViewModel" />
     </data>
     <FrameLayout
         android:id="@+id/fragment_management"

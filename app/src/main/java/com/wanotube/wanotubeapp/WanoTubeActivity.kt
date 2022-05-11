@@ -22,7 +22,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NavUtils
 import com.wanotube.wanotubeapp.database.getDatabase
-import com.wanotube.wanotubeapp.network.NetworkVideo
+import com.wanotube.wanotubeapp.network.objects.NetworkVideo
 import com.wanotube.wanotubeapp.network.asDatabaseModel
 import com.wanotube.wanotubeapp.network.authentication.AccountUtils
 import com.wanotube.wanotubeapp.network.authentication.AuthPreferences
@@ -30,7 +30,7 @@ import com.wanotube.wanotubeapp.repository.VideosRepository
 import com.wanotube.wanotubeapp.ui.edit.EditInfoActivity
 import com.wanotube.wanotubeapp.ui.edit.UploadActivity
 import com.wanotube.wanotubeapp.ui.login.LoginActivity
-import com.wanotube.wanotubeapp.util.Constant
+import com.wanotube.wanotubeapp.util.Constant.URL
 import io.socket.client.IO
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
@@ -177,7 +177,7 @@ abstract class WanoTubeActivity : AppCompatActivity(){
 
     fun startServerSocket() {
         try {
-            mSocket = IO.socket("${Constant.BASE_URL}:${Constant.PORT}/")
+            mSocket = IO.socket(URL)
             mSocket.connect()
             mSocket.on(Socket.EVENT_CONNECT, onConnect)
         } catch (e: Exception) {

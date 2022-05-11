@@ -1,6 +1,8 @@
 package com.wanotube.wanotubeapp.util
 
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.Date
 import java.util.Formatter
 import java.util.Locale
@@ -58,6 +60,10 @@ fun stringForTime(timeMs: Float): String {
     }
 }
 
-fun convertStringToDate(dateString: String): Date {
-    return SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH).parse(dateString)
+fun convertStringToDate(dateString: String?): Date {
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    var strDate = dateString
+    if (dateString == "")
+        strDate = LocalDateTime.now().format(formatter)
+    return SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH).parse(strDate)
 }

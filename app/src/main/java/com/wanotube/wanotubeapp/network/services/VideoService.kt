@@ -1,5 +1,8 @@
-package com.wanotube.wanotubeapp.network
+package com.wanotube.wanotubeapp.network.services
 
+import com.wanotube.wanotubeapp.network.objects.NetworkVideo
+import com.wanotube.wanotubeapp.network.objects.NetworkVideoContainer
+import com.wanotube.wanotubeapp.network.objects.NetworkVideoWatch
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.GET
@@ -17,7 +20,7 @@ interface IVideoService {
 
     @Headers("isDisableAuthorization:true")
     @GET("videos/{id}")
-    fun getVideo(@Path("id") id: String): Call<NetworkVideo>?
+    fun getVideo(@Path("id") id: String): Call<NetworkVideoWatch>?
 
     @Multipart
     @POST("videos/upload")
@@ -42,4 +45,9 @@ interface IVideoService {
         @Part duration: MultipartBody.Part,
         @Part visibility: MultipartBody.Part,
         ): Call<NetworkVideo>?
+
+    @Headers("isDisableAuthorization:true")
+    @Multipart
+    @POST("videos/like")
+    fun likeVideo(@Part targetId: MultipartBody.Part): Call<NetworkVideo>?
 }

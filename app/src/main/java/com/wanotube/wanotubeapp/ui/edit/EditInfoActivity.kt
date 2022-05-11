@@ -21,7 +21,8 @@ import com.wanotube.wanotubeapp.database.asDomainModel
 import com.wanotube.wanotubeapp.database.getDatabase
 import com.wanotube.wanotubeapp.databinding.ActivityEditVideoInfoBinding
 import com.wanotube.wanotubeapp.domain.Video
-import com.wanotube.wanotubeapp.network.NetworkVideo
+import com.wanotube.wanotubeapp.network.objects.NetworkVideo
+import com.wanotube.wanotubeapp.network.objects.NetworkVideoWatch
 import com.wanotube.wanotubeapp.network.asDatabaseModel
 import com.wanotube.wanotubeapp.repository.VideosRepository
 import com.wanotube.wanotubeapp.ui.watch.WatchActivity
@@ -178,10 +179,10 @@ class EditInfoActivity: WanoTubeActivity(), AdapterView.OnItemSelectedListener  
     private fun getVideo() {
         CoroutineScope(Dispatchers.IO).launch {
             val responseBodyCall = videosRepository.getVideo(videoId)
-            responseBodyCall?.enqueue(object : Callback<NetworkVideo> {
+            responseBodyCall?.enqueue(object : Callback<NetworkVideoWatch> {
                 override fun onResponse(
-                    call: Call<NetworkVideo>?,
-                    response: Response<NetworkVideo?>?
+                    call: Call<NetworkVideoWatch>?,
+                    response: Response<NetworkVideoWatch?>?
                 ) {
                     if (response != null) {
                         if (response.code() == 200) {
@@ -199,7 +200,7 @@ class EditInfoActivity: WanoTubeActivity(), AdapterView.OnItemSelectedListener  
                         }
                     }
                 }
-                override fun onFailure(call: Call<NetworkVideo>?, t: Throwable?) {
+                override fun onFailure(call: Call<NetworkVideoWatch>?, t: Throwable?) {
                     Timber.e("Failed: error: %s", t.toString())
                 }
             })

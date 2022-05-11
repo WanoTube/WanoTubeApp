@@ -1,7 +1,7 @@
 package com.wanotube.wanotubeapp.network.authentication
 
-import com.wanotube.wanotubeapp.network.IUserService
-import com.wanotube.wanotubeapp.network.LoginResult
+import com.wanotube.wanotubeapp.network.services.IUserService
+import com.wanotube.wanotubeapp.network.objects.LoginResult
 import com.wanotube.wanotubeapp.network.ServiceGenerator
 import okhttp3.MultipartBody
 import retrofit2.Call
