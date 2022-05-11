@@ -35,6 +35,7 @@ import android.widget.TextView
 import android.widget.Toast
 import android.widget.VideoView
 import androidx.appcompat.app.ActionBar
+import androidx.core.app.ShareCompat
 import androidx.lifecycle.ViewModelProvider
 import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.WanoTubeActivity
@@ -51,6 +52,7 @@ import com.wanotube.wanotubeapp.repository.ChannelRepository
 import com.wanotube.wanotubeapp.repository.CommentRepository
 import com.wanotube.wanotubeapp.repository.VideosRepository
 import com.wanotube.wanotubeapp.util.Constant
+import com.wanotube.wanotubeapp.util.Constant.PRODUCTION_WEB_URL
 import com.wanotube.wanotubeapp.viewmodels.CommentViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -369,6 +371,7 @@ class WatchActivity : WanoTubeActivity() {
         handleVideoPlayer()
         handleSendComment()
         handleLike()
+        handleShare()
 
 //        dismissControlFrame.setOnClickListener {
 //            dismissControls()
@@ -382,6 +385,16 @@ class WatchActivity : WanoTubeActivity() {
 //        }
     }
 
+    private fun handleShare() {
+        binding.shareButton.setOnClickListener {
+            ShareCompat.IntentBuilder(this)
+                .setType("text/plain")
+                .setChooserTitle("Share URL")
+                .setText("$PRODUCTION_WEB_URL/watch/$videoId")
+                .startChooser();
+        }
+    }
+    
     private fun handleLike() {
         binding.likeButton.setOnClickListener { 
             videosRepository.likeVideo(videoId)

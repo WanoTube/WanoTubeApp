@@ -8,6 +8,8 @@ object Constant {
 
     const val FULL_URL = "${BASE_URL}:${PORT}${VERSION}/"
     const val URL = "${BASE_URL}:${PORT}/"
+    
+    const val PRODUCTION_WEB_URL = "https://www.demo.o-redsky.xyz"
 
 //    const val FULL_URL = "https://api.demo.o-redsky.xyz/v1/"
 //    const val URL = FULL_URL
