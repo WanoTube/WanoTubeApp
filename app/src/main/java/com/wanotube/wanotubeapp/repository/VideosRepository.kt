@@ -183,7 +183,6 @@ class VideosRepository(private val database: AppDatabase) {
                 response: Response<NetworkVideo?>?
             ) {
                 val videoModel = response?.body()?.asDatabaseModel()
-                Timber.e("Ngan: videoModel.totalLikes: %s", videoModel?.totalLikes)
                 CoroutineScope(Dispatchers.IO).launch {
                     if (videoModel != null) {
                         database.videoDao.likeVideo(videoModel.totalLikes, videoModel.id)

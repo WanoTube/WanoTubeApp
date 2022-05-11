@@ -35,7 +35,6 @@ import android.widget.TextView
 import android.widget.Toast
 import android.widget.VideoView
 import androidx.appcompat.app.ActionBar
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.WanoTubeActivity
@@ -395,7 +394,6 @@ class WatchActivity : WanoTubeActivity() {
                 video.observe(observeOwner) { video -> 
                     if (video != null) {
                         if (isVideoInsertedToDB) {
-//                            Timber.e("Ngan %s", "video: $video")
                             binding.totalLikes.text = video.totalLikes.toString()
                         }
                     } else {
