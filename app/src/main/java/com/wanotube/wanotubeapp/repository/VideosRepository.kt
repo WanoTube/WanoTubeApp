@@ -193,6 +193,10 @@ class VideosRepository(private val database: AppDatabase) {
         })
     }
     
+    fun clearVideos() {
+        database.videoDao.clearVideos()
+    }
+    
     companion object {
         enum class VideoType {
             NORMAL, SHORT 

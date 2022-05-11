@@ -94,6 +94,9 @@ dependencies {
     //LikeButton 
     implementation 'com.github.jd-alexander:LikeButton:0.2.3'
 
+    //SwipeRefreshLayout for swipe from top to refresh data
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+
     def exoplayer_version = "2.12.0"
     implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer_version"
     implementation "com.google.android.exoplayer:exoplayer-dash:$exoplayer_version"

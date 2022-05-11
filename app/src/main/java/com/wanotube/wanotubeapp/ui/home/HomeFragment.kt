@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.wanotube.wanotubeapp.IEventListener
 import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.databinding.FragmentHomeBinding
@@ -29,7 +30,7 @@ class HomeFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         val binding: FragmentHomeBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_home, container, false
@@ -63,12 +64,18 @@ class HomeFragment : Fragment() {
                 adapter.data = it
                 binding.homeShimmerViewContainer.stopShimmer()
                 binding.homeShimmerViewContainer.visibility = View.GONE
-                binding.videoList.visibility = View.VISIBLE
+                binding.pullToRefresh.visibility = View.VISIBLE
             }
         }
 
         binding.lifecycleOwner = this
 
+        val pullToRefresh: SwipeRefreshLayout = binding.pullToRefresh
+        pullToRefresh.setOnRefreshListener {
+            viewModel.clearDataFromRepository()
+            viewModel.refreshDataFromRepository()
+            pullToRefresh.isRefreshing = false
+        }
         return binding.root
     }
 }

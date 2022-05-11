@@ -27,6 +27,11 @@
                 android:resource="@xml/authenticator" />
         </service>
 
+        <service 
+            android:name=".service.OnClearFromRecentService"
+            android:stopWithTask="false">
+        </service>
+
         <activity
             android:name=".ui.edit.EditInfoActivity"
             android:exported="false"

@@ -2,6 +2,7 @@ package com.wanotube.wanotubeapp.database.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -23,4 +24,7 @@ interface VideoDao {
     
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(video: DatabaseVideo)
+    
+    @Query("DELETE FROM DatabaseVideo")
+    fun clearVideos()
 }

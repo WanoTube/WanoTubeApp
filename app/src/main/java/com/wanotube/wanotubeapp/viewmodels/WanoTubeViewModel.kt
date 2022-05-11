@@ -75,11 +75,16 @@ class WanoTubeViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
+    fun clearDataFromRepository() {
+        viewModelScope.launch {
+            videosRepository.clearVideos()
+        }
+    }
     /**
      * Refresh data from the repository. Use a coroutine launch to run in a
      * background thread.
      */
-    private fun refreshDataFromRepository() {
+    fun refreshDataFromRepository() {
         viewModelScope.launch {
             try {
                 videosRepository.refreshVideos(channelRepository)
