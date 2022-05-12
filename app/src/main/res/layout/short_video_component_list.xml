@@ -42,11 +42,12 @@
             android:gravity="bottom"
             android:layout_gravity="bottom"
             android:layout_marginBottom="10dp"
+            android:paddingStart="9dp"
+            android:paddingEnd="9dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content">
             <TextView
                 android:id="@+id/textVideoTitle"
-                android:paddingStart="9dp"
                 android:paddingTop="5dp"
                 android:paddingEnd="5dp"
                 android:text="@string/app_name"
@@ -62,7 +63,6 @@
                 android:id="@+id/textVideoDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="5dp"
                 android:paddingTop="5dp"
                 android:paddingEnd="5dp"
                 android:shadowDx="0"
@@ -79,38 +79,59 @@
             android:gravity="end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
-            <ImageView
-                android:src="@drawable/ic_person_pin"
-                android:layout_gravity="end"
-                android:padding="2dp"
-                android:layout_marginEnd="18dp"
-                android:layout_width="40dp"
-                android:layout_height="40dp"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <ImageView
+                    android:src="@drawable/ic_person_pin"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="18dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_width="@dimen/shorts_home_icon_size"
+                    android:layout_height="@dimen/shorts_home_icon_size"/>
+<!--                <TextView-->
+<!--                    android:layout_width="@dimen/shorts_home_icon_size"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:text="@string/like_total_default"/>-->
+            </LinearLayout>
+            
+            
             <ImageView
                 android:id="@+id/favorites"
                 android:src="@drawable/ic_favorite"
                 android:layout_gravity="end"
                 android:padding="2dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="@dimen/shorts_home_spaces_between_icons"
                 android:layout_marginEnd="18dp"
-                android:layout_width="40dp"
-                android:layout_height="40dp"/>
+                android:layout_width="@dimen/shorts_home_icon_size"
+                android:layout_height="@dimen/shorts_home_icon_size"/>
+            <ImageView
+                android:src="@drawable/comment"
+                app:tint="@color/white"
+                android:layout_gravity="end"
+                android:padding="6dp"
+                android:layout_marginTop="@dimen/shorts_home_spaces_between_icons"
+                android:layout_marginEnd="18dp"
+                android:layout_width="@dimen/shorts_home_icon_size"
+                android:layout_height="@dimen/shorts_home_icon_size"/>
             <ImageView
                 android:src="@drawable/ic_share"
                 android:layout_gravity="end"
                 android:padding="6dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="@dimen/shorts_home_spaces_between_icons"
                 android:layout_marginEnd="18dp"
-                android:layout_width="40dp"
-                android:layout_height="40dp"/>
+                android:layout_width="@dimen/shorts_home_icon_size"
+                android:layout_height="@dimen/shorts_home_icon_size"/>
             <ImageView
                 android:src="@drawable/ic_more"
                 android:layout_gravity="end"
                 android:padding="2dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="@dimen/shorts_home_spaces_between_icons"
                 android:layout_marginEnd="18dp"
-                android:layout_width="40dp"
-                android:layout_height="40dp"/>
+                android:layout_width="@dimen/shorts_home_icon_size"
+                android:layout_height="@dimen/shorts_home_icon_size"/>
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

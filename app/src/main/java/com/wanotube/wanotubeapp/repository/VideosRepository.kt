@@ -200,7 +200,7 @@ class VideosRepository(private val database: AppDatabase) {
         database.videoDao.clearVideos()
     }
     
-    fun getVideoFromDatabase(videoId: String): LiveData<DatabaseVideo> {
+    fun getVideoFromDatabase(videoId: String): LiveData<DatabaseVideo>? {
         return database.videoDao.getVideo(videoId)
     }
     

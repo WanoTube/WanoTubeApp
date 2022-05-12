@@ -12,6 +12,7 @@
         android:id="@+id/fragment_watch"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/margin_bottom_fragment"
         tools:context=".ui.shorts.ShortsFragment">
 
     <LinearLayout

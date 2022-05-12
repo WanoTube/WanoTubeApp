@@ -123,11 +123,11 @@ class WatchActivity : WanoTubeActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         initLayouts(binding)
-        setClickListeners()
         initialiseSeekBar()
         setHandler()
         initAdapter()
         getVideo()
+        setClickListeners()
     }
 
     override fun customActionBar() {
@@ -179,6 +179,8 @@ class WatchActivity : WanoTubeActivity() {
                         if (response.code() == 200) {
                             val videoDatabase = response.body()?.asDatabaseModel()
                             currentVideo = videoDatabase?.asDomainModel()
+                            binding.totalLikes.text = videoDatabase?.totalLikes.toString()
+
                             if (!isVideoInsertedToDB) {
                                 CoroutineScope(Dispatchers.IO).launch {
                                     videosRepository.insertVideoToDatabase(videoDatabase!!)
@@ -404,7 +406,7 @@ class WatchActivity : WanoTubeActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             val video = videosRepository.getVideoFromDatabase(videoId)
             withContext(Dispatchers.Main) {
-                video.observe(observeOwner) { video -> 
+                video?.observe(observeOwner) { video -> 
                     if (video != null) {
                         if (isVideoInsertedToDB) {
                             binding.totalLikes.text = video.totalLikes.toString()

@@ -33,4 +33,7 @@
     <dimen name="management_shimmer_title_width">200dp</dimen>
     <dimen name="shimmer_title_height">18dp</dimen>
     <dimen name="management_shimmer_description_width">150dp</dimen>
+    <dimen name="shorts_home_icon_size">45dp</dimen>
+    <dimen name="shorts_home_spaces_between_icons">15dp</dimen>
+    <dimen name="margin_bottom_fragment">56dp</dimen>
 </resources>

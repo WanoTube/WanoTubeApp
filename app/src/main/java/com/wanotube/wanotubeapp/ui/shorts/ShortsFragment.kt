@@ -38,10 +38,10 @@ class ShortsFragment : Fragment() {
 
         videoViewModel.allPublicVideos.observe(viewLifecycleOwner) {
             it?.let {
-                val videos = it.filter {
-                    video -> video.type == VideoType.SHORT.name
-                }
-                adapter.data = videos
+//                val videos = it.filter {
+//                    video -> video.type == VideoType.SHORT.name
+//                }
+                adapter.data = it
             }
         }
 
