@@ -15,6 +15,7 @@ import com.wanotube.wanotubeapp.network.ServiceGenerator
 import com.wanotube.wanotubeapp.network.services.IVideoService
 import com.wanotube.wanotubeapp.network.objects.NetworkVideoWatch
 import com.wanotube.wanotubeapp.network.asDatabaseModel
+import com.wanotube.wanotubeapp.util.VideoType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -203,9 +204,4 @@ class VideosRepository(private val database: AppDatabase) {
         return database.videoDao.getVideo(videoId)
     }
     
-    companion object {
-        enum class VideoType {
-            NORMAL, SHORT 
-        }
-    }
 }

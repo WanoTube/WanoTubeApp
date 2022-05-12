@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.databinding.FragmentShortsBinding
+import com.wanotube.wanotubeapp.util.VideoType
 import com.wanotube.wanotubeapp.viewmodels.WanoTubeViewModel
 
 class ShortsFragment : Fragment() {
@@ -37,7 +38,10 @@ class ShortsFragment : Fragment() {
 
         videoViewModel.allPublicVideos.observe(viewLifecycleOwner) {
             it?.let {
-                adapter.data = it
+                val videos = it.filter {
+                    video -> video.type == VideoType.SHORT.name
+                }
+                adapter.data = videos
             }
         }
 

@@ -16,3 +16,8 @@ object Constant {
     
     const val TIME_OUT = 2500L
 }
+
+
+enum class VideoType {
+    NORMAL, SHORT
+}

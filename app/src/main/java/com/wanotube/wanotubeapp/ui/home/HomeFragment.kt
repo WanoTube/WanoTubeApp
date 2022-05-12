@@ -12,6 +12,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.wanotube.wanotubeapp.IEventListener
 import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.databinding.FragmentHomeBinding
+import com.wanotube.wanotubeapp.util.VideoType
 import com.wanotube.wanotubeapp.viewmodels.WanoTubeViewModel
 
 
@@ -61,7 +62,10 @@ class HomeFragment : Fragment() {
         
         viewModel.allPublicVideos.observe(viewLifecycleOwner) {
             it?.let {
-                adapter.data = it
+                val videos = it.filter { 
+                    video -> video.type == VideoType.NORMAL.name
+                }
+                adapter.data = videos
                 binding.homeShimmerViewContainer.stopShimmer()
                 binding.homeShimmerViewContainer.visibility = View.GONE
                 binding.pullToRefresh.visibility = View.VISIBLE
