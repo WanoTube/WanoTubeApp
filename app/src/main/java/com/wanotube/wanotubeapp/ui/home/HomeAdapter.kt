@@ -79,6 +79,7 @@ class HomeAdapter(iEventListener: IEventListener) : RecyclerView.Adapter<HomeAda
             thumbnailVideoView.setOnClickListener{
                 val intent = Intent(context, WatchActivity::class.java)
                 intent.putExtra("VIDEO_ID", item.id)
+                intent.putExtra("NEED_TOKEN", false)
                 context.startActivity(intent)
             }
         }

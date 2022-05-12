@@ -178,7 +178,7 @@ class EditInfoActivity: WanoTubeActivity(), AdapterView.OnItemSelectedListener  
     
     private fun getVideo() {
         CoroutineScope(Dispatchers.IO).launch {
-            val responseBodyCall = videosRepository.getVideo(videoId)
+            val responseBodyCall = videosRepository.getVideoWithAuthorization(videoId)
             responseBodyCall?.enqueue(object : Callback<NetworkVideoWatch> {
                 override fun onResponse(
                     call: Call<NetworkVideoWatch>?,
@@ -196,7 +196,7 @@ class EditInfoActivity: WanoTubeActivity(), AdapterView.OnItemSelectedListener  
                                 }
                             }
                         } else {
-                            Toast.makeText(WanotubeApp.context, "Find video unsuccessfully, please try again :( ", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(WanotubeApp.context, response.message(), Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
@@ -270,8 +270,9 @@ class EditInfoActivity: WanoTubeActivity(), AdapterView.OnItemSelectedListener  
     private fun finishActivity() {
         if (!::video.isInitialized)
             return
-        val intent = Intent(this, WatchActivity::class.java)
-        intent.putExtra("VIDEO_ID", video.id)
-        startActivity(intent)
+        //SAVE ONLY
+//        val intent = Intent(this, WatchActivity::class.java)
+//        intent.putExtra("VIDEO_ID", video.id)
+//        startActivity(intent)
     }
 }

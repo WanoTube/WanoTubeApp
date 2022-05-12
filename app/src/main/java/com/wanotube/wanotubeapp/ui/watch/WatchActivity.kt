@@ -169,7 +169,13 @@ class WatchActivity : WanoTubeActivity() {
     
     private fun getVideo() {
         CoroutineScope(Dispatchers.IO).launch {
-            val responseBodyCall = videosRepository.getVideo(videoId)
+            val doesNeedToken = intent.getBooleanExtra("NEED_TOKEN", false)
+            val responseBodyCall = if (doesNeedToken) {
+                videosRepository.getVideoWithAuthorization(videoId)
+            } else {
+                videosRepository.getVideo(videoId)
+            }
+            
             responseBodyCall?.enqueue(object : Callback<NetworkVideoWatch> {
                 override fun onResponse(
                     call: Call<NetworkVideoWatch>?,
@@ -194,7 +200,7 @@ class WatchActivity : WanoTubeActivity() {
                             if (currentVideo != null)
                                 initVideo()
                         } else {
-                            Toast.makeText(WanotubeApp.context, "Find video unsuccessfully, please try again :( ", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(WanotubeApp.context, response.message(), Toast.LENGTH_SHORT).show()
                         }
                     }
                 }

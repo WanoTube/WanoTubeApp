@@ -18,8 +18,12 @@ interface IVideoService {
     @GET("videos/public")
     fun getVideos(): Call<NetworkVideoContainer>?
 
+    @Headers("isDisableAuthorization:true")
     @GET("videos/{id}")
     fun getVideo(@Path("id") id: String): Call<NetworkVideoWatch>?
+
+    @GET("videos/{id}")
+    fun getVideoWithAuthorization(@Path("id") id: String): Call<NetworkVideoWatch>?
 
     @Multipart
     @POST("videos/upload")
