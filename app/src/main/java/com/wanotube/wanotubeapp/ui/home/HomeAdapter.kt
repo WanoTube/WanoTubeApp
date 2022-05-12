@@ -14,6 +14,7 @@ import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.domain.Account
 import com.wanotube.wanotubeapp.domain.Video
 import com.wanotube.wanotubeapp.ui.watch.WatchActivity
+import com.wanotube.wanotubeapp.util.toTimeAgo
 
 class HomeAdapter(iEventListener: IEventListener) : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
@@ -60,7 +61,9 @@ class HomeAdapter(iEventListener: IEventListener) : RecyclerView.Adapter<HomeAda
                 it.userId == item.authorId
             }
             if (channel != null) {
-                val subtitle = channel.username + "  " + item.totalViews + " views"
+                val subtitle = channel.username + "  " + 
+                        item.totalViews + " views  " + 
+                        item.createdAt.time.toTimeAgo()
                 subtitleView.text = subtitle
 
                 Glide.with(avatarView.context)
