@@ -90,7 +90,11 @@ abstract class WanoTubeActivity : AppCompatActivity(){
         val email =  mAuthPreferences!!.email
         val account = AccountUtils.getAccount(this, email)
         val token = mAuthPreferences!!.authToken
-        return account != null && token != null
+        val result = account != null && token != null
+        if (!result) {
+            openLoginActivity()
+        }
+        return result
     }
     
     open fun logOut() {

@@ -367,10 +367,7 @@ class WatchActivity : WanoTubeActivity() {
                     binding.commentEditText
                 ) }
 
-            } else {
-                openLoginActivity()
             }
-            
         }
     }
 
@@ -404,8 +401,10 @@ class WatchActivity : WanoTubeActivity() {
     }
     
     private fun handleLike() {
-        binding.likeButton.setOnClickListener { 
-            videosRepository.likeVideo(videoId)
+        binding.likeButton.setOnClickListener {
+            if (checkTokenAvailable()) {
+                videosRepository.likeVideo(videoId)
+            }
         }
 
         val observeOwner = this

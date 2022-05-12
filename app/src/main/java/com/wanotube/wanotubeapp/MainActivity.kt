@@ -78,8 +78,6 @@ class MainActivity : WanoTubeActivity(), IEventListener {
                     R.id.create -> {
                         if (checkTokenAvailable()) {
                             showBottomSheetDialog()
-                        } else {
-                            openLoginActivity()
                         }
                     }
                     else -> validFlag = false
