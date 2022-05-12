@@ -216,7 +216,7 @@ class EditInfoActivity: WanoTubeActivity(), AdapterView.OnItemSelectedListener  
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.next -> {
+        R.id.save -> {
             updateVideo()
             // Then go to MyVideos
             true
@@ -248,9 +248,9 @@ class EditInfoActivity: WanoTubeActivity(), AdapterView.OnItemSelectedListener  
             ) {
                 Timber.e("Result Status Code:  %s", response.code())
                 if (response.code() == 200) {
-                    finishActivity()
+                    Toast.makeText(context, "Edit successfully ! ", Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(context, "Update unsuccessfully, please try again :( ", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Update failed, please try again :( ", Toast.LENGTH_SHORT).show()
                 }
             }
             override fun onFailure(call: Call<NetworkVideo>?, t: Throwable?) {
@@ -265,14 +265,5 @@ class EditInfoActivity: WanoTubeActivity(), AdapterView.OnItemSelectedListener  
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
         parent?.setSelection(visibility)
-    }
-    
-    private fun finishActivity() {
-        if (!::video.isInitialized)
-            return
-        //SAVE ONLY
-//        val intent = Intent(this, WatchActivity::class.java)
-//        intent.putExtra("VIDEO_ID", video.id)
-//        startActivity(intent)
     }
 }

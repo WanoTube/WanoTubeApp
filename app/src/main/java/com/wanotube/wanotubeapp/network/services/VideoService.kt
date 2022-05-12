@@ -36,7 +36,6 @@ interface IVideoService {
         @Part type: MultipartBody.Part,
         ): Call<NetworkVideo>?
 
-    @Headers("isDisableAuthorization:true")
     @Multipart
     @PATCH("videos/update")
     fun updateVideo(

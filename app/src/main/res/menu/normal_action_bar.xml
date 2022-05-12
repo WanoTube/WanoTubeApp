@@ -10,8 +10,8 @@
 <!--        app:showAsAction="ifRoom" />-->
 
     <item
-        android:id="@+id/next"
-        android:title="@string/next"
+        android:id="@+id/save"
+        android:title="@string/save"
         android:contentDescription="@string/click_to_finish_this_step"
         app:showAsAction="ifRoom" />
 </menu>
