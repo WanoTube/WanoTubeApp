@@ -36,6 +36,8 @@ import android.widget.Toast
 import android.widget.VideoView
 import androidx.core.app.ShareCompat
 import androidx.lifecycle.ViewModelProvider
+import com.like.LikeButton
+import com.like.OnLikeListener
 import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.WanoTubeActivity
 import com.wanotube.wanotubeapp.WanotubeApp
@@ -44,8 +46,8 @@ import com.wanotube.wanotubeapp.database.getDatabase
 import com.wanotube.wanotubeapp.databinding.ActivityWatchBinding
 import com.wanotube.wanotubeapp.domain.User
 import com.wanotube.wanotubeapp.domain.Video
-import com.wanotube.wanotubeapp.network.objects.NetworkVideoWatch
 import com.wanotube.wanotubeapp.network.asDatabaseModel
+import com.wanotube.wanotubeapp.network.objects.NetworkVideoWatch
 import com.wanotube.wanotubeapp.repository.ChannelRepository
 import com.wanotube.wanotubeapp.repository.CommentRepository
 import com.wanotube.wanotubeapp.repository.VideosRepository
@@ -60,6 +62,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import timber.log.Timber
+
 
 class WatchActivity : WanoTubeActivity() {
     private lateinit var binding: ActivityWatchBinding
@@ -170,7 +173,7 @@ class WatchActivity : WanoTubeActivity() {
             responseBodyCall?.enqueue(object : Callback<NetworkVideoWatch> {
                 override fun onResponse(
                     call: Call<NetworkVideoWatch>?,
-                    response: Response<NetworkVideoWatch?>?
+                    response: Response<NetworkVideoWatch?>?,
                 ) {
                     if (response != null) {
                         if (response.code() == 200) {
@@ -391,11 +394,18 @@ class WatchActivity : WanoTubeActivity() {
     }
     
     private fun handleLike() {
-        binding.likeButton.setOnClickListener {
-            if (checkTokenAvailable()) {
-                videosRepository.likeVideo(videoId)
+        binding.likeButton.setOnLikeListener(object : OnLikeListener {
+            override fun liked(likeButton: LikeButton) {
+                if (checkTokenAvailable()) {
+                    videosRepository.likeVideo(videoId)
+                }
             }
-        }
+            override fun unLiked(likeButton: LikeButton) {
+                if (checkTokenAvailable()) {
+                    videosRepository.likeVideo(videoId)
+                }
+            }
+        })
 
         val observeOwner = this
         CoroutineScope(Dispatchers.IO).launch {
