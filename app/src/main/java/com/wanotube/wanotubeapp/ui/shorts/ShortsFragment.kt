@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.databinding.FragmentShortsBinding
 import com.wanotube.wanotubeapp.util.VideoType
@@ -41,12 +42,22 @@ class ShortsFragment : Fragment() {
 //                val videos = it.filter {
 //                    video -> video.type == VideoType.SHORT.name
 //                }
+//                adapter.data = videos
                 adapter.data = it
+
+                binding.pullToRefresh.visibility = View.VISIBLE
             }
         }
 
         binding.lifecycleOwner = this
-        
+
+        val pullToRefresh: SwipeRefreshLayout = binding.pullToRefresh
+        pullToRefresh.setOnRefreshListener {
+            videoViewModel.clearDataFromRepository()
+            videoViewModel.refreshDataFromRepository()
+            pullToRefresh.isRefreshing = false
+        }
+
         return binding.root    
     }
 }

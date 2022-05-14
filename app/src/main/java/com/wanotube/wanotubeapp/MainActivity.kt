@@ -148,7 +148,7 @@ class MainActivity : WanoTubeActivity(), IEventListener {
     private fun chooseVideoForUploadNormalVideo(bottomSheetDialog: BottomSheetDialog, isUploadNormalVideo: Boolean) {
         openGalleryForVideo()
         bottomSheetDialog.dismiss()
-        isUploadNormalVideo
+        this.isUploadNormalVideo = isUploadNormalVideo
     }
 }
 
