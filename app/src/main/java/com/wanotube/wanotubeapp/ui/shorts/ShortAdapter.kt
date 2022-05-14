@@ -2,6 +2,7 @@ package com.wanotube.wanotubeapp.ui.shorts
 
 import android.content.Context
 import android.content.Intent
+import android.media.MediaPlayer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,7 +44,7 @@ class ShortAdapter() : RecyclerView.Adapter<ShortAdapter.ViewHolder>() {
         var likeButton: LikeButton = itemView.findViewById(R.id.favorites) as LikeButton
         var shareButton: ImageView = itemView.findViewById(R.id.share_button) as ImageView
         var commentButton: ImageView = itemView.findViewById(R.id.comment_button) as ImageView
-
+        var mediaPlayer: MediaPlayer? = null
         var totalLikesTextView :TextView = itemView.findViewById(R.id.total_likes) as TextView
 
         val videosRepository = context?.let { getDatabase(it) }?.let { VideosRepository(it) }
@@ -54,10 +55,18 @@ class ShortAdapter() : RecyclerView.Adapter<ShortAdapter.ViewHolder>() {
             title.text = obj.title
             desc.text = obj.description
             videoView.setOnPreparedListener { mediaPlayer ->
+                this.mediaPlayer = mediaPlayer
                 pbar.visibility = View.GONE
                 mediaPlayer.start()
             }
             videoView.setOnCompletionListener { mediaPlayer -> mediaPlayer.start() }
+            videoView.setOnClickListener {
+                if (mediaPlayer?.isPlaying == true) {
+                    this.mediaPlayer?.pause()
+                } else {
+                    this.mediaPlayer?.start()
+                }
+            }
             val context = videoView.context
 
             handleLike(context, obj)
