@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.wanotube.wanotubeapp.database.asDomainModel
 import com.wanotube.wanotubeapp.database.getDatabase
 import com.wanotube.wanotubeapp.domain.Video
@@ -27,8 +28,15 @@ class ChannelViewModel(application: Application) : AndroidViewModel(application)
     init {
         refreshVideos()
     }
+
+    fun clearDataFromRepository() {
+        viewModelScope.launch {
+            currentChannelVideos.value = mutableListOf()
+            channelRepository.clearVideos()
+        }
+    }
     
-    private fun refreshVideos() {
+    fun refreshVideos() {
         CoroutineScope(Dispatchers.IO).launch {
             channelRepository.getAllVideosByChannelId()?.enqueue(object :
                 Callback<NetworkVideoContainer> {
