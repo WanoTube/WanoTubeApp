@@ -88,12 +88,12 @@ abstract class WanoTubeActivity : AppCompatActivity(){
         return true
     }
     
-    open fun checkTokenAvailable(): Boolean {
+    open fun checkTokenAvailable(openLoginActivity: Boolean): Boolean {
         val email =  mAuthPreferences!!.email
         val account = AccountUtils.getAccount(this, email)
         val token = mAuthPreferences!!.authToken
         val result = account != null && token != null
-        if (!result) {
+        if (!result && openLoginActivity) {
             openLoginActivity()
         }
         return result

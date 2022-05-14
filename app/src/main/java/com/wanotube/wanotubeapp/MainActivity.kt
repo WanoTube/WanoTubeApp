@@ -68,15 +68,19 @@ class MainActivity : WanoTubeActivity(), IEventListener {
                         loadFragment(R.id.fragment_short)
                     }
                     R.id.management -> {
-                        currentFragment = ManagementFragment()
-                        loadFragment(R.id.fragment_management)
+                        if (checkTokenAvailable(true)) {
+                            currentFragment = ManagementFragment()
+                            loadFragment(R.id.fragment_management)
+                        }
                     }
                     R.id.user -> {
-                        currentFragment = ProfileFragment()
-                        loadFragment(R.id.fragment_profile)
+                        if (checkTokenAvailable(true)) {
+                            currentFragment = ProfileFragment()
+                            loadFragment(R.id.fragment_profile)
+                        }
                     }
                     R.id.create -> {
-                        if (checkTokenAvailable()) {
+                        if (checkTokenAvailable(true)) {
                             showBottomSheetDialog()
                         }
                     }
