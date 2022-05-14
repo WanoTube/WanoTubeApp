@@ -711,12 +711,7 @@ class WatchActivity : WanoTubeActivity() {
 
     override fun onBackPressed() {
         releaseVideoPlayer()
-//        return if (myCondition) {
-//            //action not popBackStack
-//            true
-//        } else {
-//            false
-//        }
+        super.onBackPressed()
     }
 
     private fun dismissControls() {

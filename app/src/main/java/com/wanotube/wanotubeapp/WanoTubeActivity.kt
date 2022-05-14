@@ -22,18 +22,20 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NavUtils
 import com.wanotube.wanotubeapp.database.getDatabase
-import com.wanotube.wanotubeapp.network.objects.NetworkVideo
 import com.wanotube.wanotubeapp.network.asDatabaseModel
 import com.wanotube.wanotubeapp.network.authentication.AccountUtils
 import com.wanotube.wanotubeapp.network.authentication.AuthPreferences
+import com.wanotube.wanotubeapp.network.objects.NetworkVideo
 import com.wanotube.wanotubeapp.repository.VideosRepository
 import com.wanotube.wanotubeapp.ui.edit.EditInfoActivity
 import com.wanotube.wanotubeapp.ui.edit.UploadActivity
 import com.wanotube.wanotubeapp.ui.login.LoginActivity
 import com.wanotube.wanotubeapp.util.Constant.URL
 import io.socket.client.IO
+import io.socket.client.Manager
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
+import io.socket.engineio.client.Transport
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -147,7 +149,6 @@ abstract class WanoTubeActivity : AppCompatActivity(){
         val mAuthPreferences = AuthPreferences(this)
         val context = this
         mAuthPreferences.authToken?.let {
-            Timber.e("Wanotube authToken: " + mAuthPreferences.authToken)
             val responseBodyCall = videosRepository.uploadVideo(
                 file,
                 it,
@@ -156,19 +157,17 @@ abstract class WanoTubeActivity : AppCompatActivity(){
             responseBodyCall?.enqueue(object : Callback<NetworkVideo> {
                 override fun onResponse(
                     call: Call<NetworkVideo>,
-                    response: Response<NetworkVideo>
+                    response: Response<NetworkVideo>,
                 ) {
-                    Timber.e("Result Status Code:  %s", response.code())
                     if (response.code() == 200) {
                         val body = response.body()?.asDatabaseModel()
-                        Timber.e("Result: %s", body)
                         if (body != null) {
                             val intent = Intent(context, EditInfoActivity::class.java)
                             intent.putExtra("VIDEO_ID", body.id)
                             context.startActivity(intent)
                         }
                     } else {
-                        Toast.makeText(context, "Upload unsuccessfully, please try again :( ", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, response.message(), Toast.LENGTH_SHORT).show()
                     }
                 }
                 override fun onFailure(call: Call<NetworkVideo>?, t: Throwable?) {
@@ -191,14 +190,14 @@ abstract class WanoTubeActivity : AppCompatActivity(){
     }
 
     private var onConnect = Emitter.Listener {
-        runOnUiThread {
-            setProgressDialog()
-        }
         Timber.e("Video's upload state: %s", "On connect")
         mSocket.on(UploadActivity.UPLOAD_TO_S3, onUpload)
     }
 
     private var onUpload = Emitter.Listener { args ->
+        runOnUiThread {
+            setProgressDialog()
+        }
         Timber.e("Video's upload progress %s", "Progress: " + args[0])
         if (args != null) {
             if (args[0] != null) {
@@ -226,9 +225,6 @@ abstract class WanoTubeActivity : AppCompatActivity(){
         runOnUiThread {
             progressBar.visibility = View.GONE
             dialog.hide()
-//            finish()
-//            super.onBackPressed()
-//            openUploadActivity()
         }
     }
 
