@@ -88,7 +88,7 @@ abstract class WanoTubeActivity : AppCompatActivity(){
         return true
     }
     
-    open fun checkTokenAvailable(openLoginActivity: Boolean): Boolean {
+    open fun checkTokenAvailable(openLoginActivity: Boolean = true): Boolean {
         val email =  mAuthPreferences!!.email
         val account = AccountUtils.getAccount(this, email)
         val token = mAuthPreferences!!.authToken
@@ -180,7 +180,14 @@ abstract class WanoTubeActivity : AppCompatActivity(){
 
     fun startServerSocket() {
         try {
-            mSocket = IO.socket(URL)
+            val opts = IO.Options()
+            val authToken: MutableMap<String, String> = HashMap()
+            val mAuthPreferences = WanotubeApp.context?.let { AuthPreferences(it) }
+            if (mAuthPreferences != null) {
+                authToken["token"] = mAuthPreferences.authToken!!
+                opts.auth = authToken
+            }
+            mSocket = IO.socket(URL, opts)
             mSocket.connect()
             mSocket.on(Socket.EVENT_CONNECT, onConnect)
         } catch (e: Exception) {
