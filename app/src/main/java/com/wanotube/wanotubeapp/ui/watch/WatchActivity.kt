@@ -34,7 +34,6 @@ import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
 import android.widget.VideoView
-import androidx.appcompat.app.ActionBar
 import androidx.core.app.ShareCompat
 import androidx.lifecycle.ViewModelProvider
 import com.wanotube.wanotubeapp.R
@@ -43,7 +42,6 @@ import com.wanotube.wanotubeapp.WanotubeApp
 import com.wanotube.wanotubeapp.database.asDomainModel
 import com.wanotube.wanotubeapp.database.getDatabase
 import com.wanotube.wanotubeapp.databinding.ActivityWatchBinding
-import com.wanotube.wanotubeapp.domain.Account
 import com.wanotube.wanotubeapp.domain.User
 import com.wanotube.wanotubeapp.domain.Video
 import com.wanotube.wanotubeapp.network.objects.NetworkVideoWatch
@@ -100,7 +98,7 @@ class WatchActivity : WanoTubeActivity() {
     
     private var currentVideo: Video? = null
     private var currentUser: User? = null
-    private var currentAccount: Account? = null
+//    private var currentAccount: Account? = null
 
     private var channelId = ""
     private var username = ""
@@ -120,7 +118,7 @@ class WatchActivity : WanoTubeActivity() {
         binding = ActivityWatchBinding.inflate(layoutInflater)
         setContentView(binding.root)
         
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.hide()
 
         initLayouts(binding)
         initialiseSeekBar()
@@ -128,13 +126,6 @@ class WatchActivity : WanoTubeActivity() {
         initAdapter()
         getVideo()
         setClickListeners()
-    }
-
-    override fun customActionBar() {
-        super.customActionBar()
-        supportActionBar!!.apply {
-            displayOptions = ActionBar.DISPLAY_SHOW_TITLE
-        }
     }
 
     private fun initAdapter() {
@@ -277,7 +268,6 @@ class WatchActivity : WanoTubeActivity() {
                 velocityX: Float,
                 velocityY: Float,
             ): Boolean {
-                //TODO: Minimise and maximise
 //                if (isMaximise) {
 //                   minimiseView()
 //                } else {
@@ -396,7 +386,7 @@ class WatchActivity : WanoTubeActivity() {
                 .setType("text/plain")
                 .setChooserTitle("Share URL")
                 .setText("$PRODUCTION_WEB_URL/watch/$videoId")
-                .startChooser();
+                .startChooser()
         }
     }
     
@@ -424,6 +414,7 @@ class WatchActivity : WanoTubeActivity() {
         }
     }
     
+    @SuppressLint("SetTextI18n")
     private fun initVideo() {
         binding.title.text = currentVideo?.title
         binding.subtitle.text = currentVideo?.totalViews.toString() + " views"
@@ -656,6 +647,7 @@ class WatchActivity : WanoTubeActivity() {
     private fun setHandler() {
         videoHandler = Handler()
         videoRunnable = object : Runnable {
+            @SuppressLint("SetTextI18n")
             override fun run() {
                 if (videoView.duration > 0) {
                     val currentPosition = videoView.currentPosition
@@ -691,6 +683,7 @@ class WatchActivity : WanoTubeActivity() {
     private fun initialiseSeekBar() {
         seekBar.progress = 0
         seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            @SuppressLint("SetTextI18n")
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 if (seekBar.id == R.id.seekbar) {
                     if (fromUser) {
