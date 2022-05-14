@@ -231,6 +231,7 @@ abstract class WanoTubeActivity : AppCompatActivity(){
         mSocket.off()
         runOnUiThread {
             progressBar.visibility = View.GONE
+            isUploading = false
             dialog.hide()
         }
     }
