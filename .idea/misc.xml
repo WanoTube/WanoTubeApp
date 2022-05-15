@@ -15,6 +15,7 @@
         <entry key="app/src/main/res/drawable-xhdpi/ic_launcher_foreground.xml" value="0.1025" />
         <entry key="app/src/main/res/drawable-xhdpi/ic_more.xml" value="0.1025" />
         <entry key="app/src/main/res/drawable-xhdpi/ic_person_pin.xml" value="0.201" />
+        <entry key="app/src/main/res/drawable/circle_shape.xml" value="0.1785" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1025" />
         <entry key="app/src/main/res/drawable/primary_button.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/rounded_dialog.xml" value="0.1445" />
@@ -30,6 +31,7 @@
         <entry key="app/src/main/res/layout/bottom_sheet_dialog_layout.xml" value="0.1" />
         <entry key="app/src/main/res/layout/choose_video_dialog_layout.xml" value="0.11096014492753623" />
         <entry key="app/src/main/res/layout/comment_component_list.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/dialog_comment_short.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_following.xml" value="0.15052083333333333" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.19841987499292346" />
         <entry key="app/src/main/res/layout/fragment_login_tab.xml" value="0.1" />
@@ -53,6 +55,7 @@
         <entry key="app/src/main/res/xml/authenticator.xml" value="0.1" />
         <entry key="app/src/main/res/xml/background_loader.xml" value="0.21693840579710144" />
         <entry key="app/src/main/res/xml/circle_shape.xml" value="0.14427083333333332" />
+        <entry key="app/src/main/res/xml/rounded_comment_edit_text.xml" value="0.18" />
         <entry key="app/src/main/res/xml/spinner.xml" value="0.1375" />
       </map>
     </option>

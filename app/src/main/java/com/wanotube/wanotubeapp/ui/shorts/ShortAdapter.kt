@@ -12,6 +12,7 @@ import android.widget.TextView
 import android.widget.VideoView
 import androidx.core.app.ShareCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.like.LikeButton
 import com.like.OnLikeListener
 import com.wanotube.wanotubeapp.R
@@ -71,15 +72,23 @@ class ShortAdapter() : RecyclerView.Adapter<ShortAdapter.ViewHolder>() {
 
             handleLike(context, obj)
             handleShare(context, obj)
-            handleComment(obj)
+            handleComment(context, obj)
         }
 
-        private fun handleComment(obj: Video) {
-            commentButton.setOnClickListener { 
-                
+        private fun handleComment(context: Context, obj: Video) {
+            commentButton.setOnClickListener {
+                showBottomSheetDialog(context)
             }
         }
 
+        private fun showBottomSheetDialog(context: Context) {
+            val bottomSheetDialog = BottomSheetDialog(context)
+            bottomSheetDialog.apply {
+                setContentView(R.layout.dialog_comment_short)
+                show()
+            }
+        }
+        
         private fun handleShare(context: Context, obj: Video) {
             shareButton.setOnClickListener {
                 ShareCompat.IntentBuilder(context)
