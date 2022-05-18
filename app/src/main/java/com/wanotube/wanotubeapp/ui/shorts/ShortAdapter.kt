@@ -2,22 +2,23 @@ package com.wanotube.wanotubeapp.ui.shorts
 
 import android.content.Context
 import android.content.Intent
-import android.media.MediaPlayer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.VideoView
 import androidx.core.app.ShareCompat
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.exoplayer2.Player
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.like.LikeButton
 import com.like.OnLikeListener
 import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.WanotubeApp.Companion.context
+import com.wanotube.wanotubeapp.components.videoPlayer.PlayerStateCallback
 import com.wanotube.wanotubeapp.database.getDatabase
+import com.wanotube.wanotubeapp.databinding.ShortVideoComponentListBinding
 import com.wanotube.wanotubeapp.domain.Video
 import com.wanotube.wanotubeapp.network.authentication.AccountUtils
 import com.wanotube.wanotubeapp.network.authentication.AuthPreferences
@@ -25,7 +26,7 @@ import com.wanotube.wanotubeapp.repository.VideosRepository
 import com.wanotube.wanotubeapp.ui.login.LoginActivity
 import com.wanotube.wanotubeapp.util.Constant
 
-class ShortAdapter() : RecyclerView.Adapter<ShortAdapter.ViewHolder>() {
+class ShortAdapter : RecyclerView.Adapter<ShortAdapter.VideoViewHolder>(), PlayerStateCallback {
 
     var data =  listOf<Video>()
         set(value) {
@@ -33,42 +34,44 @@ class ShortAdapter() : RecyclerView.Adapter<ShortAdapter.ViewHolder>() {
             notifyDataSetChanged()
         }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder.from(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoViewHolder {
+        val binding = DataBindingUtil.inflate<ShortVideoComponentListBinding>(
+            LayoutInflater.from(parent.context), R.layout.short_video_component_list, parent, false
+        )
+        return VideoViewHolder(binding)
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var videoView: VideoView = itemView.findViewById<View>(R.id.videoView) as VideoView
+    override fun getItemCount(): Int = data.size
+
+    override fun onBindViewHolder(viewHolder: VideoViewHolder, position: Int) {
+        val item = data[position]
+        with(viewHolder.binding) {
+            url = item.url
+            callback = this@ShortAdapter
+            executePendingBindings()
+        }
+        viewHolder.setData(item)
+    }
+
+    class VideoViewHolder constructor(val binding: ShortVideoComponentListBinding) : RecyclerView.ViewHolder(binding.root) {
+
         var title: TextView = itemView.findViewById<View>(R.id.textVideoTitle) as TextView
         var desc: TextView = itemView.findViewById<View>(R.id.textVideoDescription) as TextView
-        var pbar: ProgressBar = itemView.findViewById<View>(R.id.videoProgressBar) as ProgressBar
+//        var pbar: ProgressBar = itemView.findViewById<View>(R.id.videoProgressBar) as ProgressBar
         var likeButton: LikeButton = itemView.findViewById(R.id.like_button) as LikeButton
         var shareButton: ImageView = itemView.findViewById(R.id.share_button) as ImageView
         var commentButton: ImageView = itemView.findViewById(R.id.comment_button) as ImageView
-        var mediaPlayer: MediaPlayer? = null
         var totalLikesTextView :TextView = itemView.findViewById(R.id.total_likes) as TextView
 
         val videosRepository = context?.let { getDatabase(it) }?.let { VideosRepository(it) }
         val mAuthPreferences = context?.let { AuthPreferences(it) }
 
         fun setData(obj: Video) {
-            videoView.setVideoPath(obj.url)
+
             title.text = obj.title
             desc.text = obj.description
-            videoView.setOnPreparedListener { mediaPlayer ->
-                this.mediaPlayer = mediaPlayer
-                pbar.visibility = View.GONE
-                mediaPlayer.start()
-            }
-            videoView.setOnCompletionListener { mediaPlayer -> mediaPlayer.start() }
-            videoView.setOnClickListener {
-                if (mediaPlayer?.isPlaying == true) {
-                    this.mediaPlayer?.pause()
-                } else {
-                    this.mediaPlayer?.start()
-                }
-            }
-            val context = videoView.context
+
+            val context = title.context
 
             handleLike(context, obj)
             handleShare(context, obj)
@@ -88,7 +91,7 @@ class ShortAdapter() : RecyclerView.Adapter<ShortAdapter.ViewHolder>() {
                 show()
             }
         }
-        
+
         private fun handleShare(context: Context, obj: Video) {
             shareButton.setOnClickListener {
                 ShareCompat.IntentBuilder(context)
@@ -141,21 +144,22 @@ class ShortAdapter() : RecyclerView.Adapter<ShortAdapter.ViewHolder>() {
 //                }
 //            }
         }
+    }
+
+    override fun onVideoDurationRetrieved(duration: Long, player: Player) {
         
-        companion object {
-            fun from(parent: ViewGroup): ViewHolder {
-                val layoutInflater = LayoutInflater.from(parent.context)
-                val view = layoutInflater
-                    .inflate(R.layout.short_video_component_list, parent, false)
-                return ViewHolder(view)
-            }
-        }
     }
 
-    override fun getItemCount(): Int = data.size
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = data[position]
-        holder.setData(item)
+    override fun onVideoBuffering(player: Player) {
+        
     }
+
+    override fun onStartedPlaying(player: Player) {
+        
+    }
+
+    override fun onFinishedPlaying(player: Player) {
+        
+    }
+
 }
