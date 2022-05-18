@@ -65,16 +65,6 @@ class WanoTubeViewModel(application: Application) : AndroidViewModel(application
     val isNetworkErrorShown: LiveData<Boolean>
         get() = _isNetworkErrorShown
 
-    /**
-     * init{} is called immediately when this ViewModel is created.
-     */
-    init {
-        if (!isInitialized) {
-            isInitialized = true
-            refreshDataFromRepository()
-        }
-    }
-
     fun clearDataFromRepository() {
         viewModelScope.launch {
             videosRepository.clearVideos()

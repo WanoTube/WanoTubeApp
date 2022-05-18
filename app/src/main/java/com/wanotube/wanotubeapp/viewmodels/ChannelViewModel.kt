@@ -25,10 +25,6 @@ class ChannelViewModel(application: Application) : AndroidViewModel(application)
 
     var currentChannelVideos: MutableLiveData<MutableList<Video>> = MutableLiveData<MutableList<Video>>()
     
-    init {
-        refreshVideos()
-    }
-
     fun clearDataFromRepository() {
         viewModelScope.launch {
             currentChannelVideos.value = mutableListOf()
