@@ -42,7 +42,7 @@ class ShortAdapter() : RecyclerView.Adapter<ShortAdapter.ViewHolder>() {
         var title: TextView = itemView.findViewById<View>(R.id.textVideoTitle) as TextView
         var desc: TextView = itemView.findViewById<View>(R.id.textVideoDescription) as TextView
         var pbar: ProgressBar = itemView.findViewById<View>(R.id.videoProgressBar) as ProgressBar
-        var likeButton: LikeButton = itemView.findViewById(R.id.favorites) as LikeButton
+        var likeButton: LikeButton = itemView.findViewById(R.id.like_button) as LikeButton
         var shareButton: ImageView = itemView.findViewById(R.id.share_button) as ImageView
         var commentButton: ImageView = itemView.findViewById(R.id.comment_button) as ImageView
         var mediaPlayer: MediaPlayer? = null
