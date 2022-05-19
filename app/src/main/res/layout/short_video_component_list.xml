@@ -2,6 +2,10 @@
 <layout>
     <data>
         <variable
+            name="isPlaying"
+            type="Boolean"/>
+        
+        <variable
             name="url"
             type="String"/>
 
@@ -21,6 +25,7 @@
             android:layout_height="match_parent"
             app:video_url="@{url}"
             app:on_state_change="@{callback}"
+            app:is_playing="@{isPlaying}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -25,6 +25,8 @@ import com.wanotube.wanotubeapp.network.authentication.AuthPreferences
 import com.wanotube.wanotubeapp.repository.VideosRepository
 import com.wanotube.wanotubeapp.ui.login.LoginActivity
 import com.wanotube.wanotubeapp.util.Constant
+import timber.log.Timber
+
 
 class ShortAdapter : RecyclerView.Adapter<ShortAdapter.VideoViewHolder>(), PlayerStateCallback {
 
@@ -33,6 +35,39 @@ class ShortAdapter : RecyclerView.Adapter<ShortAdapter.VideoViewHolder>(), Playe
             field = value
             notifyDataSetChanged()
         }
+//    override fun onViewRecycled(holder: VideoViewHolder) {
+//        val videoView = holder.binding.videoView
+//        releasePlayer(videoView)
+//        super.onViewRecycled(holder)
+//    }
+//
+//
+//    private fun releasePlayer(videoView: PlayerView) {
+//        videoView.player?.run {
+//            release()
+//        }
+//        videoView.player = null
+//    }
+    
+    override fun onViewAttachedToWindow(holder: VideoViewHolder) {
+        super.onViewAttachedToWindow(holder)
+        holder.binding.videoView.player?.pause()
+
+        with(holder.binding) {
+            isPlaying = true
+            Timber.e("onViewAttachedToWindow, isPlaying: $isPlaying")
+        }
+
+    }
+
+    override fun onViewDetachedFromWindow(holder: VideoViewHolder) {
+        super.onViewDetachedFromWindow(holder)
+        holder.binding.videoView.player?.pause()
+        with(holder.binding) {
+            isPlaying = false
+            Timber.e("onViewDetachedFromWindow, isPlaying: $isPlaying")
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoViewHolder {
         val binding = DataBindingUtil.inflate<ShortVideoComponentListBinding>(
@@ -48,9 +83,26 @@ class ShortAdapter : RecyclerView.Adapter<ShortAdapter.VideoViewHolder>(), Playe
         with(viewHolder.binding) {
             url = item.url
             callback = this@ShortAdapter
+            isPlaying = false
             executePendingBindings()
+
+            videoView.setOnClickListener {
+                if (videoView.player?.isPlaying == true) {
+                    pausePlayer(videoView.player!!)
+                } else {
+                    startPlayer(videoView.player!!)
+                }
+            }
         }
         viewHolder.setData(item)
+    }
+
+    private fun pausePlayer(player: Player) {
+        player.playWhenReady = false
+    }
+
+    private fun startPlayer(player: Player) {
+        player.playWhenReady = true
     }
 
     class VideoViewHolder constructor(val binding: ShortVideoComponentListBinding) : RecyclerView.ViewHolder(binding.root) {

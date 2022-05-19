@@ -1,6 +1,5 @@
 package com.wanotube.wanotubeapp.util
 
-import android.net.Uri
 import android.view.View
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
@@ -9,12 +8,11 @@ import com.google.android.exoplayer2.DefaultLoadControl
 import com.google.android.exoplayer2.DefaultRenderersFactory
 import com.google.android.exoplayer2.ExoPlaybackException
 import com.google.android.exoplayer2.ExoPlayerFactory
+import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.source.ExtractorMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.ui.PlayerView
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
 import com.wanotube.wanotubeapp.components.videoPlayer.PlayerStateCallback
 
 /**
@@ -37,29 +35,33 @@ fun setImageUrl(imageView: ImageView, url: String) {
     Glide.with(imageView.context).load(url).into(imageView)
 }
 
-@BindingAdapter("video_url", "on_state_change")
-fun PlayerView.loadVideo(url: String?, callback: PlayerStateCallback) {
+
+private var currentWindow = 0
+private var playbackPosition = 0L
+
+@BindingAdapter("video_url", "on_state_change", "is_playing")
+fun PlayerView.loadVideo(url: String?, callback: PlayerStateCallback, isPlaying: Boolean) {
     if (url == null) return
     val player = ExoPlayerFactory.newSimpleInstance(
         context, DefaultRenderersFactory(context), DefaultTrackSelector(),
         DefaultLoadControl()
     )
 
-    player.playWhenReady = true
     player.repeatMode = Player.REPEAT_MODE_ALL
     // When changing track, retain the latest frame instead of showing a black screen
     setKeepContentOnPlayerReset(true)
     // We'll show the controller
     this.useController = true
     // Provide url to load the video from here
-    val mediaSource = ExtractorMediaSource.Factory(
-        DefaultHttpDataSourceFactory("Demo")
-    ).createMediaSource(Uri.parse(url))
+    val mediaItem = MediaItem.fromUri(url)
+    player.setMediaItem(mediaItem)
+    //    player.playWhenReady = isPlaying
 
-    player.prepare(mediaSource)
-
+    player.seekTo(currentWindow, playbackPosition)
+    player.prepare()
+    
     this.player = player
-
+    
     this.player!!.addListener(object : Player.EventListener {
 
         override fun onPlayerError(error: ExoPlaybackException) {
