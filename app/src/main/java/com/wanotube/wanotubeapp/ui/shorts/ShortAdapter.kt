@@ -85,26 +85,30 @@ class ShortAdapter : RecyclerView.Adapter<ShortAdapter.VideoViewHolder>(), Playe
             isPlaying = false
             executePendingBindings()
 
+            exoPlay.setOnClickListener {
+                startPlayer(viewHolder.binding)
+            }
+            
             videoView.setOnClickListener {
                 if (videoView.player?.isPlaying == true) {
-                    pausePlayer(videoView.player!!)
-                    exoPlay.visibility = View.VISIBLE
-                    exoPause.visibility = View.GONE
+                    pausePlayer(viewHolder.binding)
                 } else {
-                    startPlayer(videoView.player!!)
-                    exoPlay.visibility = View.GONE
+                    startPlayer(viewHolder.binding)
                 }
             }
         }
         viewHolder.setData(item)
     }
 
-    private fun pausePlayer(player: Player) {
-        player.playWhenReady = false
+    private fun pausePlayer(binding: ShortVideoComponentListBinding) {
+        binding.videoView.player!!.playWhenReady = false
+        binding.exoPlay.visibility = View.VISIBLE
+        binding.exoPause.visibility = View.GONE
     }
 
-    private fun startPlayer(player: Player) {
-        player.playWhenReady = true
+    private fun startPlayer(binding: ShortVideoComponentListBinding) {
+        binding.videoView.player!!.playWhenReady = true
+        binding.exoPlay.visibility = View.GONE
     }
 
     class VideoViewHolder constructor(val binding: ShortVideoComponentListBinding) : RecyclerView.ViewHolder(binding.root) {

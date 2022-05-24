@@ -49,11 +49,13 @@
             android:orientation="horizontal">
 
             <ImageButton android:id="@id/exo_play"
+                app:background="@null"
                 android:scaleX="2"
                 android:scaleY="2"
                 style="@style/ExoMediaButton.Play"/>
 
             <ImageButton android:id="@id/exo_pause"
+                app:background="@null"
                 android:visibility="gone"
                 android:scaleX="2"
                 android:scaleY="2"
