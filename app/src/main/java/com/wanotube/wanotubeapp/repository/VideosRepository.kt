@@ -78,6 +78,12 @@ class VideosRepository(private val database: AppDatabase) {
         }
     }
     
+    fun insertAllVideos(videosModel:  List<DatabaseVideo>?) {
+        if (videosModel != null) {
+            database.videoDao.insertAll(videosModel)
+        }
+    }
+    
     fun getVideo(videoId: String): Call<NetworkVideoWatch>? {
         val videoService: IVideoService? =
             ServiceGenerator.createService(IVideoService::class.java)

@@ -64,7 +64,7 @@ class MainActivity : WanoTubeActivity(), IEventListener {
             ).get(ChannelViewModel::class.java)
 
         initVideos()
-        initChannels()
+//        initChannels()
     }
     
     private fun initVideos() {
