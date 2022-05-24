@@ -32,6 +32,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintVertical_bias="1.0"
+            app:controller_layout_id="@layout/short_player_control_view"
             />
 <!--        <ProgressBar-->
 <!--            android:id="@+id/videoProgressBar"-->
