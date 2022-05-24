@@ -2,6 +2,7 @@ package com.wanotube.wanotubeapp.ui.shorts
 
 import android.content.Context
 import android.content.Intent
+import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,10 +53,8 @@ class ShortAdapter : RecyclerView.Adapter<ShortAdapter.VideoViewHolder>(), Playe
     override fun onViewAttachedToWindow(holder: VideoViewHolder) {
         super.onViewAttachedToWindow(holder)
         holder.binding.videoView.player?.pause()
-
         with(holder.binding) {
             isPlaying = true
-            Timber.e("onViewAttachedToWindow, isPlaying: $isPlaying")
         }
 
     }
@@ -89,8 +88,11 @@ class ShortAdapter : RecyclerView.Adapter<ShortAdapter.VideoViewHolder>(), Playe
             videoView.setOnClickListener {
                 if (videoView.player?.isPlaying == true) {
                     pausePlayer(videoView.player!!)
+                    exoPlay.visibility = View.VISIBLE
+                    exoPause.visibility = View.GONE
                 } else {
                     startPlayer(videoView.player!!)
+                    exoPlay.visibility = View.GONE
                 }
             }
         }
