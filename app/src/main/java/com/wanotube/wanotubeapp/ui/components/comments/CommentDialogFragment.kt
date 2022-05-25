@@ -10,7 +10,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.wanotube.wanotubeapp.R
+import com.wanotube.wanotubeapp.database.getDatabase
 import com.wanotube.wanotubeapp.databinding.DialogCommentShortBinding
+import com.wanotube.wanotubeapp.repository.CommentRepository
 import com.wanotube.wanotubeapp.ui.watch.CommentAdapter
 import com.wanotube.wanotubeapp.viewmodels.CommentViewModel
 
@@ -31,8 +33,24 @@ class CommentDialogFragment: BottomSheetDialogFragment() {
         )
 
         videoId = arguments?.getString("VIDEO_ID").toString()
-        
+        activity?.application?.let {
+            val commentRepository = CommentRepository(getDatabase(it))
+            binding.btnSendComment.setOnClickListener {
+                val commentText = binding.commentEditText.text.toString()
+                binding.commentEditText.text.clear()
+                adapter?.let { it1 -> commentRepository.sendComment(commentText, videoId, it1) }
+                
+//                applicationContext?.let { it1 -> hideKeyboardFrom(
+//                    it1,
+//                    binding.commentEditText
+//                )}
+
+            }
+        }
+
         initRecyclerView()
+        
+        
 
         return binding.root
     }
