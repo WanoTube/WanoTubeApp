@@ -56,3 +56,9 @@ class NetworkAccount {
     @Expose
     var v: Int? = null
 }
+
+class NetworkFollow {
+    @SerializedName("number_of_followers")
+    @Expose
+    var numberOfFollowers: Int? = 0
+}

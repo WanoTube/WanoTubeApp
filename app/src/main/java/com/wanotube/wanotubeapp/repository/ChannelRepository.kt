@@ -13,6 +13,7 @@ import com.wanotube.wanotubeapp.network.ServiceGenerator
 import com.wanotube.wanotubeapp.network.objects.UserResult
 import com.wanotube.wanotubeapp.network.asDatabaseModel
 import com.wanotube.wanotubeapp.network.authentication.AuthPreferences
+import com.wanotube.wanotubeapp.network.objects.NetworkFollow
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -89,6 +90,52 @@ class ChannelRepository(private val database: AppDatabase) {
             }
         }
         return null
+    }
+
+    suspend fun followChannel(channelId: String) {
+        val mAuthPreferences = context?.let { AuthPreferences(it) }
+        if (mAuthPreferences != null) {
+            mAuthPreferences.authToken?.let {
+                Timber.e("Ngan %s", "token: $it")
+                val service = ServiceGenerator.createService(IChannelService::class.java, it)
+                val response = service?.followChannel(channelId)
+                response?.enqueue(object : Callback<NetworkFollow> {
+                    override fun onResponse(
+                        call: Call<NetworkFollow>?,
+                        response: Response<NetworkFollow?>?
+                    ) {
+                        val result = response?.body()
+                        Timber.e("followChannel: result: $result")
+                    }
+                    override fun onFailure(call: Call<NetworkFollow>?, t: Throwable?) {
+                        Timber.e("Failed: error: %s", t.toString())
+                    }
+                })
+            }
+        }
+    }
+
+    suspend fun unfollowChannel(channelId: String) {
+        val mAuthPreferences = context?.let { AuthPreferences(it) }
+        if (mAuthPreferences != null) {
+            mAuthPreferences.authToken?.let {
+                Timber.e("Ngan %s", "token: $it")
+                val service = ServiceGenerator.createService(IChannelService::class.java, it)
+                val response = service?.unfollowChannel(channelId)
+                response?.enqueue(object : Callback<NetworkFollow> {
+                    override fun onResponse(
+                        call: Call<NetworkFollow>?,
+                        response: Response<NetworkFollow?>?
+                    ) {
+                        val result = response?.body()
+                        Timber.e("followChannel: result: $result")
+                    }
+                    override fun onFailure(call: Call<NetworkFollow>?, t: Throwable?) {
+                        Timber.e("Failed: error: %s", t.toString())
+                    }
+                })            
+            }
+        }
     }
     
     fun clearVideos() {
