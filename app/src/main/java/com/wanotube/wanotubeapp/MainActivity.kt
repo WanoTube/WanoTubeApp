@@ -7,6 +7,7 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.appcompat.app.ActionBar
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -18,6 +19,8 @@ import com.wanotube.wanotubeapp.ui.profile.ProfileFragment
 import com.wanotube.wanotubeapp.ui.shorts.ShortsFragment
 import com.wanotube.wanotubeapp.util.Constant
 import com.wanotube.wanotubeapp.util.URIPathHelper
+import com.wanotube.wanotubeapp.viewmodels.ChannelViewModel
+import com.wanotube.wanotubeapp.viewmodels.WanoTubeViewModel
 
 class MainActivity : WanoTubeActivity(), IEventListener {
 
@@ -25,6 +28,9 @@ class MainActivity : WanoTubeActivity(), IEventListener {
     private lateinit var binding: ActivityMainBinding
     private var  currentFragmentId: Int = R.id.home
     private var isUploadNormalVideo = true
+    
+    private lateinit var videoViewModel: WanoTubeViewModel
+    private lateinit var channelViewModel: ChannelViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,8 +44,43 @@ class MainActivity : WanoTubeActivity(), IEventListener {
 
         val navigationBarView = binding.bottomNavigation
         customNavigation(navigationBarView)
+
+        initData()
     }
 
+    private fun initData() {
+        val videoViewModelFactory = WanoTubeViewModel.WanoTubeViewModelFactory(application)
+
+        videoViewModel =
+            ViewModelProvider(
+                this, videoViewModelFactory
+            ).get(WanoTubeViewModel::class.java)
+
+        val channelViewModelFactory = ChannelViewModel.ChannelViewModelFactory(application)
+
+        channelViewModel =
+            ViewModelProvider(
+                this, channelViewModelFactory
+            ).get(ChannelViewModel::class.java)
+
+        initVideos()
+//        initChannels()
+    }
+    
+    private fun initVideos() {
+        videoViewModel.refreshDataFromRepository()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        videoViewModel.clearDataFromRepository()
+        channelViewModel.clearDataFromRepository()
+    }
+    
+    private fun initChannels() {
+        channelViewModel.refreshVideos()
+    }
+    
     override fun customActionBar() {
         super.customActionBar()
         supportActionBar!!.apply {
@@ -68,18 +109,20 @@ class MainActivity : WanoTubeActivity(), IEventListener {
                         loadFragment(R.id.fragment_short)
                     }
                     R.id.management -> {
-                        currentFragment = ManagementFragment()
-                        loadFragment(R.id.fragment_management)
+                        if (checkTokenAvailable(true)) {
+                            currentFragment = ManagementFragment()
+                            loadFragment(R.id.fragment_management)
+                        }
                     }
                     R.id.user -> {
-                        currentFragment = ProfileFragment()
-                        loadFragment(R.id.fragment_profile)
+                        if (checkTokenAvailable(true)) {
+                            currentFragment = ProfileFragment()
+                            loadFragment(R.id.fragment_profile)
+                        }
                     }
                     R.id.create -> {
-                        if (checkTokenAvailable()) {
+                        if (checkTokenAvailable(true)) {
                             showBottomSheetDialog()
-                        } else {
-                            openLoginActivity()
                         }
                     }
                     else -> validFlag = false
@@ -146,7 +189,7 @@ class MainActivity : WanoTubeActivity(), IEventListener {
     private fun chooseVideoForUploadNormalVideo(bottomSheetDialog: BottomSheetDialog, isUploadNormalVideo: Boolean) {
         openGalleryForVideo()
         bottomSheetDialog.dismiss()
-        isUploadNormalVideo
+        this.isUploadNormalVideo = isUploadNormalVideo
     }
 }
 

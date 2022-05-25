@@ -34,20 +34,20 @@ import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
 import android.widget.VideoView
-import androidx.appcompat.app.ActionBar
 import androidx.core.app.ShareCompat
 import androidx.lifecycle.ViewModelProvider
+import com.like.LikeButton
+import com.like.OnLikeListener
 import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.WanoTubeActivity
 import com.wanotube.wanotubeapp.WanotubeApp
 import com.wanotube.wanotubeapp.database.asDomainModel
 import com.wanotube.wanotubeapp.database.getDatabase
 import com.wanotube.wanotubeapp.databinding.ActivityWatchBinding
-import com.wanotube.wanotubeapp.domain.Account
 import com.wanotube.wanotubeapp.domain.User
 import com.wanotube.wanotubeapp.domain.Video
-import com.wanotube.wanotubeapp.network.objects.NetworkVideoWatch
 import com.wanotube.wanotubeapp.network.asDatabaseModel
+import com.wanotube.wanotubeapp.network.objects.NetworkVideoWatch
 import com.wanotube.wanotubeapp.repository.ChannelRepository
 import com.wanotube.wanotubeapp.repository.CommentRepository
 import com.wanotube.wanotubeapp.repository.VideosRepository
@@ -62,6 +62,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import timber.log.Timber
+
 
 class WatchActivity : WanoTubeActivity() {
     private lateinit var binding: ActivityWatchBinding
@@ -100,7 +101,7 @@ class WatchActivity : WanoTubeActivity() {
     
     private var currentVideo: Video? = null
     private var currentUser: User? = null
-    private var currentAccount: Account? = null
+//    private var currentAccount: Account? = null
 
     private var channelId = ""
     private var username = ""
@@ -120,21 +121,14 @@ class WatchActivity : WanoTubeActivity() {
         binding = ActivityWatchBinding.inflate(layoutInflater)
         setContentView(binding.root)
         
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.hide()
 
         initLayouts(binding)
-        setClickListeners()
         initialiseSeekBar()
         setHandler()
         initAdapter()
         getVideo()
-    }
-
-    override fun customActionBar() {
-        super.customActionBar()
-        supportActionBar!!.apply {
-            displayOptions = ActionBar.DISPLAY_SHOW_TITLE
-        }
+        setClickListeners()
     }
 
     private fun initAdapter() {
@@ -169,16 +163,24 @@ class WatchActivity : WanoTubeActivity() {
     
     private fun getVideo() {
         CoroutineScope(Dispatchers.IO).launch {
-            val responseBodyCall = videosRepository.getVideo(videoId)
+            val doesNeedToken = intent.getBooleanExtra("NEED_TOKEN", false)
+            val responseBodyCall = if (doesNeedToken) {
+                videosRepository.getVideoWithAuthorization(videoId)
+            } else {
+                videosRepository.getVideo(videoId)
+            }
+            
             responseBodyCall?.enqueue(object : Callback<NetworkVideoWatch> {
                 override fun onResponse(
                     call: Call<NetworkVideoWatch>?,
-                    response: Response<NetworkVideoWatch?>?
+                    response: Response<NetworkVideoWatch?>?,
                 ) {
                     if (response != null) {
                         if (response.code() == 200) {
                             val videoDatabase = response.body()?.asDatabaseModel()
                             currentVideo = videoDatabase?.asDomainModel()
+                            binding.totalLikes.text = videoDatabase?.totalLikes.toString()
+
                             if (!isVideoInsertedToDB) {
                                 CoroutineScope(Dispatchers.IO).launch {
                                     videosRepository.insertVideoToDatabase(videoDatabase!!)
@@ -192,7 +194,7 @@ class WatchActivity : WanoTubeActivity() {
                             if (currentVideo != null)
                                 initVideo()
                         } else {
-                            Toast.makeText(WanotubeApp.context, "Find video unsuccessfully, please try again :( ", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(WanotubeApp.context, response.message(), Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
@@ -269,7 +271,6 @@ class WatchActivity : WanoTubeActivity() {
                 velocityX: Float,
                 velocityY: Float,
             ): Boolean {
-                //TODO: Minimise and maximise
 //                if (isMaximise) {
 //                   minimiseView()
 //                } else {
@@ -359,10 +360,7 @@ class WatchActivity : WanoTubeActivity() {
                     binding.commentEditText
                 ) }
 
-            } else {
-                openLoginActivity()
             }
-            
         }
     }
 
@@ -391,20 +389,29 @@ class WatchActivity : WanoTubeActivity() {
                 .setType("text/plain")
                 .setChooserTitle("Share URL")
                 .setText("$PRODUCTION_WEB_URL/watch/$videoId")
-                .startChooser();
+                .startChooser()
         }
     }
     
     private fun handleLike() {
-        binding.likeButton.setOnClickListener { 
-            videosRepository.likeVideo(videoId)
-        }
+        binding.likeButton.setOnLikeListener(object : OnLikeListener {
+            override fun liked(likeButton: LikeButton) {
+                if (checkTokenAvailable()) {
+                    videosRepository.likeVideo(videoId)
+                }
+            }
+            override fun unLiked(likeButton: LikeButton) {
+                if (checkTokenAvailable()) {
+                    videosRepository.likeVideo(videoId)
+                }
+            }
+        })
 
         val observeOwner = this
         CoroutineScope(Dispatchers.IO).launch {
             val video = videosRepository.getVideoFromDatabase(videoId)
             withContext(Dispatchers.Main) {
-                video.observe(observeOwner) { video -> 
+                video?.observe(observeOwner) { video -> 
                     if (video != null) {
                         if (isVideoInsertedToDB) {
                             binding.totalLikes.text = video.totalLikes.toString()
@@ -417,6 +424,7 @@ class WatchActivity : WanoTubeActivity() {
         }
     }
     
+    @SuppressLint("SetTextI18n")
     private fun initVideo() {
         binding.title.text = currentVideo?.title
         binding.subtitle.text = currentVideo?.totalViews.toString() + " views"
@@ -649,6 +657,7 @@ class WatchActivity : WanoTubeActivity() {
     private fun setHandler() {
         videoHandler = Handler()
         videoRunnable = object : Runnable {
+            @SuppressLint("SetTextI18n")
             override fun run() {
                 if (videoView.duration > 0) {
                     val currentPosition = videoView.currentPosition
@@ -684,6 +693,7 @@ class WatchActivity : WanoTubeActivity() {
     private fun initialiseSeekBar() {
         seekBar.progress = 0
         seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            @SuppressLint("SetTextI18n")
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 if (seekBar.id == R.id.seekbar) {
                     if (fromUser) {
@@ -711,12 +721,7 @@ class WatchActivity : WanoTubeActivity() {
 
     override fun onBackPressed() {
         releaseVideoPlayer()
-//        return if (myCondition) {
-//            //action not popBackStack
-//            true
-//        } else {
-//            false
-//        }
+        super.onBackPressed()
     }
 
     private fun dismissControls() {

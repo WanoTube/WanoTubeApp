@@ -63,6 +63,7 @@ class ManagementAdapter(iEventListener: IEventListener) : RecyclerView.Adapter<M
             thumbnailVideoView.setOnClickListener{
                 val intent = Intent(context, WatchActivity::class.java)
                 intent.putExtra("VIDEO_ID", item.id)
+                intent.putExtra("NEED_TOKEN", true)
                 context.startActivity(intent)
             }
             menuView.setOnClickListener {

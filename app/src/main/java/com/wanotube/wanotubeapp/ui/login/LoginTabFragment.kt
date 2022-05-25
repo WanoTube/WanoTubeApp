@@ -61,7 +61,7 @@ class LoginTabFragment : Fragment() {
             ) {
                 val body = response?.body()
                 if (body == null) {
-                    Timber.e("Failed: error: %s", "Email or password is incorrect")
+                    Toast.makeText(context, response?.message()?:"Email or password is incorrect", Toast.LENGTH_SHORT).show()
                 } else {
                     val user = body.user
                     val token = "Bearer " + body.token
@@ -77,7 +77,7 @@ class LoginTabFragment : Fragment() {
 
                     Toast.makeText(context, "Hi " + (user?.username ?: ""), Toast.LENGTH_SHORT).show()
 
-                    openMainActivity()
+                    finish()
                 }
             }
             override fun onFailure(call: Call<LoginResult>?, t: Throwable?) {
@@ -85,6 +85,10 @@ class LoginTabFragment : Fragment() {
             }
         })
         
+    }
+    
+    private fun finish() {
+        requireActivity().onBackPressed()
     }
     
     private fun openMainActivity() {

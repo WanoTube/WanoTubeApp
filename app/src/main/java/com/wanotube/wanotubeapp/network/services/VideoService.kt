@@ -22,6 +22,9 @@ interface IVideoService {
     @GET("videos/{id}")
     fun getVideo(@Path("id") id: String): Call<NetworkVideoWatch>?
 
+    @GET("videos/{id}")
+    fun getVideoWithAuthorization(@Path("id") id: String): Call<NetworkVideoWatch>?
+
     @Multipart
     @POST("videos/upload")
     fun uploadVideo(
@@ -33,7 +36,6 @@ interface IVideoService {
         @Part type: MultipartBody.Part,
         ): Call<NetworkVideo>?
 
-    @Headers("isDisableAuthorization:true")
     @Multipart
     @PATCH("videos/update")
     fun updateVideo(

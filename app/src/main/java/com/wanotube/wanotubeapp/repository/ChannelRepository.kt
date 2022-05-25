@@ -90,4 +90,8 @@ class ChannelRepository(private val database: AppDatabase) {
         }
         return null
     }
+    
+    fun clearVideos() {
+        database.videoDao.clearVideos()
+    }
 }

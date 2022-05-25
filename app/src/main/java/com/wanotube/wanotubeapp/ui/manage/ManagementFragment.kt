@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.wanotube.wanotubeapp.IEventListener
 import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.databinding.FragmentManagementBinding
@@ -70,12 +71,19 @@ class ManagementFragment : Fragment() {
                 adapter.data = it
                 binding.managementShimmerViewContainer.stopShimmer()
                 binding.managementShimmerViewContainer.visibility = View.GONE
-                binding.videoManagementList.visibility = View.VISIBLE
+                binding.pullToRefreshMyVideos.visibility = View.VISIBLE
             }
         }
 
         binding.lifecycleOwner = this
 
+        val pullToRefresh: SwipeRefreshLayout = binding.pullToRefreshMyVideos
+        pullToRefresh.setOnRefreshListener {
+            channelViewModel.clearDataFromRepository()
+            channelViewModel.refreshVideos()
+            pullToRefresh.isRefreshing = false
+        }
+        
         return binding.root
     }
 }

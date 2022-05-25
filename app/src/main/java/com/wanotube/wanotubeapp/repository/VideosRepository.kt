@@ -15,6 +15,8 @@ import com.wanotube.wanotubeapp.network.ServiceGenerator
 import com.wanotube.wanotubeapp.network.services.IVideoService
 import com.wanotube.wanotubeapp.network.objects.NetworkVideoWatch
 import com.wanotube.wanotubeapp.network.asDatabaseModel
+import com.wanotube.wanotubeapp.network.authentication.AuthPreferences
+import com.wanotube.wanotubeapp.util.VideoType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -76,10 +78,27 @@ class VideosRepository(private val database: AppDatabase) {
         }
     }
     
+    fun insertAllVideos(videosModel:  List<DatabaseVideo>?) {
+        if (videosModel != null) {
+            database.videoDao.insertAll(videosModel)
+        }
+    }
+    
     fun getVideo(videoId: String): Call<NetworkVideoWatch>? {
         val videoService: IVideoService? =
             ServiceGenerator.createService(IVideoService::class.java)
         return videoService?.getVideo(videoId)
+    }
+
+    fun getVideoWithAuthorization(videoId: String): Call<NetworkVideoWatch>? {
+        val mAuthPreferences = context?.let { AuthPreferences(it) }
+        mAuthPreferences?.authToken?.let {
+            Timber.e("Token: %s", it)
+            val videoService: IVideoService? =
+                ServiceGenerator.createService(IVideoService::class.java, it)
+            return videoService?.getVideoWithAuthorization(videoId)
+        }
+        return null
     }
     
     fun insertVideoToDatabase(video: DatabaseVideo) {
@@ -199,13 +218,8 @@ class VideosRepository(private val database: AppDatabase) {
         database.videoDao.clearVideos()
     }
     
-    fun getVideoFromDatabase(videoId: String): LiveData<DatabaseVideo> {
+    fun getVideoFromDatabase(videoId: String): LiveData<DatabaseVideo>? {
         return database.videoDao.getVideo(videoId)
     }
     
-    companion object {
-        enum class VideoType {
-            NORMAL, SHORT 
-        }
-    }
 }

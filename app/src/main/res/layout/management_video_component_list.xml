@@ -44,6 +44,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/video_component_title_height"
                     android:layout_marginStart="@dimen/component_margin"
+                    android:layout_marginEnd="24dp"
+
                     tools:text="Video's Title" />
 
                 <TextView

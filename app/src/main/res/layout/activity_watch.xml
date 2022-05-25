@@ -284,7 +284,7 @@
                                 android:layout_height="wrap_content">
 
                                 <com.like.LikeButton
-                                    app:icon_type="heart"
+                                    app:icon_type="thumb"
                                     app:icon_size="10dp"
                                     android:id="@+id/like_button"
                                     android:layout_width="50dp"
