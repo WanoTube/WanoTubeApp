@@ -11,13 +11,16 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.wanotube.wanotubeapp.IEventListener
 import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.domain.Video
 import com.wanotube.wanotubeapp.ui.edit.EditInfoActivity
 import com.wanotube.wanotubeapp.ui.watch.WatchActivity
 
-class ManagementAdapter : RecyclerView.Adapter<ManagementAdapter.ViewHolder>() {
-    
+class OldManagementAdapter(iEventListener: IEventListener) : RecyclerView.Adapter<OldManagementAdapter.ViewHolder>() {
+
+    private var listener: IEventListener = iEventListener
+
     var data =  listOf<Video>()
         @SuppressLint("NotifyDataSetChanged")
         set(value) {
@@ -33,10 +36,10 @@ class ManagementAdapter : RecyclerView.Adapter<ManagementAdapter.ViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder.from(parent)
+        return ViewHolder.from(parent, listener)
     }
 
-    class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(
+    class ViewHolder private constructor(itemView: View, var listener: IEventListener) : RecyclerView.ViewHolder(
         itemView
     ){
 
@@ -80,11 +83,11 @@ class ManagementAdapter : RecyclerView.Adapter<ManagementAdapter.ViewHolder>() {
         }
 
         companion object {
-            fun from(parent: ViewGroup): ViewHolder {
+            fun from(parent: ViewGroup, listener: IEventListener): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater
                     .inflate(R.layout.management_video_component_list, parent, false)
-                return ViewHolder(view)
+                return ViewHolder(view, listener)
             }
         }
     }

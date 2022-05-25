@@ -32,9 +32,9 @@
             app:destination="@id/fragment_profile"/>
     </fragment>
     <fragment
-        android:id="@+id/fragment_management"
-        android:name="com.wanotube.wanotubeapp.ui.manage.ManagementFragment"
-        android:label="ManagementFragment">
+        android:id="@+id/fragment_library"
+        android:name="com.wanotube.wanotubeapp.ui.library.LibraryFragment"
+        android:label="LibraryFragment">
         <action
             android:id="@+id/action_management_fragment_to_home_fragment"
             app:destination="@id/fragment_home" />

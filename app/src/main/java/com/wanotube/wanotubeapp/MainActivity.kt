@@ -14,6 +14,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.navigation.NavigationBarView.LABEL_VISIBILITY_UNLABELED
 import com.wanotube.wanotubeapp.databinding.ActivityMainBinding
 import com.wanotube.wanotubeapp.ui.home.HomeFragment
+import com.wanotube.wanotubeapp.ui.library.LibraryFragment
 import com.wanotube.wanotubeapp.ui.manage.ManagementFragment
 import com.wanotube.wanotubeapp.ui.profile.ProfileFragment
 import com.wanotube.wanotubeapp.ui.shorts.ShortsFragment
@@ -110,8 +111,8 @@ class MainActivity : WanoTubeActivity(), IEventListener {
                     }
                     R.id.management -> {
                         if (checkTokenAvailable(true)) {
-                            currentFragment = ManagementFragment()
-                            loadFragment(R.id.fragment_management)
+                            currentFragment = LibraryFragment()
+                            loadFragment(R.id.fragment_library)
                         }
                     }
                     R.id.user -> {

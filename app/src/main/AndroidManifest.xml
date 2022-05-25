@@ -33,6 +33,10 @@
         </service>
 
         <activity
+            android:name=".ui.manage.ManagementActivity"
+            android:exported="false"
+            android:windowSoftInputMode="stateVisible|adjustPan" />
+        <activity
             android:name=".ui.edit.EditInfoActivity"
             android:exported="false"
             android:windowSoftInputMode="stateVisible|adjustPan" />
