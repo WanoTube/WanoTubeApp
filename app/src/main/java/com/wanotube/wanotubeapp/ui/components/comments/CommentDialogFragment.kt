@@ -50,8 +50,6 @@ class CommentDialogFragment: BottomSheetDialogFragment() {
 
         initRecyclerView()
         
-        
-
         return binding.root
     }
 
@@ -80,8 +78,7 @@ class CommentDialogFragment: BottomSheetDialogFragment() {
                             video ->  video.videoId == videoId
                     }
                     adapter!!.comments = videos
-//                    binding.commentTotal.text = adapter!!.itemCount.toString()
-//                    binding.totalComments.text = adapter!!.itemCount.toString()
+                    binding.commentTotal.text = adapter!!.itemCount.toString()
                 }
             }
         }

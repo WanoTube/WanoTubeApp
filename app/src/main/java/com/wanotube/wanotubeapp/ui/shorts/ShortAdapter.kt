@@ -138,6 +138,9 @@ class ShortAdapter : RecyclerView.Adapter<ShortAdapter.VideoViewHolder>(), Playe
             handleShare(context, obj)
             handleComment(context, obj)
 
+            binding.totalLikes.text = obj.totalLikes.toString()
+            binding.totalComments.text = obj.totalComments.toString()
+
             bottomSheetDialog = CommentDialogFragment.createInstance(obj.id)
         }
 
@@ -177,8 +180,8 @@ class ShortAdapter : RecyclerView.Adapter<ShortAdapter.VideoViewHolder>(), Playe
         }
 
         private fun openLoginActivity() {
-            val intent = Intent(context, LoginActivity::class.java)
-            context?.startActivity(intent)
+            val intent = Intent(binding.root.context, LoginActivity::class.java)
+            binding.root.context.startActivity(intent)
         }
 
         private fun handleLike(context: Context, obj: Video) {
@@ -194,18 +197,6 @@ class ShortAdapter : RecyclerView.Adapter<ShortAdapter.VideoViewHolder>(), Playe
                     }
                 }
             })
-
-//            val observeOwner = context
-//            CoroutineScope(Dispatchers.IO).launch {
-//                val video = videosRepository?.getVideoFromDatabase(obj.id)
-//                withContext(Dispatchers.Main) {
-//                    video?.observe(observeOwner) { video ->
-//                        if (video != null) {
-//                            totalLikesTextView.text = video.totalLikes.toString()
-//                        }
-//                    }
-//                }
-//            }
         }
     }
 
