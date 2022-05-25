@@ -15,6 +15,7 @@ class ManagementActivity : WanoTubeActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityManagementBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val viewModelFactory = ChannelViewModel.ChannelViewModelFactory(application)
 

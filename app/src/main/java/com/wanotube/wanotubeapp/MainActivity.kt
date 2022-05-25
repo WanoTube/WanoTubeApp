@@ -15,7 +15,6 @@ import com.google.android.material.navigation.NavigationBarView.LABEL_VISIBILITY
 import com.wanotube.wanotubeapp.databinding.ActivityMainBinding
 import com.wanotube.wanotubeapp.ui.home.HomeFragment
 import com.wanotube.wanotubeapp.ui.library.LibraryFragment
-import com.wanotube.wanotubeapp.ui.manage.ManagementFragment
 import com.wanotube.wanotubeapp.ui.profile.ProfileFragment
 import com.wanotube.wanotubeapp.ui.shorts.ShortsFragment
 import com.wanotube.wanotubeapp.util.Constant
