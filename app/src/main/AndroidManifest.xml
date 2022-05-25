@@ -33,7 +33,7 @@
         </service>
 
         <activity
-            android:name=".ui.manage.ManagementActivity"
+            android:name="com.wanotube.wanotubeapp.ui.library.manage.ManagementActivity"
             android:exported="false"
             android:windowSoftInputMode="stateVisible|adjustPan" />
         <activity

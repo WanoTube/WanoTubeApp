@@ -1,4 +1,4 @@
-package com.wanotube.wanotubeapp.ui.manage
+package com.wanotube.wanotubeapp.ui.library.manage
 
 import android.os.Bundle
 import android.view.View

@@ -61,4 +61,31 @@ class NetworkFollow {
     @SerializedName("number_of_followers")
     @Expose
     var numberOfFollowers: Int? = 0
+
+    @SerializedName("followings")
+    @Expose
+    var followings: Int? = 0
+}
+
+class NetworkFollowingChannel {
+    @SerializedName("username")
+    @Expose
+    var username: String? = ""
+
+    @SerializedName("channelId")
+    @Expose
+    var channelId: String? = ""
+
+    @SerializedName("number_of_followers")
+    @Expose
+    var numberOfFollowers: Int? = 0
+
+    @SerializedName("followings")
+    @Expose
+    var followings: Int? = 0
+
+    @SerializedName("avatar")
+    @Expose
+    var avatar: String? = ""
+
 }

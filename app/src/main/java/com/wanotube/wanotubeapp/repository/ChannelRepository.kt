@@ -1,5 +1,6 @@
 package com.wanotube.wanotubeapp.repository
 
+import android.net.Network
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.wanotube.wanotubeapp.WanotubeApp.Companion.context
@@ -14,6 +15,7 @@ import com.wanotube.wanotubeapp.network.objects.UserResult
 import com.wanotube.wanotubeapp.network.asDatabaseModel
 import com.wanotube.wanotubeapp.network.authentication.AuthPreferences
 import com.wanotube.wanotubeapp.network.objects.NetworkFollow
+import com.wanotube.wanotubeapp.network.objects.NetworkFollowingChannel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -119,7 +121,6 @@ class ChannelRepository(private val database: AppDatabase) {
         val mAuthPreferences = context?.let { AuthPreferences(it) }
         if (mAuthPreferences != null) {
             mAuthPreferences.authToken?.let {
-                Timber.e("Ngan %s", "token: $it")
                 val service = ServiceGenerator.createService(IChannelService::class.java, it)
                 val response = service?.unfollowChannel(channelId)
                 response?.enqueue(object : Callback<NetworkFollow> {
@@ -136,6 +137,26 @@ class ChannelRepository(private val database: AppDatabase) {
                 })            
             }
         }
+    }
+    
+    fun getFollowInfo(): Call<NetworkFollow>? {
+        val mAuthPreferences = context?.let { AuthPreferences(it) }
+        if (mAuthPreferences != null) {
+            mAuthPreferences.authToken?.let {
+               return  ServiceGenerator.createService(IChannelService::class.java, it)?.getFollowInfo()
+            }
+        }
+        return null
+    }
+    
+    fun getFollowingChannels(): Call<NetworkFollowingChannel>? {
+        val mAuthPreferences = context?.let { AuthPreferences(it) }
+        if (mAuthPreferences != null) {
+            mAuthPreferences.authToken?.let {
+                return  ServiceGenerator.createService(IChannelService::class.java, it)?.getFollowingChannels()
+            }
+        }
+        return null
     }
     
     fun clearVideos() {

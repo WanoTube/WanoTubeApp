@@ -1,4 +1,4 @@
-package com.wanotube.wanotubeapp.ui.manage
+package com.wanotube.wanotubeapp.ui.library.manage
 
 import android.annotation.SuppressLint
 import android.content.Intent

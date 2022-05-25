@@ -1,4 +1,4 @@
-package com.wanotube.wanotubeapp.ui.watch
+package com.wanotube.wanotubeapp.ui.library.following
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,20 +7,22 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.wanotube.wanotubeapp.R
+import com.wanotube.wanotubeapp.domain.Account
 import com.wanotube.wanotubeapp.domain.Comment
+import com.wanotube.wanotubeapp.ui.watch.CommentAdapter
 
-class CommentAdapter : RecyclerView.Adapter<CommentAdapter.ViewHolder>() {
+class FollowingAdapter : RecyclerView.Adapter<FollowingAdapter.ViewHolder>() {
 
-    var comments =  listOf<Comment>()
+    var data =  listOf<Account>()
         set(value) {
             field = value
             notifyDataSetChanged()
         }
 
-    override fun getItemCount() = comments.size
+    override fun getItemCount() = data.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = comments[position]
+        val item = data[position]
         holder.bind(item)
     }
 
@@ -36,10 +38,9 @@ class CommentAdapter : RecyclerView.Adapter<CommentAdapter.ViewHolder>() {
 
         private val avatarView: ImageView = itemView.findViewById(R.id.avatar)
 
-        fun bind(item: Comment) {
-            commentContentView.text = item.content
-            authorNameView.text = item.authorUsername
-            
+        fun bind(item: Account) {
+            authorNameView.text = item.username
+
 //            Glide.with(avatarView.context)
 //                .load(item.thumbnail)
 //                .circleCrop()
