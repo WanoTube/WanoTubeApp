@@ -2,7 +2,6 @@ package com.wanotube.wanotubeapp.ui.shorts
 
 import android.content.Context
 import android.content.Intent
-import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,9 +9,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.app.ShareCompat
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.exoplayer2.Player
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.like.LikeButton
 import com.like.OnLikeListener
 import com.wanotube.wanotubeapp.R
@@ -24,6 +24,7 @@ import com.wanotube.wanotubeapp.domain.Video
 import com.wanotube.wanotubeapp.network.authentication.AccountUtils
 import com.wanotube.wanotubeapp.network.authentication.AuthPreferences
 import com.wanotube.wanotubeapp.repository.VideosRepository
+import com.wanotube.wanotubeapp.ui.components.comments.CommentDialogFragment
 import com.wanotube.wanotubeapp.ui.login.LoginActivity
 import com.wanotube.wanotubeapp.util.Constant
 import timber.log.Timber
@@ -123,6 +124,8 @@ class ShortAdapter : RecyclerView.Adapter<ShortAdapter.VideoViewHolder>(), Playe
 
         val videosRepository = context?.let { getDatabase(it) }?.let { VideosRepository(it) }
         val mAuthPreferences = context?.let { AuthPreferences(it) }
+        
+        var bottomSheetDialog: CommentDialogFragment? = null
 
         fun setData(obj: Video) {
 
@@ -134,20 +137,22 @@ class ShortAdapter : RecyclerView.Adapter<ShortAdapter.VideoViewHolder>(), Playe
             handleLike(context, obj)
             handleShare(context, obj)
             handleComment(context, obj)
+
+            bottomSheetDialog = CommentDialogFragment.createInstance(obj.id)
         }
 
         private fun handleComment(context: Context, obj: Video) {
             commentButton.setOnClickListener {
-                showBottomSheetDialog(context)
+                showBottomSheetDialog()
             }
         }
 
-        private fun showBottomSheetDialog(context: Context) {
-            val bottomSheetDialog = BottomSheetDialog(context)
-            bottomSheetDialog.apply {
-                setContentView(R.layout.dialog_comment_short)
-                show()
-            }
+        private fun showBottomSheetDialog() {
+
+            val fragmentManager: FragmentManager =
+                (itemView.context as FragmentActivity).supportFragmentManager // instantiate your view context
+
+            bottomSheetDialog?.show(fragmentManager, bottomSheetDialog!!.tag)
         }
 
         private fun handleShare(context: Context, obj: Video) {
