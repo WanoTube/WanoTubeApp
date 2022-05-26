@@ -55,13 +55,14 @@
                     android:layout_marginStart="@dimen/component_margin"
                     tools:text="Video's subtitle" />
             </LinearLayout>
+
             <ImageView
                 android:id="@+id/video_menu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:tint="@null"
                 android:layout_alignEnd="@+id/video_details"
-                android:src="@drawable/ic_hamburger"/>
+                android:src="@drawable/ic_hamburger"
+                app:tint="@null" />
         </RelativeLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

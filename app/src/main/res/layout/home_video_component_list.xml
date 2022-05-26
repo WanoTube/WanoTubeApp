@@ -17,45 +17,62 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@drawable/ic_slow_motion" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/layout_start_margin"
-        android:layout_marginEnd="@dimen/layout_end_margin">
-
-        <ImageView
-            android:id="@+id/avatar_user"
-            android:layout_width="@dimen/avatar_height"
-            android:layout_height="@dimen/avatar_height"
-            android:contentDescription="@string/user_avatar"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/ic_slow_motion" />
-
-        <LinearLayout
-            android:layout_width="0dp"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/thumbnail_video"
+        app:layout_constraintTop_toTopOf="@+id/thumbnail_video"
+        android:orientation="horizontal">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/video_details"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/component_medium_margin"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/avatar_user"
-            app:layout_constraintTop_toTopOf="@+id/avatar_user">
+            android:layout_marginStart="@dimen/layout_start_margin"
+            android:layout_marginEnd="@dimen/layout_end_margin">
 
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/video_component_title_height"
-                android:layout_marginStart="@dimen/component_margin"
-                tools:text="@string/video_s_title" />
+            <ImageView
+                android:id="@+id/avatar_user"
+                android:layout_width="@dimen/avatar_height"
+                android:layout_height="@dimen/avatar_height"
+                android:contentDescription="@string/user_avatar"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/ic_slow_motion" />
 
-            <TextView
-                android:id="@+id/subtitle"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/video_component_title_height"
-                android:layout_marginStart="@dimen/component_margin"
-                tools:text="@string/video_s_title" />
-        </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/component_medium_margin"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/avatar_user"
+                app:layout_constraintTop_toTopOf="@+id/avatar_user">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/video_component_title_height"
+                    android:layout_marginStart="@dimen/component_margin"
+                    tools:text="@string/video_s_title" />
+
+                <TextView
+                    android:id="@+id/subtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/video_component_title_height"
+                    android:layout_marginStart="@dimen/component_margin"
+                    tools:text="@string/video_s_title" />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/video_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/video_details"
+            android:src="@drawable/ic_hamburger"
+            app:tint="@null" />
+    </RelativeLayout>
+    
 </LinearLayout>
