@@ -45,4 +45,10 @@
     <string name="comments">Comments</string>
     <string name="like_total_default">0</string>
     <string name="save">Save</string>
+    <string name="watch_history">Watch History</string>
+    <string name="watch_later">Watch Later</string>
+    <string name="my_followers">My Followers</string>
+    <string name="my_followings">My Followings</string>
+    <string name="follow">Follow</string>
+    <string name="default_content">Default content</string>
 </resources>

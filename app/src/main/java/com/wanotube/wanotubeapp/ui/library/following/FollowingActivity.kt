@@ -1,42 +1,21 @@
-package com.wanotube.wanotubeapp.ui.manage
+package com.wanotube.wanotubeapp.ui.library.following
 
-import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.wanotube.wanotubeapp.IEventListener
 import com.wanotube.wanotubeapp.R
-import com.wanotube.wanotubeapp.databinding.FragmentManagementBinding
+import com.wanotube.wanotubeapp.WanoTubeActivity
+import com.wanotube.wanotubeapp.databinding.ActivityFollowingBinding
 import com.wanotube.wanotubeapp.util.MarginItemDecoration
 import com.wanotube.wanotubeapp.viewmodels.ChannelViewModel
 
-class ManagementFragment : Fragment() {
+class FollowingActivity: WanoTubeActivity() {
 
-    private lateinit var listener: IEventListener
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        try {
-            listener = context as IEventListener
-        } catch (castException: ClassCastException) {
-            /** The activity does not implement the listener.  */
-        }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        val binding: FragmentManagementBinding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_management, container, false
-        )
-
-        val application = requireNotNull(this.activity).application
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val binding = ActivityFollowingBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val viewModelFactory = ChannelViewModel.ChannelViewModelFactory(application)
 
@@ -47,12 +26,12 @@ class ManagementFragment : Fragment() {
 
         binding.channelViewModel = channelViewModel
 
-        val adapter = ManagementAdapter(listener)
+        val adapter = FollowingAdapter()
 
-        binding.videoManagementList.apply {
+        binding.followedChannelList.apply {
             this.adapter = adapter
-            binding.managementShimmerViewContainer.startShimmer()
-            
+//            binding.managementShimmerViewContainer.startShimmer()
+
             val topBottomMargin = resources.getDimensionPixelSize(R.dimen.component_large_margin)
             val leftRightMargin = resources.getDimensionPixelSize(R.dimen.component_margin)
 
@@ -66,11 +45,11 @@ class ManagementFragment : Fragment() {
             )
         }
 
-        channelViewModel.currentChannelVideos.observe(viewLifecycleOwner) {
+        channelViewModel.currentChannelFollowings.observe(this) {
             it?.let {
                 adapter.data = it
-                binding.managementShimmerViewContainer.stopShimmer()
-                binding.managementShimmerViewContainer.visibility = View.GONE
+//                binding.managementShimmerViewContainer.stopShimmer()
+//                binding.managementShimmerViewContainer.visibility = View.GONE
                 binding.pullToRefreshMyVideos.visibility = View.VISIBLE
             }
         }
@@ -83,7 +62,6 @@ class ManagementFragment : Fragment() {
             channelViewModel.refreshVideos()
             pullToRefresh.isRefreshing = false
         }
-        
-        return binding.root
+
     }
 }

@@ -1,4 +1,4 @@
-package com.wanotube.wanotubeapp.ui.manage
+package com.wanotube.wanotubeapp.ui.library.manage
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -11,16 +11,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.wanotube.wanotubeapp.IEventListener
 import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.domain.Video
 import com.wanotube.wanotubeapp.ui.edit.EditInfoActivity
 import com.wanotube.wanotubeapp.ui.watch.WatchActivity
 
-class ManagementAdapter(iEventListener: IEventListener) : RecyclerView.Adapter<ManagementAdapter.ViewHolder>() {
-
-    private var listener: IEventListener = iEventListener
-
+class ManagementAdapter : RecyclerView.Adapter<ManagementAdapter.ViewHolder>() {
+    
     var data =  listOf<Video>()
         @SuppressLint("NotifyDataSetChanged")
         set(value) {
@@ -36,10 +33,10 @@ class ManagementAdapter(iEventListener: IEventListener) : RecyclerView.Adapter<M
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder.from(parent, listener)
+        return ViewHolder.from(parent)
     }
 
-    class ViewHolder private constructor(itemView: View, var listener: IEventListener) : RecyclerView.ViewHolder(
+    class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(
         itemView
     ){
 
@@ -83,11 +80,11 @@ class ManagementAdapter(iEventListener: IEventListener) : RecyclerView.Adapter<M
         }
 
         companion object {
-            fun from(parent: ViewGroup, listener: IEventListener): ViewHolder {
+            fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater
                     .inflate(R.layout.management_video_component_list, parent, false)
-                return ViewHolder(view, listener)
+                return ViewHolder(view)
             }
         }
     }

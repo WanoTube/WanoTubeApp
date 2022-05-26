@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
+import android.graphics.Color
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
@@ -370,6 +371,7 @@ class WatchActivity : WanoTubeActivity() {
         handleSendComment()
         handleLike()
         handleShare()
+        handleFollow()
 
 //        dismissControlFrame.setOnClickListener {
 //            dismissControls()
@@ -383,6 +385,32 @@ class WatchActivity : WanoTubeActivity() {
 //        }
     }
 
+    private fun handleFollow() {
+        binding.follow.setOnClickListener {
+            if (checkTokenAvailable()) {
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    if (binding.follow.text == "FOLLOW") {
+                        channelRepository.followChannel(channelId)
+                        withContext(Dispatchers.Main) {
+                            binding.follow.text = "UNFOLLOW"
+                            binding.follow.setBackgroundColor(Color.WHITE)
+                            binding.follow.setTextColor(Color.BLACK)
+                        }
+
+                    } else {
+                        channelRepository.unfollowChannel(channelId)
+                        withContext(Dispatchers.Main) {
+                            binding.follow.text = "FOLLOW"
+                            binding.follow.setBackgroundColor(resources.getColor(R.color.dark_pink))
+                            binding.follow.setTextColor(Color.WHITE)
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     private fun handleShare() {
         binding.shareButton.setOnClickListener {
             ShareCompat.IntentBuilder(this)
@@ -397,12 +425,16 @@ class WatchActivity : WanoTubeActivity() {
         binding.likeButton.setOnLikeListener(object : OnLikeListener {
             override fun liked(likeButton: LikeButton) {
                 if (checkTokenAvailable()) {
-                    videosRepository.likeVideo(videoId)
+                    CoroutineScope(Dispatchers.IO).launch {
+                        videosRepository.likeVideo(videoId)
+                    }
                 }
             }
             override fun unLiked(likeButton: LikeButton) {
                 if (checkTokenAvailable()) {
-                    videosRepository.likeVideo(videoId)
+                    CoroutineScope(Dispatchers.IO).launch {
+                        videosRepository.likeVideo(videoId)
+                    }
                 }
             }
         })

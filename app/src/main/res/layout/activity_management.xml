@@ -8,10 +8,10 @@
             type="com.wanotube.wanotubeapp.viewmodels.ChannelViewModel" />
     </data>
     <FrameLayout
-        android:id="@+id/fragment_management"
+        android:id="@+id/activity_management"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.library.manage.ManagementFragment">
+        tools:context=".ui.library.manage.ManagementActivity">
 
         <com.facebook.shimmer.ShimmerFrameLayout
             android:id="@+id/management_shimmer_view_container"

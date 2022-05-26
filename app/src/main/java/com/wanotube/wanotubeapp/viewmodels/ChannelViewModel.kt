@@ -7,10 +7,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.wanotube.wanotubeapp.database.asDomainModel
+import com.wanotube.wanotubeapp.database.entity.DatabaseChannel
 import com.wanotube.wanotubeapp.database.getDatabase
 import com.wanotube.wanotubeapp.domain.Video
 import com.wanotube.wanotubeapp.network.objects.NetworkVideoContainer
 import com.wanotube.wanotubeapp.network.asDatabaseModel
+import com.wanotube.wanotubeapp.network.objects.NetworkFollowingChannelContainer
 import com.wanotube.wanotubeapp.repository.ChannelRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,15 +26,35 @@ class ChannelViewModel(application: Application) : AndroidViewModel(application)
     private val channelRepository = ChannelRepository(getDatabase(application))
 
     var currentChannelVideos: MutableLiveData<MutableList<Video>> = MutableLiveData<MutableList<Video>>()
-    
+    var currentChannelFollowings: MutableLiveData<List<DatabaseChannel>> = MutableLiveData<List<DatabaseChannel>>()
+
     init {
         refreshVideos()
+        refreshFollowings()
     }
     
     fun clearDataFromRepository() {
         viewModelScope.launch {
             currentChannelVideos.value = mutableListOf()
             channelRepository.clearVideos()
+        }
+    }
+
+    private fun refreshFollowings() {
+        CoroutineScope(Dispatchers.IO).launch {
+            channelRepository.getFollowingChannels()?.enqueue(object :
+                Callback<NetworkFollowingChannelContainer> {
+                override fun onResponse(
+                    call: Call<NetworkFollowingChannelContainer>?,
+                    response: Response<NetworkFollowingChannelContainer?>?
+                ) {
+                    val channelList = response?.body()?.asDatabaseModel() ?: listOf()
+                    currentChannelFollowings.value = channelList.toMutableList()
+                }
+                override fun onFailure(call: Call<NetworkFollowingChannelContainer>?, t: Throwable?) {
+                    Timber.e("Failed: error: %s", t.toString())
+                }
+            })
         }
     }
     
