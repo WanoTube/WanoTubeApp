@@ -74,11 +74,11 @@ class NetworkFollowingChannel {
 
     @SerializedName("channelId")
     @Expose
-    var channelId: String? = ""
+    var channelId: String = ""
 
     @SerializedName("number_of_followers")
     @Expose
-    var numberOfFollowers: Int? = 0
+    var numberOfFollowers: Int = 0
 
     @SerializedName("followings")
     @Expose
@@ -88,4 +88,9 @@ class NetworkFollowingChannel {
     @Expose
     var avatar: String? = ""
 
+}
+
+class NetworkFollowingChannelContainer {
+    @SerializedName("followingChannels")
+    var channels: List<NetworkFollowingChannel> = listOf()
 }

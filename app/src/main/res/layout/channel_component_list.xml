@@ -2,6 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginStart="20dp"
+    android:layout_marginEnd="20dp"
     android:layout_marginTop="10dp">
     <ImageView
         android:id="@+id/avatar"
@@ -27,9 +29,9 @@
             android:textColor="@color/black"
             android:text="@string/author_s_name"/>
         <TextView
-            android:id="@+id/comment_content"
+            android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/author_s_followers"/>
+            android:text="@string/default_content"/>
     </LinearLayout>
 </LinearLayout>

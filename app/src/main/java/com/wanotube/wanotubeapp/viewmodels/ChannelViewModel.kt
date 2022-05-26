@@ -7,13 +7,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.wanotube.wanotubeapp.database.asDomainModel
+import com.wanotube.wanotubeapp.database.entity.DatabaseChannel
 import com.wanotube.wanotubeapp.database.getDatabase
-import com.wanotube.wanotubeapp.domain.Account
 import com.wanotube.wanotubeapp.domain.Video
 import com.wanotube.wanotubeapp.network.objects.NetworkVideoContainer
 import com.wanotube.wanotubeapp.network.asDatabaseModel
-import com.wanotube.wanotubeapp.network.objects.NetworkFollow
-import com.wanotube.wanotubeapp.network.objects.NetworkFollowingChannel
+import com.wanotube.wanotubeapp.network.objects.NetworkFollowingChannelContainer
 import com.wanotube.wanotubeapp.repository.ChannelRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -27,10 +26,11 @@ class ChannelViewModel(application: Application) : AndroidViewModel(application)
     private val channelRepository = ChannelRepository(getDatabase(application))
 
     var currentChannelVideos: MutableLiveData<MutableList<Video>> = MutableLiveData<MutableList<Video>>()
-    var currentChannelFollowings: MutableLiveData<MutableList<Account>> = MutableLiveData<MutableList<Account>>()
+    var currentChannelFollowings: MutableLiveData<List<DatabaseChannel>> = MutableLiveData<List<DatabaseChannel>>()
 
     init {
         refreshVideos()
+        refreshFollowings()
     }
     
     fun clearDataFromRepository() {
@@ -40,20 +40,18 @@ class ChannelViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    fun refreshFollowings() {
+    private fun refreshFollowings() {
         CoroutineScope(Dispatchers.IO).launch {
             channelRepository.getFollowingChannels()?.enqueue(object :
-                Callback<NetworkFollowingChannel> {
+                Callback<NetworkFollowingChannelContainer> {
                 override fun onResponse(
-                    call: Call<NetworkFollowingChannel>?,
-                    response: Response<NetworkFollowingChannel?>?
+                    call: Call<NetworkFollowingChannelContainer>?,
+                    response: Response<NetworkFollowingChannelContainer?>?
                 ) {
-                    //TOOD: Convert to database model then save to currentChannelFollowings
-//                    val databaseVideo = response?.body()?.asDatabaseModel() ?: listOf()
-//                    val videos = databaseVideo.asDomainModel()
-//                    currentChannelVideos.value = videos.toMutableList()
+                    val channelList = response?.body()?.asDatabaseModel() ?: listOf()
+                    currentChannelFollowings.value = channelList.toMutableList()
                 }
-                override fun onFailure(call: Call<NetworkFollowingChannel>?, t: Throwable?) {
+                override fun onFailure(call: Call<NetworkFollowingChannelContainer>?, t: Throwable?) {
                     Timber.e("Failed: error: %s", t.toString())
                 }
             })

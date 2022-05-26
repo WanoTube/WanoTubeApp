@@ -11,3 +11,9 @@ data class DatabaseAccount constructor(
     val isAdmin: Boolean,
     var avatar: String,
     val userId: String)
+
+data class DatabaseChannel constructor(
+    val username: String,
+    val channelId: String,
+    var avatar: String,
+    val numberOfFollowers: Int)

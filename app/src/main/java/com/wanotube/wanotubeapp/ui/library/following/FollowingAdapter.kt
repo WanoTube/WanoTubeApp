@@ -6,14 +6,13 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.wanotube.wanotubeapp.R
-import com.wanotube.wanotubeapp.domain.Account
-import com.wanotube.wanotubeapp.domain.Comment
-import com.wanotube.wanotubeapp.ui.watch.CommentAdapter
+import com.wanotube.wanotubeapp.database.entity.DatabaseChannel
 
 class FollowingAdapter : RecyclerView.Adapter<FollowingAdapter.ViewHolder>() {
 
-    var data =  listOf<Account>()
+    var data =  listOf<DatabaseChannel>()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -33,18 +32,19 @@ class FollowingAdapter : RecyclerView.Adapter<FollowingAdapter.ViewHolder>() {
 
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView){
 
-        private val commentContentView: TextView = itemView.findViewById(R.id.comment_content)
         private val authorNameView: TextView = itemView.findViewById(R.id.author_name)
+        private val authorFollowersView: TextView = itemView.findViewById(R.id.content)
 
         private val avatarView: ImageView = itemView.findViewById(R.id.avatar)
 
-        fun bind(item: Account) {
+        fun bind(item: DatabaseChannel) {
             authorNameView.text = item.username
+            authorFollowersView.text = item.numberOfFollowers.toString() + " followers"
 
-//            Glide.with(avatarView.context)
-//                .load(item.thumbnail)
-//                .circleCrop()
-//                .into(avatarView)
+            Glide.with(avatarView.context)
+                .load(item.avatar)
+                .circleCrop()
+                .into(avatarView)
         }
 
         companion object {

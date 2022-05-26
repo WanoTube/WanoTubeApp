@@ -31,7 +31,7 @@ class CommentAdapter : RecyclerView.Adapter<CommentAdapter.ViewHolder>() {
 
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView){
 
-        private val commentContentView: TextView = itemView.findViewById(R.id.comment_content)
+        private val commentContentView: TextView = itemView.findViewById(R.id.content)
         private val authorNameView: TextView = itemView.findViewById(R.id.author_name)
 
         private val avatarView: ImageView = itemView.findViewById(R.id.avatar)

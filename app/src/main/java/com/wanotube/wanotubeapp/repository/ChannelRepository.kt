@@ -1,6 +1,5 @@
 package com.wanotube.wanotubeapp.repository
 
-import android.net.Network
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.wanotube.wanotubeapp.WanotubeApp.Companion.context
@@ -15,7 +14,7 @@ import com.wanotube.wanotubeapp.network.objects.UserResult
 import com.wanotube.wanotubeapp.network.asDatabaseModel
 import com.wanotube.wanotubeapp.network.authentication.AuthPreferences
 import com.wanotube.wanotubeapp.network.objects.NetworkFollow
-import com.wanotube.wanotubeapp.network.objects.NetworkFollowingChannel
+import com.wanotube.wanotubeapp.network.objects.NetworkFollowingChannelContainer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -63,7 +62,7 @@ class ChannelRepository(private val database: AppDatabase) {
                     call: Call<NetworkAccount>?,
                     response: Response<NetworkAccount?>?
                 ) {
-                    var channelBodyModel = response?.body()?.asDatabaseModel()
+                    val channelBodyModel = response?.body()?.asDatabaseModel()
                     if (channelBodyModel != null) {
                         channelBodyModel.avatar = userInfo.user?.avatar.toString()
                         CoroutineScope(Dispatchers.IO).launch {
@@ -149,7 +148,7 @@ class ChannelRepository(private val database: AppDatabase) {
         return null
     }
     
-    fun getFollowingChannels(): Call<NetworkFollowingChannel>? {
+    fun getFollowingChannels(): Call<NetworkFollowingChannelContainer>? {
         val mAuthPreferences = context?.let { AuthPreferences(it) }
         if (mAuthPreferences != null) {
             mAuthPreferences.authToken?.let {

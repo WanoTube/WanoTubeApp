@@ -45,9 +45,9 @@ class FollowingActivity: WanoTubeActivity() {
             )
         }
 
-        channelViewModel.currentChannelVideos.observe(this) {
+        channelViewModel.currentChannelFollowings.observe(this) {
             it?.let {
-//                adapter.data = it
+                adapter.data = it
 //                binding.managementShimmerViewContainer.stopShimmer()
 //                binding.managementShimmerViewContainer.visibility = View.GONE
                 binding.pullToRefreshMyVideos.visibility = View.VISIBLE

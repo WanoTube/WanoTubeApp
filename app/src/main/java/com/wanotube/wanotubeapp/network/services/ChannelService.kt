@@ -2,7 +2,7 @@ package com.wanotube.wanotubeapp.network.services
 
 import com.wanotube.wanotubeapp.network.objects.NetworkAccount
 import com.wanotube.wanotubeapp.network.objects.NetworkFollow
-import com.wanotube.wanotubeapp.network.objects.NetworkFollowingChannel
+import com.wanotube.wanotubeapp.network.objects.NetworkFollowingChannelContainer
 import com.wanotube.wanotubeapp.network.objects.NetworkVideoContainer
 import com.wanotube.wanotubeapp.network.objects.UserResult
 import retrofit2.Call
@@ -37,5 +37,5 @@ interface IChannelService {
     fun getFollowInfo(): Call<NetworkFollow>?
 
     @GET("users/followings")
-    fun getFollowingChannels(): Call<NetworkFollowingChannel>?
+    fun getFollowingChannels(): Call<NetworkFollowingChannelContainer>?
 }
