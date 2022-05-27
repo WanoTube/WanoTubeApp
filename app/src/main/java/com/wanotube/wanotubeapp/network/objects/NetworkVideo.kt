@@ -119,3 +119,18 @@ class Doc {
     @Expose
     var user: UserId? = null
 }
+
+class NetworkWatchHistoryDate {
+
+    @SerializedName("account_id")
+    @Expose
+    var account_id: String? = null
+    
+    @SerializedName("date")
+    @Expose
+    var date: String? = null
+
+    @SerializedName("videos")
+    @Expose
+    var videos: List<String?> = listOf()
+}

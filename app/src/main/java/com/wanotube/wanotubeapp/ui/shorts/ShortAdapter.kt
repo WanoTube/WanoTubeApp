@@ -27,6 +27,7 @@ import com.wanotube.wanotubeapp.repository.VideosRepository
 import com.wanotube.wanotubeapp.ui.components.comments.CommentDialogFragment
 import com.wanotube.wanotubeapp.ui.login.LoginActivity
 import com.wanotube.wanotubeapp.util.Constant
+import com.wanotube.wanotubeapp.util.isCountedAsView
 import timber.log.Timber
 
 
@@ -114,6 +115,7 @@ class ShortAdapter : RecyclerView.Adapter<ShortAdapter.VideoViewHolder>(), Playe
 
     class VideoViewHolder constructor(val binding: ShortVideoComponentListBinding) : RecyclerView.ViewHolder(binding.root) {
 
+        var isIncreasedView = false
         var title: TextView = itemView.findViewById<View>(R.id.textVideoTitle) as TextView
         var desc: TextView = itemView.findViewById<View>(R.id.textVideoDescription) as TextView
 //        var pbar: ProgressBar = itemView.findViewById<View>(R.id.videoProgressBar) as ProgressBar
@@ -139,6 +141,19 @@ class ShortAdapter : RecyclerView.Adapter<ShortAdapter.VideoViewHolder>(), Playe
             handleComment(context, obj)
 
             bottomSheetDialog = CommentDialogFragment.createInstance(obj.id)
+            
+            binding.videoView.player?.addListener(object : Player.EventListener {
+                override fun onIsPlayingChanged(isPlaying: Boolean) {
+                    if (isPlaying) {
+                        binding.videoView.player?.apply {
+                            if (isCountedAsView(currentPosition, duration) && !isIncreasedView) {
+                                isIncreasedView = true
+                                videosRepository?.increaseView(obj.id)
+                            }
+                        }
+                    }
+                }
+            })
         }
 
         private fun handleComment(context: Context, obj: Video) {
@@ -194,18 +209,6 @@ class ShortAdapter : RecyclerView.Adapter<ShortAdapter.VideoViewHolder>(), Playe
                     }
                 }
             })
-
-//            val observeOwner = context
-//            CoroutineScope(Dispatchers.IO).launch {
-//                val video = videosRepository?.getVideoFromDatabase(obj.id)
-//                withContext(Dispatchers.Main) {
-//                    video?.observe(observeOwner) { video ->
-//                        if (video != null) {
-//                            totalLikesTextView.text = video.totalLikes.toString()
-//                        }
-//                    }
-//                }
-//            }
         }
     }
 

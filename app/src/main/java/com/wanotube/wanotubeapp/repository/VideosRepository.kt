@@ -16,7 +16,7 @@ import com.wanotube.wanotubeapp.network.services.IVideoService
 import com.wanotube.wanotubeapp.network.objects.NetworkVideoWatch
 import com.wanotube.wanotubeapp.network.asDatabaseModel
 import com.wanotube.wanotubeapp.network.authentication.AuthPreferences
-import com.wanotube.wanotubeapp.network.services.ICommentService
+import com.wanotube.wanotubeapp.network.objects.NetworkWatchHistoryDate
 import com.wanotube.wanotubeapp.util.VideoType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -271,5 +271,32 @@ class VideosRepository(private val database: AppDatabase) {
 
     fun getWatchLaterList(): Call<NetworkVideoContainer>? {
         return ServiceGenerator.createService(IVideoService::class.java)?.getWatchLaterVideos()
+    }
+    
+    fun increaseView(videoId: String): Call<NetworkWatchHistoryDate>? {
+        Timber.e("increase view for video ($videoId)")
+        val mAuthPreferences = context?.let { AuthPreferences(it) }
+        mAuthPreferences?.authToken?.let {
+            val videoService: IVideoService? =
+                ServiceGenerator.createService(IVideoService::class.java, it)
+            val response = videoService?.increaseView(videoId)
+            response?.enqueue(object : Callback<NetworkWatchHistoryDate> {
+
+                override fun onResponse(
+                    call: Call<NetworkWatchHistoryDate>?,
+                    response: Response<NetworkWatchHistoryDate?>?,
+                ) {
+                    if (response?.code() == 200) {
+                        Timber.e("Increased view")
+                    } else {
+                        Timber.e("Cannot increase view")
+                    }
+                }
+                override fun onFailure(call: Call<NetworkWatchHistoryDate>?, t: Throwable?) {
+                    Timber.e("Failed: error: %s", t.toString())
+                }
+            })
+        }
+        return null
     }
 }
