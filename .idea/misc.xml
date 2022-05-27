@@ -17,11 +17,13 @@
         <entry key="app/src/main/res/drawable-anydpi/ic_fast_forward.xml" value="0.1025" />
         <entry key="app/src/main/res/drawable-anydpi/ic_fast_rewind.xml" value="0.1025" />
         <entry key="app/src/main/res/drawable-anydpi/ic_library.xml" value="0.1025" />
+        <entry key="app/src/main/res/drawable-mdpi/ic_share_black.xml" value="0.2175" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1025" />
         <entry key="app/src/main/res/drawable-xhdpi/ic_launcher_background.xml" value="0.1025" />
         <entry key="app/src/main/res/drawable-xhdpi/ic_launcher_foreground.xml" value="0.1025" />
         <entry key="app/src/main/res/drawable-xhdpi/ic_more.xml" value="0.1025" />
         <entry key="app/src/main/res/drawable-xhdpi/ic_person_pin.xml" value="0.201" />
+        <entry key="app/src/main/res/drawable-xhdpi/ic_share.xml" value="0.2175" />
         <entry key="app/src/main/res/drawable/circle_shape.xml" value="0.1785" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1025" />
         <entry key="app/src/main/res/drawable/primary_button.xml" value="0.1" />
@@ -58,7 +60,7 @@
         <entry key="app/src/main/res/layout/fragment_watch.xml" value="0.1" />
         <entry key="app/src/main/res/layout/home_shimmer_placeholder_layout.xml" value="0.1" />
         <entry key="app/src/main/res/layout/home_video_component_list.xml" value="0.165" />
-        <entry key="app/src/main/res/layout/home_video_menu_dialog.xml" value="0.12817028985507245" />
+        <entry key="app/src/main/res/layout/home_video_menu_dialog.xml" value="0.5415430925894476" />
         <entry key="app/src/main/res/layout/layout_to_custom_button.xml" value="0.15052083333333333" />
         <entry key="app/src/main/res/layout/manage_video_menu_dialog.xml" value="0.23854166666666668" />
         <entry key="app/src/main/res/layout/management_shimmer_placeholder_layout.xml" value="0.21693840579710144" />
