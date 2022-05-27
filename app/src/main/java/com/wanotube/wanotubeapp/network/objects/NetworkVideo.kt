@@ -2,6 +2,7 @@ package com.wanotube.wanotubeapp.network.objects
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import com.wanotube.wanotubeapp.domain.Video
 
 /**
  * VideoHolder holds a list of Videos.
@@ -122,9 +123,13 @@ class Doc {
 
 class NetworkWatchHistoryDate {
 
+    @SerializedName("_id")
+    @Expose
+    var id: String? = null
+    
     @SerializedName("account_id")
     @Expose
-    var account_id: String? = null
+    var accountId: String? = null
     
     @SerializedName("date")
     @Expose
@@ -132,5 +137,12 @@ class NetworkWatchHistoryDate {
 
     @SerializedName("videos")
     @Expose
-    var videos: List<String?> = listOf()
+    var videos: List<Video> = listOf()
+}
+
+class NetworkWatchHistoryContainer {
+
+    @SerializedName("history")
+    @Expose
+    var history: List<NetworkWatchHistoryDate> = listOf()
 }

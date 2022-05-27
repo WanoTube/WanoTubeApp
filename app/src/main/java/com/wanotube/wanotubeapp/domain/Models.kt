@@ -19,7 +19,7 @@ data class Video(
     val url: String,
     val title: String,
     val description: String,
-    val thumbnail: String,
+    var thumbnail: String,
     val size: Long,
     val totalViews: Long,
     val totalLikes: Long,

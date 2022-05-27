@@ -17,6 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WanoTubeApp"
         android:usesCleartextTraffic="true">
+
         <service android:name=".network.authentication.AuthenticatorService">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
@@ -28,13 +29,15 @@
         </service>
         <service
             android:name=".service.OnClearFromRecentService"
-            android:stopWithTask="false"></service>
+            android:stopWithTask="false" />
 
+        <activity
+            android:name=".ui.library.watchhistory.WatchHistoryActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.library.watchlater.WatchLaterActivity"
             android:exported="false"
             android:windowSoftInputMode="stateVisible|adjustPan" />
-
         <activity
             android:name=".ui.library.following.FollowingActivity"
             android:exported="false"

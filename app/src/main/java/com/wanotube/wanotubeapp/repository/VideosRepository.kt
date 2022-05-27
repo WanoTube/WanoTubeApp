@@ -16,6 +16,7 @@ import com.wanotube.wanotubeapp.network.services.IVideoService
 import com.wanotube.wanotubeapp.network.objects.NetworkVideoWatch
 import com.wanotube.wanotubeapp.network.asDatabaseModel
 import com.wanotube.wanotubeapp.network.authentication.AuthPreferences
+import com.wanotube.wanotubeapp.network.objects.NetworkWatchHistoryContainer
 import com.wanotube.wanotubeapp.network.objects.NetworkWatchHistoryDate
 import com.wanotube.wanotubeapp.util.VideoType
 import kotlinx.coroutines.CoroutineScope
@@ -270,7 +271,19 @@ class VideosRepository(private val database: AppDatabase) {
     }
 
     fun getWatchLaterList(): Call<NetworkVideoContainer>? {
-        return ServiceGenerator.createService(IVideoService::class.java)?.getWatchLaterVideos()
+        val mAuthPreferences = context?.let { AuthPreferences(it) }
+        mAuthPreferences?.authToken?.let {
+            return ServiceGenerator.createService(IVideoService::class.java, it)?.getWatchLaterVideos()
+        }
+        return null
+    }
+
+    fun getWatchHistoryList(): Call<NetworkWatchHistoryContainer>? {
+        val mAuthPreferences = context?.let { AuthPreferences(it) }
+        mAuthPreferences?.authToken?.let {
+            return ServiceGenerator.createService(IVideoService::class.java, it)?.getWatchHistoryVideos()
+        }
+        return null
     }
     
     fun increaseView(videoId: String): Call<NetworkWatchHistoryDate>? {

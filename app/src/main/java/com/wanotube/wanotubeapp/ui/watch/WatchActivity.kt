@@ -750,7 +750,7 @@ class WatchActivity : WanoTubeActivity() {
     
     private fun increaseView() {
         if (!isIncreasedView) {
-//            isIncreasedView = true
+            isIncreasedView = true
             videosRepository.increaseView(videoId) 
         }
     }
