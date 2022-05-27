@@ -57,6 +57,7 @@ class VideoHistoryAdapter(val application: Application) : RecyclerView.Adapter<V
             item.thumbnail = "https://d1td7i7nd90xol.cloudfront.net/son.png"
             Glide.with(thumbnailVideoView.context)
                 .load(item.thumbnail)
+                .placeholder(R.drawable.video_placeholder)
                 .override(480, 269)
                 .centerCrop()
                 .into(thumbnailVideoView)

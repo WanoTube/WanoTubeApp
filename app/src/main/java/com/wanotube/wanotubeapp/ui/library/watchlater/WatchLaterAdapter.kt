@@ -69,6 +69,7 @@ class WatchLaterAdapter(val application: Application) : RecyclerView.Adapter<Wat
 
                 Glide.with(avatarView.context)
                     .load(channel.avatar)
+                    .placeholder(R.drawable.video_placeholder)
                     .circleCrop()
                     .into(avatarView)
             }
@@ -76,6 +77,7 @@ class WatchLaterAdapter(val application: Application) : RecyclerView.Adapter<Wat
 
             Glide.with(thumbnailVideoView.context)
                 .load(item.thumbnail)
+                .placeholder(R.drawable.video_placeholder)
                 .override(480, 269)
                 .centerCrop()
                 .into(thumbnailVideoView)

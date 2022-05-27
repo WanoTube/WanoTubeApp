@@ -74,6 +74,7 @@ class HomeAdapter(val application: Application, iEventListener: IEventListener) 
 
                 Glide.with(avatarView.context)
                     .load(channel.avatar)
+                    .placeholder(R.drawable.video_placeholder)
                     .circleCrop()
                     .into(avatarView)
             }
@@ -81,6 +82,7 @@ class HomeAdapter(val application: Application, iEventListener: IEventListener) 
             
             Glide.with(thumbnailVideoView.context)
                 .load(item.thumbnail)
+                .placeholder(R.drawable.video_placeholder)
                 .override(480, 269)
                 .centerCrop()
                 .into(thumbnailVideoView)

@@ -52,6 +52,7 @@ class ManagementAdapter : RecyclerView.Adapter<ManagementAdapter.ViewHolder>() {
 
             Glide.with(thumbnailVideoView.context)
                 .load(item.thumbnail)
+                .placeholder(R.drawable.video_placeholder)
                 .override(480, 269)
                 .centerCrop()
                 .into(thumbnailVideoView)

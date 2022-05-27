@@ -13,6 +13,7 @@ import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.ui.PlayerView
+import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.components.videoPlayer.PlayerStateCallback
 
 /**
@@ -32,7 +33,10 @@ fun hideIfNetworkError(view: View, isNetWorkError: Boolean, playlist: Any?) {
  */
 @BindingAdapter("imageUrl")
 fun setImageUrl(imageView: ImageView, url: String) {
-    Glide.with(imageView.context).load(url).into(imageView)
+    Glide.with(imageView.context)
+        .load(url)
+        .placeholder(R.drawable.video_placeholder)
+        .into(imageView)
 }
 
 

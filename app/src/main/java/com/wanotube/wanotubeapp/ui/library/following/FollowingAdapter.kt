@@ -43,6 +43,7 @@ class FollowingAdapter : RecyclerView.Adapter<FollowingAdapter.ViewHolder>() {
 
             Glide.with(avatarView.context)
                 .load(item.avatar)
+                .placeholder(R.drawable.video_placeholder)
                 .circleCrop()
                 .into(avatarView)
         }
