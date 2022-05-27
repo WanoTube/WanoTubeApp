@@ -23,7 +23,7 @@ class WatchLaterActivity : AppCompatActivity() {
 
         binding.viewModel = viewModel
         
-        val adapter = WatchLaterAdapter()
+        val adapter = WatchLaterAdapter(application)
 
         binding.watchLaterList.adapter = adapter
 
