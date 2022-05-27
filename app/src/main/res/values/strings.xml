@@ -51,4 +51,7 @@
     <string name="my_followings">My Followings</string>
     <string name="follow">Follow</string>
     <string name="default_content">Default content</string>
+    <string name="save_to_watch_later">Save to watch later</string>
+    <string name="share">Share</string>
+    <string name="remove_from_watch_later">Remove from Watch Later</string>
 </resources>

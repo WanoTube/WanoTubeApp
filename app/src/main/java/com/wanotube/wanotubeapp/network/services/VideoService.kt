@@ -52,4 +52,13 @@ interface IVideoService {
     @Multipart
     @POST("videos/like")
     fun likeVideo(@Part targetId: MultipartBody.Part): Call<NetworkVideo>?
+
+    @PATCH("videos/watch-later/{videoId}")
+    fun watchLater(@Path("videoId") videoId: String): Call<NetworkVideo>?
+
+    @PATCH("videos/watch-later/{videoId}/remove")
+    fun removeWatchLater(@Path("videoId") videoId: String): Call<NetworkVideo>?
+
+    @GET("videos/watch-later")
+    fun getWatchLaterVideos(): Call<NetworkVideoContainer>?
 }

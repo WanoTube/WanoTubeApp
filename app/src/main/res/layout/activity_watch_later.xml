@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Data to make available to the XML via data binding. In this case,
+         the whole ViewModel, so that we can access the LiveData,
+         click handlers, and state variables. -->
+    <data>
+        <variable
+            name="viewModel"
+            type="com.wanotube.wanotubeapp.viewmodels.WanoTubeViewModel" />
+    </data>
+    <FrameLayout
+        android:id="@+id/activity_watch_later"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.library.watchlater.WatchLaterActivity">
+<!--        <com.facebook.shimmer.ShimmerFrameLayout-->
+<!--            android:id="@+id/home_shimmer_view_container"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content">-->
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="vertical">-->
+<!--                <include layout="@layout/home_shimmer_placeholder_layout"/>-->
+<!--                <include layout="@layout/home_shimmer_placeholder_layout"/>-->
+<!--                <include layout="@layout/home_shimmer_placeholder_layout"/>-->
+<!--                <include layout="@layout/home_shimmer_placeholder_layout"/>-->
+<!--                <include layout="@layout/home_shimmer_placeholder_layout"/>-->
+<!--                <include layout="@layout/home_shimmer_placeholder_layout"/>-->
+<!--                <include layout="@layout/home_shimmer_placeholder_layout"/>-->
+<!--                <include layout="@layout/home_shimmer_placeholder_layout"/>-->
+<!--                <include layout="@layout/home_shimmer_placeholder_layout"/>-->
+<!--                <include layout="@layout/home_shimmer_placeholder_layout"/>-->
+<!--                <include layout="@layout/home_shimmer_placeholder_layout"/>-->
+<!--                <include layout="@layout/home_shimmer_placeholder_layout"/>-->
+<!--                <include layout="@layout/home_shimmer_placeholder_layout"/>-->
+<!--                <include layout="@layout/home_shimmer_placeholder_layout"/>-->
+<!--                <include layout="@layout/home_shimmer_placeholder_layout"/>-->
+<!--            </LinearLayout>-->
+
+<!--        </com.facebook.shimmer.ShimmerFrameLayout>-->
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/pullToRefresh"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/watch_later_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </FrameLayout>
+</layout>

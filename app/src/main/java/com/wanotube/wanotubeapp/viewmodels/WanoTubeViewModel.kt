@@ -7,10 +7,19 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.wanotube.wanotubeapp.database.asDomainModel
 import com.wanotube.wanotubeapp.database.getDatabase
+import com.wanotube.wanotubeapp.domain.Video
+import com.wanotube.wanotubeapp.network.asDatabaseModel
+import com.wanotube.wanotubeapp.network.objects.NetworkVideo
+import com.wanotube.wanotubeapp.network.objects.NetworkVideoContainer
 import com.wanotube.wanotubeapp.repository.ChannelRepository
 import com.wanotube.wanotubeapp.repository.VideosRepository
 import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import timber.log.Timber
 import java.io.IOException
 
 /**
@@ -30,13 +39,14 @@ class WanoTubeViewModel(application: Application) : AndroidViewModel(application
      */
     private val videosRepository = VideosRepository(getDatabase(application))
     private val channelRepository = ChannelRepository(getDatabase(application))
-
+    
     /**
      * A playlist of videos displayed on the screen.
      */
     val allPublicVideos = videosRepository.videos
     val channels = channelRepository.channels
-    
+    var watchLaterList: MutableLiveData<List<Video>> = MutableLiveData<List<Video>>()
+
     var isInitialized = false
 
     /**
@@ -65,6 +75,10 @@ class WanoTubeViewModel(application: Application) : AndroidViewModel(application
     val isNetworkErrorShown: LiveData<Boolean>
         get() = _isNetworkErrorShown
 
+    init {
+        getWatchLaterList()
+    }
+    
     fun clearDataFromRepository() {
         viewModelScope.launch {
             videosRepository.clearVideos()
@@ -96,6 +110,23 @@ class WanoTubeViewModel(application: Application) : AndroidViewModel(application
         _isNetworkErrorShown.value = true
     }
 
+    fun getWatchLaterList() {
+        val response = videosRepository.getWatchLaterList()
+        response?.enqueue(object : Callback<NetworkVideoContainer> {
+            override fun onResponse(
+                call: Call<NetworkVideoContainer>?,
+                response: Response<NetworkVideoContainer?>?,
+            ) {
+                if (response?.code() == 200) {
+                    watchLaterList.value = response.body()?.asDatabaseModel()?.asDomainModel()!!
+                }
+            }
+            override fun onFailure(call: Call<NetworkVideoContainer>?, t: Throwable?) {
+                Timber.e("Failed: error: %s", t.toString())
+            }
+        })
+    }
+    
     /**
      * Factory for constructing WanoTubeViewModel with parameter
      */

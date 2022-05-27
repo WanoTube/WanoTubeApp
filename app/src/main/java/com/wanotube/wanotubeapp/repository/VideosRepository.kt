@@ -16,6 +16,7 @@ import com.wanotube.wanotubeapp.network.services.IVideoService
 import com.wanotube.wanotubeapp.network.objects.NetworkVideoWatch
 import com.wanotube.wanotubeapp.network.asDatabaseModel
 import com.wanotube.wanotubeapp.network.authentication.AuthPreferences
+import com.wanotube.wanotubeapp.network.services.ICommentService
 import com.wanotube.wanotubeapp.util.VideoType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -221,5 +222,54 @@ class VideosRepository(private val database: AppDatabase) {
     fun getVideoFromDatabase(videoId: String): LiveData<DatabaseVideo>? {
         return database.videoDao.getVideo(videoId)
     }
+
+    fun watchLater(videoId: String): Call<NetworkVideo>? {
+        val mAuthPreferences = context?.let { AuthPreferences(it) }
+        mAuthPreferences?.authToken?.let {
+            val response = ServiceGenerator.createService(IVideoService::class.java, it)?.watchLater(videoId)
+            response?.enqueue(object : Callback<NetworkVideo> {
+                override fun onResponse(
+                    call: Call<NetworkVideo>?,
+                    response: Response<NetworkVideo?>?,
+                ) {
+                    if (response?.code() == 200) {
+                        Timber.e("Added to watch later")
+                    } else {
+                        Timber.e("Cannot add to watch later")
+                    }
+                }
+                override fun onFailure(call: Call<NetworkVideo>?, t: Throwable?) {
+                    Timber.e("Failed: error: %s", t.toString())
+                }
+            })
+        }
+        return null
+    }
     
+    fun removeWatchLater(videoId: String) {
+        val mAuthPreferences = context?.let { AuthPreferences(it) }
+        mAuthPreferences?.authToken?.let {
+            val response = ServiceGenerator.createService(IVideoService::class.java, it)?.removeWatchLater(videoId)
+            response?.enqueue(object : Callback<NetworkVideo> {
+
+                override fun onResponse(
+                    call: Call<NetworkVideo>?,
+                    response: Response<NetworkVideo?>?,
+                ) {
+                    if (response?.code() == 200) {
+                        Timber.e("Removed watch later")
+                    } else {
+                        Timber.e("Cannot remove this watch later")
+                    }
+                }
+                override fun onFailure(call: Call<NetworkVideo>?, t: Throwable?) {
+                    Timber.e("Failed: error: %s", t.toString())
+                }
+            })
+        }
+    }
+
+    fun getWatchLaterList(): Call<NetworkVideoContainer>? {
+        return ServiceGenerator.createService(IVideoService::class.java)?.getWatchLaterVideos()
+    }
 }

@@ -66,7 +66,7 @@ class ManagementAdapter : RecyclerView.Adapter<ManagementAdapter.ViewHolder>() {
             menuView.setOnClickListener {
                 val bottomSheetDialog = BottomSheetDialog(context)
                 bottomSheetDialog.apply {
-                    setContentView(R.layout.video_menu_dialog)
+                    setContentView(R.layout.manage_video_menu_dialog)
                     findViewById<LinearLayout>(R.id.edit_video)?.setOnClickListener {
                         val intent = Intent(context, EditInfoActivity::class.java)
                         intent.putExtra("VIDEO_ID", item.id)

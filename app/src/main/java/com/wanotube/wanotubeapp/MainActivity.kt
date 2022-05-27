@@ -167,9 +167,9 @@ class MainActivity : WanoTubeActivity(), IEventListener {
         }
     }
 
-    override fun setCurrentFragment(fragment: Fragment) {
-        currentFragment = fragment
-    }
+//    override fun setCurrentFragment(fragment: Fragment) {
+//        currentFragment = fragment
+//    }
 
     private fun showBottomSheetDialog() {
         val bottomSheetDialog = BottomSheetDialog(this)
@@ -190,9 +190,10 @@ class MainActivity : WanoTubeActivity(), IEventListener {
         openGalleryForVideo()
         bottomSheetDialog.dismiss()
         this.isUploadNormalVideo = isUploadNormalVideo
+        application
     }
 }
 
 interface IEventListener {
-    fun setCurrentFragment(fragment: Fragment)
+//    fun setCurrentFragment(fragment: Fragment)
 }

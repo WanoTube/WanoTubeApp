@@ -11,12 +11,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.wanotube.wanotubeapp.IEventListener
 import com.wanotube.wanotubeapp.R
+import com.wanotube.wanotubeapp.database.getDatabase
 import com.wanotube.wanotubeapp.databinding.FragmentHomeBinding
+import com.wanotube.wanotubeapp.repository.VideosRepository
 import com.wanotube.wanotubeapp.util.VideoType
 import com.wanotube.wanotubeapp.viewmodels.WanoTubeViewModel
 
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), IEventListener {
 
     private lateinit var listener: IEventListener
 
@@ -48,12 +50,11 @@ class HomeFragment : Fragment() {
 
         binding.viewModel = viewModel
 
-        val adapter = HomeAdapter(listener)
+        val adapter = HomeAdapter(application, listener)
 
         binding.videoList.adapter = adapter
         
         binding.homeShimmerViewContainer.startShimmer()
-
         viewModel.channels.observe(viewLifecycleOwner) {
             it?.let {
                 adapter.channels = it
@@ -80,6 +81,7 @@ class HomeFragment : Fragment() {
             viewModel.refreshDataFromRepository()
             pullToRefresh.isRefreshing = false
         }
+        
         return binding.root
     }
 }
