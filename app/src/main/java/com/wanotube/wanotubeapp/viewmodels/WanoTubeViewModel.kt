@@ -8,11 +8,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.wanotube.wanotubeapp.database.asDomainModel
+import com.wanotube.wanotubeapp.database.entity.DatabaseWatchHistory
 import com.wanotube.wanotubeapp.database.getDatabase
 import com.wanotube.wanotubeapp.domain.Video
 import com.wanotube.wanotubeapp.network.asDatabaseModel
-import com.wanotube.wanotubeapp.network.objects.NetworkVideo
 import com.wanotube.wanotubeapp.network.objects.NetworkVideoContainer
+import com.wanotube.wanotubeapp.network.objects.NetworkWatchHistoryContainer
 import com.wanotube.wanotubeapp.repository.ChannelRepository
 import com.wanotube.wanotubeapp.repository.VideosRepository
 import kotlinx.coroutines.launch
@@ -46,6 +47,7 @@ class WanoTubeViewModel(application: Application) : AndroidViewModel(application
     val allPublicVideos = videosRepository.videos
     val channels = channelRepository.channels
     var watchLaterList: MutableLiveData<List<Video>> = MutableLiveData<List<Video>>()
+    var watchHistoryList: MutableLiveData<List<DatabaseWatchHistory>> = MutableLiveData<List<DatabaseWatchHistory>>()
 
     var isInitialized = false
 
@@ -74,10 +76,6 @@ class WanoTubeViewModel(application: Application) : AndroidViewModel(application
      */
     val isNetworkErrorShown: LiveData<Boolean>
         get() = _isNetworkErrorShown
-
-    init {
-        getWatchLaterList()
-    }
     
     fun clearDataFromRepository() {
         viewModelScope.launch {
@@ -126,7 +124,26 @@ class WanoTubeViewModel(application: Application) : AndroidViewModel(application
             }
         })
     }
-    
+
+
+    fun getWatchHistoryList() {
+        val response = videosRepository.getWatchHistoryList()
+        response?.enqueue(object : Callback<NetworkWatchHistoryContainer> {
+            override fun onResponse(
+                call: Call<NetworkWatchHistoryContainer>?,
+                response: Response<NetworkWatchHistoryContainer?>?,
+            ) {
+                if (response?.code() == 200) {
+                    watchHistoryList.value = response.body()?.asDatabaseModel()
+                    Timber.e("Reponse body: %s", response.body()?.asDatabaseModel())
+
+                }
+            }
+            override fun onFailure(call: Call<NetworkWatchHistoryContainer>?, t: Throwable?) {
+                Timber.e("Failed: error: %s", t.toString())
+            }
+        })
+    }
     /**
      * Factory for constructing WanoTubeViewModel with parameter
      */

@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.ui.library.following.FollowingActivity
 import com.wanotube.wanotubeapp.ui.library.manage.ManagementActivity
+import com.wanotube.wanotubeapp.ui.library.watchhistory.WatchHistoryActivity
 import com.wanotube.wanotubeapp.ui.library.watchlater.WatchLaterActivity
 
 class LibraryFragment: Fragment() {
@@ -19,10 +20,15 @@ class LibraryFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val view = inflater.inflate(R.layout.fragment_library, container, false)
+
+        view.findViewById<LinearLayout>(R.id.watch_history).setOnClickListener {
+            openWatchHistoryActivity()
+        }
+        
         view.findViewById<LinearLayout>(R.id.my_videos).setOnClickListener {
             openMyVideoActivity()
         }
-
+        
         view.findViewById<LinearLayout>(R.id.my_followings).setOnClickListener {
             openMyFollowingsActivity()
         }
@@ -45,6 +51,12 @@ class LibraryFragment: Fragment() {
 
     private fun openWatchLaterActivity() {
         val intent = Intent(requireContext(), WatchLaterActivity::class.java)
+        startActivity(intent)
+    }
+    
+    private fun openWatchHistoryActivity() {
+
+        val intent = Intent(requireContext(), WatchHistoryActivity::class.java)
         startActivity(intent)
     }
 }

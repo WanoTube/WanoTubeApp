@@ -5,6 +5,7 @@ import com.wanotube.wanotubeapp.database.entity.DatabaseChannel
 import com.wanotube.wanotubeapp.database.entity.DatabaseComment
 import com.wanotube.wanotubeapp.database.entity.DatabaseUser
 import com.wanotube.wanotubeapp.database.entity.DatabaseVideo
+import com.wanotube.wanotubeapp.database.entity.DatabaseWatchHistory
 import com.wanotube.wanotubeapp.network.objects.NetworkAccount
 import com.wanotube.wanotubeapp.network.objects.NetworkComment
 import com.wanotube.wanotubeapp.network.objects.NetworkCommentContainer
@@ -12,7 +13,9 @@ import com.wanotube.wanotubeapp.network.objects.NetworkFollowingChannelContainer
 import com.wanotube.wanotubeapp.network.objects.NetworkVideo
 import com.wanotube.wanotubeapp.network.objects.NetworkVideoContainer
 import com.wanotube.wanotubeapp.network.objects.NetworkVideoWatch
+import com.wanotube.wanotubeapp.network.objects.NetworkWatchHistoryContainer
 import com.wanotube.wanotubeapp.network.objects.UserId
+import com.wanotube.wanotubeapp.util.convertSimpleStringToDate
 import com.wanotube.wanotubeapp.util.convertStringToDate
 import java.util.Date
 
@@ -142,6 +145,18 @@ fun NetworkFollowingChannelContainer.asDatabaseModel(): List<DatabaseChannel> {
             channelId = it.channelId.toString(),
             avatar = it.avatar.toString(),
             numberOfFollowers = it.numberOfFollowers
+        )
+    }
+}
+
+fun NetworkWatchHistoryContainer.asDatabaseModel(): List<DatabaseWatchHistory> {
+
+    return history.map {
+        DatabaseWatchHistory(
+            id = it.id.toString(),
+            accountId = it.accountId.toString(),
+            date = it.date.toString(),
+            videos = it.videos
         )
     }
 }

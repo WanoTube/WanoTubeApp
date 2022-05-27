@@ -54,6 +54,7 @@ import com.wanotube.wanotubeapp.repository.CommentRepository
 import com.wanotube.wanotubeapp.repository.VideosRepository
 import com.wanotube.wanotubeapp.util.Constant
 import com.wanotube.wanotubeapp.util.Constant.PRODUCTION_WEB_URL
+import com.wanotube.wanotubeapp.util.isCountedAsView
 import com.wanotube.wanotubeapp.viewmodels.CommentViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -112,6 +113,7 @@ class WatchActivity : WanoTubeActivity() {
     private var isVideoInsertedToDB = false
     private val isMaximise = true
     private var countdownTimer: CountDownTimer? = null
+    private var isIncreasedView = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -735,11 +737,22 @@ class WatchActivity : WanoTubeActivity() {
                         endTime.text = "" + convertIntToTime(videoView.duration - currentPosition)
                     }
                 }
+                if (isCountedAsView(videoView.currentPosition, videoView.duration)) {
+                    increaseView()
+                }
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {}
             override fun onStopTrackingTouch(seekBar: SeekBar) {}
         })
+    }
+
+    
+    private fun increaseView() {
+        if (!isIncreasedView) {
+            isIncreasedView = true
+            videosRepository.increaseView(videoId) 
+        }
     }
 
     private fun releaseVideoPlayer() {

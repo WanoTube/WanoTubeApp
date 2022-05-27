@@ -23,6 +23,7 @@ class ManagementActivity : WanoTubeActivity() {
             ViewModelProvider(
                 this, viewModelFactory
             ).get(ChannelViewModel::class.java)
+        channelViewModel.refreshVideos()
 
         binding.channelViewModel = channelViewModel
 

@@ -67,3 +67,15 @@ fun convertStringToDate(dateString: String?): Date {
         strDate = LocalDateTime.now().format(formatter)
     return SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH).parse(strDate)
 }
+
+fun convertSimpleStringToDate(dateString: String?): Date {
+    return SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).parse(dateString)
+}
+
+fun isCountedAsView(progress: Int, duration: Int): Boolean {
+    return (progress * 100 / duration) > 30
+}
+
+fun isCountedAsView(progress: Long, duration: Long): Boolean {
+    return (progress * 100 / duration) > 30
+}

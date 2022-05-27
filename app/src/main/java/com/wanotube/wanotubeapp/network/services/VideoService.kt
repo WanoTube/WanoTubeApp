@@ -3,6 +3,8 @@ package com.wanotube.wanotubeapp.network.services
 import com.wanotube.wanotubeapp.network.objects.NetworkVideo
 import com.wanotube.wanotubeapp.network.objects.NetworkVideoContainer
 import com.wanotube.wanotubeapp.network.objects.NetworkVideoWatch
+import com.wanotube.wanotubeapp.network.objects.NetworkWatchHistoryContainer
+import com.wanotube.wanotubeapp.network.objects.NetworkWatchHistoryDate
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.GET
@@ -61,4 +63,10 @@ interface IVideoService {
 
     @GET("videos/watch-later")
     fun getWatchLaterVideos(): Call<NetworkVideoContainer>?
+
+    @GET("videos/history")
+    fun getWatchHistoryVideos(): Call<NetworkWatchHistoryContainer>?
+
+    @PATCH("videos/{id}/view")
+    fun increaseView(@Path("id") videoId: String): Call<NetworkWatchHistoryDate>?
 }
