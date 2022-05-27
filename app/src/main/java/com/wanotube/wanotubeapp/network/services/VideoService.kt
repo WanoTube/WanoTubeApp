@@ -50,10 +50,8 @@ interface IVideoService {
         @Part visibility: MultipartBody.Part,
         ): Call<NetworkVideo>?
 
-    @Headers("isDisableAuthorization:true")
-    @Multipart
-    @POST("videos/like")
-    fun likeVideo(@Part targetId: MultipartBody.Part): Call<NetworkVideo>?
+    @POST("videos/like/{id}")
+    fun likeVideo(@Path("id") videoId: String): Call<NetworkVideo>?
 
     @PATCH("videos/watch-later/{videoId}")
     fun watchLater(@Path("videoId") videoId: String): Call<NetworkVideo>?

@@ -133,6 +133,7 @@ class ShortAdapter : RecyclerView.Adapter<ShortAdapter.VideoViewHolder>(), Playe
 
             title.text = obj.title
             desc.text = obj.description
+            totalLikesTextView.text = obj.totalLikes.toString()
 
             val context = title.context
 
@@ -201,11 +202,13 @@ class ShortAdapter : RecyclerView.Adapter<ShortAdapter.VideoViewHolder>(), Playe
                 override fun liked(likeButton: LikeButton) {
                     if (checkTokenAvailable()) {
                         videosRepository?.likeVideo(obj.id)
+                        totalLikesTextView.text = (obj?.totalLikes?.plus(1)).toString()
                     }
                 }
                 override fun unLiked(likeButton: LikeButton) {
                     if (checkTokenAvailable()) {
                         videosRepository?.likeVideo(obj.id)
+                        totalLikesTextView.text = (obj?.totalLikes?.minus(1)).toString()
                     }
                 }
             })

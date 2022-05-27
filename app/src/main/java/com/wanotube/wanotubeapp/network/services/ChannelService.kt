@@ -1,6 +1,7 @@
 package com.wanotube.wanotubeapp.network.services
 
 import com.wanotube.wanotubeapp.network.objects.NetworkAccount
+import com.wanotube.wanotubeapp.network.objects.NetworkCopyrightStatus
 import com.wanotube.wanotubeapp.network.objects.NetworkFollow
 import com.wanotube.wanotubeapp.network.objects.NetworkFollowingChannelContainer
 import com.wanotube.wanotubeapp.network.objects.NetworkVideoContainer
@@ -38,4 +39,7 @@ interface IChannelService {
 
     @GET("users/followings")
     fun getFollowingChannels(): Call<NetworkFollowingChannelContainer>?
+
+    @GET("users/copyright-status")
+    fun getCopyrightStatus(): Call<NetworkCopyrightStatus>?
 }

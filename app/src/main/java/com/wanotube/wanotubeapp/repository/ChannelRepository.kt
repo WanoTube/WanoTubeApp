@@ -13,8 +13,10 @@ import com.wanotube.wanotubeapp.network.ServiceGenerator
 import com.wanotube.wanotubeapp.network.objects.UserResult
 import com.wanotube.wanotubeapp.network.asDatabaseModel
 import com.wanotube.wanotubeapp.network.authentication.AuthPreferences
+import com.wanotube.wanotubeapp.network.objects.NetworkCopyrightStatus
 import com.wanotube.wanotubeapp.network.objects.NetworkFollow
 import com.wanotube.wanotubeapp.network.objects.NetworkFollowingChannelContainer
+import com.wanotube.wanotubeapp.network.services.IVideoService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -157,7 +159,15 @@ class ChannelRepository(private val database: AppDatabase) {
         }
         return null
     }
-    
+
+    fun getCopyrightStatus(): Call<NetworkCopyrightStatus>? {
+        val mAuthPreferences = context?.let { AuthPreferences(it) }
+        mAuthPreferences?.authToken?.let {
+            return ServiceGenerator.createService(IChannelService::class.java, it)?.getCopyrightStatus()
+        }
+        return null
+    }
+
     fun clearVideos() {
         database.videoDao.clearVideos()
     }

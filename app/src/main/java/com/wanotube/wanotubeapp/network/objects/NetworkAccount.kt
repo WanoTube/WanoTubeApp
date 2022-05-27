@@ -94,3 +94,25 @@ class NetworkFollowingChannelContainer {
     @SerializedName("followingChannels")
     var channels: List<NetworkFollowingChannel> = listOf()
 }
+
+class NetworkCopyrightStatus {
+
+    @SerializedName("blocked_status")
+    var blockedStatus: String = ""
+
+    @SerializedName("strikes")
+    var strikes: List<NetworkCopyrightStrike> = listOf()
+}
+
+
+class NetworkCopyrightStrike {
+
+    @SerializedName("issued_date")
+    var issuedDate: String = ""
+
+    @SerializedName("video_title")
+    var videoTitle: String = ""
+
+    @SerializedName("is_expired")
+    var isExpired: Boolean = false
+}

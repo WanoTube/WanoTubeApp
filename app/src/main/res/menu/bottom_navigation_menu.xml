@@ -19,7 +19,7 @@
         android:id="@+id/management"
         android:enabled="true"
         android:icon="@drawable/ic_library"
-        android:title="@string/my_videos"/>
+        android:title="Library"/>
     <item
         android:id="@+id/user"
         android:enabled="true"

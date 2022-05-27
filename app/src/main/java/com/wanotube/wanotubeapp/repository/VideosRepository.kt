@@ -194,26 +194,29 @@ class VideosRepository(private val database: AppDatabase) {
     }
 
     fun likeVideo(targetId: String) {
-        val targetIdBody = MultipartBody.Part.createFormData("target_id", targetId)
-        val videoService: IVideoService? =
-            ServiceGenerator.createService(IVideoService::class.java)
-        val response = videoService?.likeVideo(targetIdBody)
-        response?.enqueue(object : Callback<NetworkVideo> {
-            override fun onResponse(
-                call: Call<NetworkVideo>?,
-                response: Response<NetworkVideo?>?
-            ) {
-                val videoModel = response?.body()?.asDatabaseModel()
-                CoroutineScope(Dispatchers.IO).launch {
-                    if (videoModel != null) {
-                        database.videoDao.likeVideo(videoModel.totalLikes, videoModel.id)
+        val mAuthPreferences = context?.let { AuthPreferences(it) }
+        mAuthPreferences?.authToken?.let {
+            val videoService: IVideoService? =
+                ServiceGenerator.createService(IVideoService::class.java, it)
+            val response = videoService?.likeVideo(targetId)
+            response?.enqueue(object : Callback<NetworkVideo> {
+                override fun onResponse(
+                    call: Call<NetworkVideo>?,
+                    response: Response<NetworkVideo?>?
+                ) {
+                    val videoModel = response?.body()?.asDatabaseModel()
+                    CoroutineScope(Dispatchers.IO).launch {
+                        if (videoModel != null) {
+                            database.videoDao.likeVideo(videoModel.totalLikes, videoModel.id)
+                        }
                     }
                 }
-            }
-            override fun onFailure(call: Call<NetworkVideo>?, t: Throwable?) {
-                Timber.e("Failed: error: %s", t.toString())
-            }
-        })
+                override fun onFailure(call: Call<NetworkVideo>?, t: Throwable?) {
+                    Timber.e("Failed: error: %s", t.toString())
+                }
+            })
+        }
+        
     }
     
     fun clearVideos() {

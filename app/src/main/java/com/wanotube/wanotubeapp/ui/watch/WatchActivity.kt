@@ -431,12 +431,15 @@ class WatchActivity : WanoTubeActivity() {
                         videosRepository.likeVideo(videoId)
                     }
                 }
+                binding.totalLikes.text = (currentVideo?.totalLikes?.plus(1)).toString()
             }
             override fun unLiked(likeButton: LikeButton) {
                 if (checkTokenAvailable()) {
                     CoroutineScope(Dispatchers.IO).launch {
                         videosRepository.likeVideo(videoId)
                     }
+                    //TODO: NOT HARDCODED
+//                    binding.totalLikes.text = (currentVideo?.totalLikes?.minus(1)).toString()
                 }
             }
         })

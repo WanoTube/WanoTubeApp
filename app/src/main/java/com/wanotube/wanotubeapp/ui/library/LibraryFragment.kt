@@ -6,12 +6,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.wanotube.wanotubeapp.R
+import com.wanotube.wanotubeapp.database.getDatabase
+import com.wanotube.wanotubeapp.network.objects.NetworkCopyrightStatus
+import com.wanotube.wanotubeapp.network.objects.NetworkFollow
+import com.wanotube.wanotubeapp.repository.ChannelRepository
 import com.wanotube.wanotubeapp.ui.library.following.FollowingActivity
 import com.wanotube.wanotubeapp.ui.library.manage.ManagementActivity
 import com.wanotube.wanotubeapp.ui.library.watchhistory.WatchHistoryActivity
 import com.wanotube.wanotubeapp.ui.library.watchlater.WatchLaterActivity
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import timber.log.Timber
 
 class LibraryFragment: Fragment() {
 
@@ -36,6 +45,27 @@ class LibraryFragment: Fragment() {
         view.findViewById<LinearLayout>(R.id.watch_later).setOnClickListener {
             openWatchLaterActivity()
         }
+        val blockedStatusTextView = view.findViewById<TextView>(R.id.blocked_status)
+        val strikeTextView = view.findViewById<TextView>(R.id.strikes)
+
+        val channelRepository = ChannelRepository(getDatabase(requireActivity().application))
+        channelRepository.getCopyrightStatus()?.enqueue(object : Callback<NetworkCopyrightStatus> {
+            override fun onResponse(
+                call: Call<NetworkCopyrightStatus>?,
+                response: Response<NetworkCopyrightStatus?>?
+            ) {
+                if (response?.code() == 200) {
+                    val result = response.body()
+                    val status = if (result?.blockedStatus != "NONE") "Normal" else "Blocked"
+                    blockedStatusTextView.text = "Status: " + status
+                    val strikes = result?.strikes
+                    strikeTextView.text = "Strikes: " + strikes?.size.toString()
+                }
+            }
+            override fun onFailure(call: Call<NetworkCopyrightStatus>?, t: Throwable?) {
+                Timber.e("Failed: error: %s", t.toString())
+            }
+        })
         return view
     }
     
