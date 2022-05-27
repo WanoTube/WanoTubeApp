@@ -98,6 +98,7 @@ class HomeAdapter(val application: Application, iEventListener: IEventListener) 
                     setContentView(R.layout.home_video_menu_dialog)
                     findViewById<LinearLayout>(R.id.save_watch_later)?.setOnClickListener {
                         saveToWatchLater(item.id)
+                        bottomSheetDialog.hide()
                     }
                     findViewById<LinearLayout>(R.id.share)?.setOnClickListener {
                     }

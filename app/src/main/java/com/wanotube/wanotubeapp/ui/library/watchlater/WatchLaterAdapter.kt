@@ -90,9 +90,10 @@ class WatchLaterAdapter(val application: Application) : RecyclerView.Adapter<Wat
             menuView.setOnClickListener {
                 val bottomSheetDialog = BottomSheetDialog(context)
                 bottomSheetDialog.apply {
-                    setContentView(R.layout.manage_video_menu_dialog)
+                    setContentView(R.layout.watch_later_menu_dialog)
                     findViewById<LinearLayout>(R.id.remove_watch_later)?.setOnClickListener {
                         removeFromWatchLater(item.id)
+                        bottomSheetDialog.hide()
                     }
                     findViewById<LinearLayout>(R.id.share)?.setOnClickListener {
                     }

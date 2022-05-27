@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.wanotube.wanotubeapp.databinding.ActivityWatchLaterBinding
 import com.wanotube.wanotubeapp.util.VideoType
 import com.wanotube.wanotubeapp.viewmodels.WanoTubeViewModel
@@ -37,6 +38,12 @@ class WatchLaterActivity : AppCompatActivity() {
 //                binding.homeShimmerViewContainer.visibility = View.GONE
                 binding.pullToRefresh.visibility = View.VISIBLE
             }
+        }
+        
+        val pullToRefresh: SwipeRefreshLayout = binding.pullToRefresh
+        pullToRefresh.setOnRefreshListener {
+            viewModel.getWatchLaterList()
+            pullToRefresh.isRefreshing = false
         }
 
         binding.lifecycleOwner = this
