@@ -38,7 +38,7 @@ class EditActivity : AppCompatActivity() {
 
                 Log.e("FFmpegLoad", "onSuccess")
 
-                inputPath = intent.getStringExtra("FILE_PATH")
+                inputPath = intent.getStringExtra("FILE_PATH").toString()
                 outputPath = File(inputPath).parent + File(inputPath).name.split(".")[0] + "(1)." + File(inputPath).extension
                 startPosition = "00:00:00"
                 endPosition = "00:02:00"
