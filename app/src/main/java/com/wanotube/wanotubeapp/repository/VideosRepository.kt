@@ -111,7 +111,7 @@ class VideosRepository(private val database: AppDatabase) {
         val retriever = MediaMetadataRetriever()
         retriever.setDataSource(context, Uri.fromFile(file))
         val time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
-        val timeInMillis = time.toFloat()
+        val timeInMillis = time!!.toFloat()
         retriever.release()
         return (timeInMillis*1000).toInt()
     }

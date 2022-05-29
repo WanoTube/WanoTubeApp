@@ -64,7 +64,7 @@ class EditInfoActivity: WanoTubeActivity(), AdapterView.OnItemSelectedListener  
         titleText = viewBinding.videoTitle
         descriptionText = viewBinding.videoDescription
 
-        videoId = intent.getStringExtra("VIDEO_ID")
+        videoId = intent.getStringExtra("VIDEO_ID").toString()
         
         getVideo()
         addResourceForSpinner()

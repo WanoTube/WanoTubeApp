@@ -13,8 +13,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.navigation.NavigationBarView.LABEL_VISIBILITY_UNLABELED
 import com.wanotube.wanotubeapp.databinding.ActivityMainBinding
+import com.wanotube.wanotubeapp.ui.deepar.CameraActivity
+import com.wanotube.wanotubeapp.ui.edit.EditActivity
 import com.wanotube.wanotubeapp.ui.home.HomeFragment
 import com.wanotube.wanotubeapp.ui.library.LibraryFragment
+import com.wanotube.wanotubeapp.ui.login.LoginActivity
 import com.wanotube.wanotubeapp.ui.profile.ProfileFragment
 import com.wanotube.wanotubeapp.ui.shorts.ShortsFragment
 import com.wanotube.wanotubeapp.util.Constant
@@ -64,7 +67,6 @@ class MainActivity : WanoTubeActivity(), IEventListener {
             ).get(ChannelViewModel::class.java)
 
         initVideos()
-//        initChannels()
     }
     
     private fun initVideos() {
@@ -76,11 +78,7 @@ class MainActivity : WanoTubeActivity(), IEventListener {
         videoViewModel.clearDataFromRepository()
         channelViewModel.clearDataFromRepository()
     }
-    
-    private fun initChannels() {
-        channelViewModel.refreshVideos()
-    }
-    
+        
     override fun customActionBar() {
         super.customActionBar()
         supportActionBar!!.apply {
@@ -179,11 +177,17 @@ class MainActivity : WanoTubeActivity(), IEventListener {
                 chooseVideoForUploadNormalVideo(bottomSheetDialog, true)
             }
             findViewById<LinearLayout>(R.id.create_short)?.setOnClickListener {
-                chooseVideoForUploadNormalVideo(bottomSheetDialog, false)
+                openCameraActivity()
+//                chooseVideoForUploadNormalVideo(bottomSheetDialog, false)
             }
             show()
         }
 
+    }
+    
+    private fun openCameraActivity() {
+        val intent = Intent(this, CameraActivity::class.java)
+        startActivity(intent)
     }
     
     private fun chooseVideoForUploadNormalVideo(bottomSheetDialog: BottomSheetDialog, isUploadNormalVideo: Boolean) {

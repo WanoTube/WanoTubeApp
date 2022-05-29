@@ -135,7 +135,7 @@ class WatchActivity : WanoTubeActivity() {
     }
 
     private fun initAdapter() {
-        videoId = intent.getStringExtra("VIDEO_ID")
+        videoId = intent.getStringExtra("VIDEO_ID").toString()
 
         val viewModelFactory = CommentViewModel.CommentViewModelFactory(application)
 
