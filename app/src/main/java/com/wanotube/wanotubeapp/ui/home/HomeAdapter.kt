@@ -14,11 +14,11 @@ import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.wanotube.wanotubeapp.IEventListener
 import com.wanotube.wanotubeapp.R
-import com.wanotube.wanotubeapp.WanotubeApp.Companion.context
 import com.wanotube.wanotubeapp.database.getDatabase
 import com.wanotube.wanotubeapp.domain.Account
 import com.wanotube.wanotubeapp.domain.Video
 import com.wanotube.wanotubeapp.repository.VideosRepository
+import com.wanotube.wanotubeapp.ui.watch.NewWatchActivity
 import com.wanotube.wanotubeapp.ui.watch.WatchActivity
 import com.wanotube.wanotubeapp.util.toTimeAgo
 
@@ -88,7 +88,7 @@ class HomeAdapter(val application: Application, iEventListener: IEventListener) 
                 .into(thumbnailVideoView)
 
             thumbnailVideoView.setOnClickListener{
-                val intent = Intent(context, WatchActivity::class.java)
+                val intent = Intent(context, NewWatchActivity::class.java)
                 intent.putExtra("VIDEO_ID", item.id)
                 intent.putExtra("NEED_TOKEN", false)
                 context.startActivity(intent)

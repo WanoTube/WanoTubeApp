@@ -1,7 +1,6 @@
 package com.wanotube.wanotubeapp.ui.edit
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -25,7 +24,6 @@ import com.wanotube.wanotubeapp.network.objects.NetworkVideo
 import com.wanotube.wanotubeapp.network.objects.NetworkVideoWatch
 import com.wanotube.wanotubeapp.network.asDatabaseModel
 import com.wanotube.wanotubeapp.repository.VideosRepository
-import com.wanotube.wanotubeapp.ui.watch.WatchActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
