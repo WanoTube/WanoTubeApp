@@ -91,6 +91,7 @@ class CameraActivity : AppCompatActivity(), SurfaceHolder.Callback, AREventListe
             }
             return orientation
         }
+
     var masks: ArrayList<String>? = null
     var effects: ArrayList<String>? = null
     var filters: ArrayList<String>? = null
@@ -100,9 +101,10 @@ class CameraActivity : AppCompatActivity(), SurfaceHolder.Callback, AREventListe
     private var width = 0
     private var height = 0
     private var videoFileName: File? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.camera_activity)
+        setContentView(R.layout.activity_camera)
     }
 
     override fun onStart() {
@@ -131,7 +133,7 @@ class CameraActivity : AppCompatActivity(), SurfaceHolder.Callback, AREventListe
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == 1 && grantResults.size > 0) {
+        if (requestCode == 1 && grantResults.isNotEmpty()) {
             for (grantResult in grantResults) {
                 if (grantResult != PackageManager.PERMISSION_GRANTED) {
                     return  // no permission
