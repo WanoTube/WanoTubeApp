@@ -9,12 +9,14 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.ScrollView
 import android.widget.Toast
 import androidx.core.app.ShareCompat
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.util.Util
@@ -156,6 +158,8 @@ class NewWatchActivity : WanoTubeActivity() {
                             channelId = response.body()?.user?.channelId.toString()
                             username = response.body()?.user?.username.toString()
                             currentUser = response.body()?.user?.doc?.user?.asDatabaseModel()?.asDomainModel()
+                            val authorAvatar = response.body()?.user?.avatar.toString()
+                            loadAvatar(authorAvatar, binding.avatarAuthor)
                             initVideo()
                         } else {
                             Toast.makeText(WanotubeApp.context, response.message(), Toast.LENGTH_SHORT).show()
@@ -167,6 +171,14 @@ class NewWatchActivity : WanoTubeActivity() {
                 }
             })
         }
+    }
+
+    private fun loadAvatar(avatarUrl: String, avatarView: ImageView) {
+        Glide.with(avatarView.context)
+            .load(avatarUrl)
+            .placeholder(R.drawable.image_placeholder)
+            .circleCrop()
+            .into(binding.avatarAuthor)
     }
 
     private fun initLayouts(binding: ActivityNewWatchBinding) {

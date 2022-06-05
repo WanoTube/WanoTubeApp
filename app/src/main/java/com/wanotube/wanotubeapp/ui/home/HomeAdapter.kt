@@ -74,7 +74,7 @@ class HomeAdapter(val application: Application, iEventListener: IEventListener) 
 
                 Glide.with(avatarView.context)
                     .load(channel.avatar)
-                    .placeholder(R.drawable.video_placeholder)
+                    .placeholder(R.drawable.image_placeholder)
                     .circleCrop()
                     .into(avatarView)
             }
