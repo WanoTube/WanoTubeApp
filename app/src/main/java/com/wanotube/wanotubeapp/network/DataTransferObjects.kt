@@ -118,7 +118,7 @@ fun NetworkComment.asDatabaseModel(): DatabaseComment {
     return DatabaseComment(
         id = id.toString(),
         content = content.toString(),
-        authorId = user?.id.toString(),
+        authorId = user?.id.toString(), //Note: accountId - channelId
         videoId = videoId.toString(),
         authorAvatar = "",
         authorUsername = user?.username.toString()

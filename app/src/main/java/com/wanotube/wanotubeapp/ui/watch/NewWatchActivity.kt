@@ -37,6 +37,7 @@ import com.wanotube.wanotubeapp.repository.CommentRepository
 import com.wanotube.wanotubeapp.repository.VideosRepository
 import com.wanotube.wanotubeapp.util.Constant.PRODUCTION_WEB_URL
 import com.wanotube.wanotubeapp.viewmodels.CommentViewModel
+import com.wanotube.wanotubeapp.viewmodels.WanoTubeViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -92,6 +93,14 @@ class NewWatchActivity : WanoTubeActivity() {
         initAdapter()
         getVideo()
         setClickListeners()
+        loadCommentAuthorAvatar()
+    }
+
+    private fun loadCommentAuthorAvatar() {
+        val avatarCommentAuthor = mAuthPreferences?.avatar
+        if (avatarCommentAuthor != null) {
+            loadAvatar(avatarCommentAuthor, binding.avatarCommentAuthor)
+        }
     }
 
     private fun initAdapter() {
@@ -112,6 +121,18 @@ class NewWatchActivity : WanoTubeActivity() {
 
         binding.lifecycleOwner = this
 
+        val videoViewModelFactory = WanoTubeViewModel.WanoTubeViewModelFactory(application)
+
+        val videoViewModel =
+            ViewModelProvider(
+                this, videoViewModelFactory
+            ).get(WanoTubeViewModel::class.java)
+
+        videoViewModel.channels.observe(this) {
+            it?.let {
+                adapter.channels = it
+            }
+        }
         commentViewModel.comments.observe(this) {
             it?.let {
                 val videos = it.filter {
@@ -178,7 +199,7 @@ class NewWatchActivity : WanoTubeActivity() {
             .load(avatarUrl)
             .placeholder(R.drawable.image_placeholder)
             .circleCrop()
-            .into(binding.avatarAuthor)
+            .into(avatarView)
     }
 
     private fun initLayouts(binding: ActivityNewWatchBinding) {
