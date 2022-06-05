@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
     <LinearLayout
         android:id="@+id/activity_upload"
-        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -14,7 +14,9 @@
             <com.google.android.exoplayer2.ui.PlayerView
                 android:id="@+id/video_view"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"/>
+                android:layout_height="200dp"
+                app:controller_layout_id="@layout/watch_player_control_view" />
+
         </LinearLayout>
         <View style="@style/Divider.Horizontal"/>
         <LinearLayout
@@ -27,6 +29,7 @@
             android:gravity="center"
             android:orientation="horizontal">
             <ImageView
+                android:id="@+id/avatar_author"
                 android:layout_width="@dimen/avatar_size"
                 android:layout_height="@dimen/avatar_size"
                 android:src="@drawable/user"/>
@@ -66,10 +69,10 @@
         </LinearLayout>
         <View style="@style/Divider.Horizontal"/>
         <LinearLayout
+
             android:layout_marginStart="@dimen/component_large_margin"
             android:layout_marginEnd="@dimen/component_large_margin"
             android:layout_marginTop="@dimen/component_medium_margin"
-            android:layout_marginBottom="@dimen/component_medium_margin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -91,10 +94,100 @@
                 android:background="@android:color/transparent"
                 android:hint="@string/your_description">
             </EditText>
+
+        </LinearLayout>
+        <View style="@style/Divider.Horizontal"/>
+        <LinearLayout
+
+            android:layout_marginStart="@dimen/component_large_margin"
+            android:layout_marginEnd="@dimen/component_large_margin"
+            android:layout_marginTop="@dimen/component_medium_margin"
+            android:layout_marginBottom="@dimen/component_medium_margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Privacy"/>
             <Spinner
+                android:layout_gravity="start"
+                android:textAlignment="textStart"
                 android:id="@+id/privacy_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>
+        <View style="@style/Divider.Horizontal"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_marginStart="@dimen/component_large_margin"
+            android:layout_marginEnd="@dimen/component_large_margin"
+            android:layout_marginTop="@dimen/component_medium_margin"
+            android:layout_marginBottom="@dimen/component_medium_margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="Tags"/>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:hint="Enter chip"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <!--Horizontal ScrollView to accomodate chips overflow by making them scroll-->
+
+                <HorizontalScrollView
+                    android:id="@+id/horizontal_scroll_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="none">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:layout_editor_absoluteX="8dp"
+                        tools:layout_editor_absoluteY="503dp">
+
+                        <!--ChipGroup to hold multiple chips and help in removal by getting child elements-->
+
+                        <com.google.android.material.chip.ChipGroup
+                            android:id="@+id/chipGroup"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintBottom_toBottomOf="@+id/textInputEditText"
+                            app:layout_constraintEnd_toStartOf="@+id/textInputEditText"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/textInputEditText" />
+
+                        <!--Entering chip generation text and using commas to detect when a new chip is to be generated-->
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/textInputEditText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:hint="Enter chip"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/chipGroup"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </HorizontalScrollView>
+            </com.google.android.material.textfield.TextInputLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 </layout>

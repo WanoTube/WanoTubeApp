@@ -2,6 +2,9 @@ package com.wanotube.wanotubeapp.ui.edit
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -13,6 +16,7 @@ import androidx.appcompat.app.ActionBar
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.util.Util
+import com.google.android.material.chip.Chip
 import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.WanoTubeActivity
 import com.wanotube.wanotubeapp.WanotubeApp
@@ -66,6 +70,7 @@ class EditInfoActivity: WanoTubeActivity(), AdapterView.OnItemSelectedListener  
         
         getVideo()
         addResourceForSpinner()
+        handleChip()
     }
     
     override fun customActionBar() {
@@ -263,5 +268,44 @@ class EditInfoActivity: WanoTubeActivity(), AdapterView.OnItemSelectedListener  
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
         parent?.setSelection(visibility)
+    }
+
+    private fun handleChip() {
+        val context = this
+        val textInputEditText = viewBinding.textInputEditText
+        val chipGroup = viewBinding.chipGroup
+
+        textInputEditText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val trimmed = s.toString().trim { it <= ' ' }
+                if (trimmed.length > 1 && trimmed.endsWith(",")) {
+                    val chip = Chip(context)
+                    chip.text = trimmed.substring(0, trimmed.length - 1)
+                    chip.isCloseIconVisible = true
+
+                    //Callback fired when chip close icon is clicked
+                    chip.setOnCloseIconClickListener {
+                        chipGroup.removeView(chip)
+                    }
+
+                    chipGroup.addView(chip)
+                    s?.clear()
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+        textInputEditText.setOnKeyListener { _, _, event ->
+            if (event != null && event.action == KeyEvent.ACTION_DOWN && event.keyCode == KeyEvent.KEYCODE_DEL) {
+                if (textInputEditText.length() == 0 && chipGroup.childCount > 0) {
+                    val chip = chipGroup.getChildAt(chipGroup.childCount - 1) as Chip
+                    chipGroup.removeView(chip)
+                }
+            }
+            false
+        }
+
     }
 }
