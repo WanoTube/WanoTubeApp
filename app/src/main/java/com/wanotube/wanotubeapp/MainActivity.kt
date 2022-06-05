@@ -14,15 +14,12 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.navigation.NavigationBarView.LABEL_VISIBILITY_UNLABELED
 import com.wanotube.wanotubeapp.databinding.ActivityMainBinding
 import com.wanotube.wanotubeapp.ui.deepar.CameraActivity
-import com.wanotube.wanotubeapp.ui.edit.EditActivity
 import com.wanotube.wanotubeapp.ui.home.HomeFragment
 import com.wanotube.wanotubeapp.ui.library.LibraryFragment
-import com.wanotube.wanotubeapp.ui.login.LoginActivity
 import com.wanotube.wanotubeapp.ui.profile.ProfileFragment
 import com.wanotube.wanotubeapp.ui.shorts.ShortsFragment
 import com.wanotube.wanotubeapp.util.Constant
 import com.wanotube.wanotubeapp.util.URIPathHelper
-import com.wanotube.wanotubeapp.viewmodels.ChannelViewModel
 import com.wanotube.wanotubeapp.viewmodels.WanoTubeViewModel
 
 class MainActivity : WanoTubeActivity(), IEventListener {
@@ -33,7 +30,6 @@ class MainActivity : WanoTubeActivity(), IEventListener {
     private var isUploadNormalVideo = true
     
     private lateinit var videoViewModel: WanoTubeViewModel
-    private lateinit var channelViewModel: ChannelViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,13 +55,6 @@ class MainActivity : WanoTubeActivity(), IEventListener {
                 this, videoViewModelFactory
             ).get(WanoTubeViewModel::class.java)
 
-        val channelViewModelFactory = ChannelViewModel.ChannelViewModelFactory(application)
-
-        channelViewModel =
-            ViewModelProvider(
-                this, channelViewModelFactory
-            ).get(ChannelViewModel::class.java)
-
         initVideos()
     }
     
@@ -76,7 +65,6 @@ class MainActivity : WanoTubeActivity(), IEventListener {
     override fun onDestroy() {
         super.onDestroy()
         videoViewModel.clearDataFromRepository()
-        channelViewModel.clearDataFromRepository()
     }
         
     override fun customActionBar() {
