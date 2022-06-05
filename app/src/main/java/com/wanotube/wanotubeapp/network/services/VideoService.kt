@@ -3,6 +3,7 @@ package com.wanotube.wanotubeapp.network.services
 import com.wanotube.wanotubeapp.network.objects.NetworkVideo
 import com.wanotube.wanotubeapp.network.objects.NetworkVideoContainer
 import com.wanotube.wanotubeapp.network.objects.NetworkVideoWatch
+import com.wanotube.wanotubeapp.network.objects.NetworkVideoWatchContainer
 import com.wanotube.wanotubeapp.network.objects.NetworkWatchHistoryContainer
 import com.wanotube.wanotubeapp.network.objects.NetworkWatchHistoryDate
 import okhttp3.MultipartBody
@@ -60,7 +61,7 @@ interface IVideoService {
     fun removeWatchLater(@Path("videoId") videoId: String): Call<NetworkVideo>?
 
     @GET("videos/watch-later")
-    fun getWatchLaterVideos(): Call<NetworkVideoContainer>?
+    fun getWatchLaterVideos(): Call<NetworkVideoWatchContainer>?
 
     @GET("videos/history")
     fun getWatchHistoryVideos(): Call<NetworkWatchHistoryContainer>?

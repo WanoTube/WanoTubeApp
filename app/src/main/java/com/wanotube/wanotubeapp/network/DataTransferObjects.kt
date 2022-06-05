@@ -13,9 +13,9 @@ import com.wanotube.wanotubeapp.network.objects.NetworkFollowingChannelContainer
 import com.wanotube.wanotubeapp.network.objects.NetworkVideo
 import com.wanotube.wanotubeapp.network.objects.NetworkVideoContainer
 import com.wanotube.wanotubeapp.network.objects.NetworkVideoWatch
+import com.wanotube.wanotubeapp.network.objects.NetworkVideoWatchContainer
 import com.wanotube.wanotubeapp.network.objects.NetworkWatchHistoryContainer
 import com.wanotube.wanotubeapp.network.objects.UserId
-import com.wanotube.wanotubeapp.util.convertSimpleStringToDate
 import com.wanotube.wanotubeapp.util.convertStringToDate
 import java.util.Date
 
@@ -43,6 +43,28 @@ fun NetworkVideoContainer.asDatabaseModel(): List<DatabaseVideo> {
             visibility = it.visibility,
             duration = it.duration,
             authorId = it.authorId,
+            type = it.type,
+            updatedAt = it.updatedAt,
+            createdAt = it.createdAt
+        )
+    }
+}
+
+fun NetworkVideoWatchContainer.asDatabaseModel(): List<DatabaseVideo> {
+    return videos.map {
+        DatabaseVideo(
+            id = it.id,
+            url = it.url,
+            title = it.title,
+            description = it.description,
+            thumbnail = it.thumbnail,
+            size = it.size,
+            totalViews = it.totalViews,
+            totalLikes = it.totalLikes,
+            totalComments = it.totalComments,
+            visibility = it.visibility,
+            duration = it.duration,
+            authorId = it.user?.channelId.toString(), //AuthorId here's userId
             type = it.type,
             updatedAt = it.updatedAt,
             createdAt = it.createdAt

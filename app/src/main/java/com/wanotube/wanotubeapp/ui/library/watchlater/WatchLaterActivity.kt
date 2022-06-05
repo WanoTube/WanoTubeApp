@@ -29,7 +29,13 @@ class WatchLaterActivity : AppCompatActivity() {
         binding.watchLaterList.adapter = adapter
 
         viewModel.getWatchLaterList()
-        
+
+        viewModel.channels.observe(this) {
+            it?.let {
+                adapter.channels = it
+            }
+        }
+
         viewModel.watchLaterList.observe(this) {
             it?.let {
                 val videos = it.filter {
