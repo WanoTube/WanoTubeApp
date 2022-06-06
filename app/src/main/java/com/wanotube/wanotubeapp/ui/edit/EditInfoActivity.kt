@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
+import androidx.core.view.allViews
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.util.Util
@@ -233,6 +234,14 @@ class EditInfoActivity: WanoTubeActivity(), AdapterView.OnItemSelectedListener  
     private fun updateVideo() {
         if (!::video.isInitialized)
             return
+
+        var tags = ""
+        val chipGroup = viewBinding.chipGroup
+        chipGroup.allViews.forEach {
+            val chip = it as Chip
+            tags = "$tags,${chip.text}"
+        }
+
         val resCall = videosRepository.updateVideo(
             video.id,
             titleText.text.toString(),
@@ -240,7 +249,8 @@ class EditInfoActivity: WanoTubeActivity(), AdapterView.OnItemSelectedListener  
             video.url,
             video.size.toString(),
             video.duration.toString(),
-            visibility.toString()
+            visibility.toString(),
+            tags
         )
         
         val context = this

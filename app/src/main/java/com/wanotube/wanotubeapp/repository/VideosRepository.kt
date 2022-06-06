@@ -172,7 +172,8 @@ class VideosRepository(private val database: AppDatabase) {
                     url: String,
                     size: String,
                     duration: String,
-                    visibility: String): Call<NetworkVideo>? {
+                    visibility: String,
+                    tags: String): Call<NetworkVideo>? {
 
         val idBody = MultipartBody.Part.createFormData("id", id)
         val titleBody = MultipartBody.Part.createFormData("title", title)
@@ -181,6 +182,7 @@ class VideosRepository(private val database: AppDatabase) {
         val sizeBody = MultipartBody.Part.createFormData("size", size)
         val durationBody = MultipartBody.Part.createFormData("duration", duration)
         val visibilityBody = MultipartBody.Part.createFormData("visibility" ,visibility)
+        val tagsBody = MultipartBody.Part.createFormData("tags" ,tags)
 
         val videoService: IVideoService? =
             ServiceGenerator.createService(IVideoService::class.java)
@@ -191,7 +193,8 @@ class VideosRepository(private val database: AppDatabase) {
             urlBody,
             sizeBody,
             durationBody,
-            visibilityBody)
+            visibilityBody,
+            tagsBody)
     }
 
     fun likeVideo(targetId: String) {

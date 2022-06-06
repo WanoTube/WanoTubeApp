@@ -49,6 +49,7 @@ interface IVideoService {
         @Part size: MultipartBody.Part,
         @Part duration: MultipartBody.Part,
         @Part visibility: MultipartBody.Part,
+        @Part tags: MultipartBody.Part
         ): Call<NetworkVideo>?
 
     @POST("videos/like/{id}")
