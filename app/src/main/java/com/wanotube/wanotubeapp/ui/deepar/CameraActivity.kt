@@ -1,46 +1,42 @@
 package com.wanotube.wanotubeapp.ui.deepar
 
-import androidx.appcompat.app.AppCompatActivity
-import android.view.SurfaceHolder
-import ai.deepar.ar.AREventListener
-import androidx.camera.core.CameraSelector
-import com.wanotube.wanotubeapp.deepar.ARSurfaceProvider
-import androidx.camera.lifecycle.ProcessCameraProvider
-import ai.deepar.ar.DeepAR
-import android.os.Bundle
-import com.wanotube.wanotubeapp.R
-import androidx.core.content.ContextCompat
-import android.content.pm.PackageManager
-import androidx.core.app.ActivityCompat
-import android.widget.ImageButton
-import android.view.SurfaceView
-import android.widget.TextView
-import android.widget.Toast
-import android.util.DisplayMetrics
-import android.content.pm.ActivityInfo
-import ai.deepar.ar.CameraResolutionPreset
-import androidx.camera.core.Preview
-import androidx.lifecycle.LifecycleOwner
-import androidx.camera.core.ImageAnalysis
-import ai.deepar.ar.DeepARImageFormat
-import android.graphics.Bitmap
-import ai.deepar.ar.ARErrorType
+import ai.deepar.ar.*
 import android.Manifest
+import android.content.pm.ActivityInfo
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.media.Image
+import android.media.MediaScannerConnection
+import android.os.Bundle
 import android.os.Environment
 import android.text.format.DateFormat
+import android.util.DisplayMetrics
 import android.util.Size
 import android.view.Surface
+import android.view.SurfaceHolder
+import android.view.SurfaceView
 import android.view.View
+import android.widget.ImageButton
 import android.widget.RadioButton
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.ImageAnalysis
+import androidx.camera.core.Preview
+import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.LifecycleOwner
 import com.google.common.util.concurrent.ListenableFuture
+import com.wanotube.wanotubeapp.BuildConfig.DEEP_AR_KEY
+import com.wanotube.wanotubeapp.R
+import com.wanotube.wanotubeapp.deepar.ARSurfaceProvider
 import java.io.File
 import java.io.FileOutputStream
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.text.SimpleDateFormat
-import java.util.ArrayList
-import java.util.Date
+import java.util.*
 import java.util.concurrent.ExecutionException
 
 class CameraActivity : AppCompatActivity(), SurfaceHolder.Callback, AREventListener {
@@ -97,10 +93,9 @@ class CameraActivity : AppCompatActivity(), SurfaceHolder.Callback, AREventListe
     var filters: ArrayList<String>? = null
     private var activeFilterType = 0
     private var recording = false
-    private var currentSwitchRecording = false
     private var width = 0
     private var height = 0
-    private var videoFileName: File? = null
+    private var videoFile: File? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -146,7 +141,7 @@ class CameraActivity : AppCompatActivity(), SurfaceHolder.Callback, AREventListe
     private fun initialize() {
         initializeDeepAR()
         initializeFilters()
-        initalizeViews()
+        initializeViews()
     }
 
     private fun initializeFilters() {
@@ -186,7 +181,7 @@ class CameraActivity : AppCompatActivity(), SurfaceHolder.Callback, AREventListe
         filters!!.add("bleachbypass")
     }
 
-    private fun initalizeViews() {
+    private fun initializeViews() {
         val previousMask = findViewById<ImageButton>(R.id.previousMask)
         val nextMask = findViewById<ImageButton>(R.id.nextMask)
         val radioMasks = findViewById<RadioButton>(R.id.masks)
@@ -198,8 +193,7 @@ class CameraActivity : AppCompatActivity(), SurfaceHolder.Callback, AREventListe
         // Surface might already be initialized, so we force the call to onSurfaceChanged
         arView.visibility = View.GONE
         arView.visibility = View.VISIBLE
-        val screenshotBtn = findViewById<ImageButton>(R.id.recordButton)
-        screenshotBtn.setOnClickListener { deepAR!!.takeScreenshot() }
+        val recordBtn = findViewById<ImageButton>(R.id.recordButton)
         val switchCamera = findViewById<ImageButton>(R.id.switchCamera)
         switchCamera.setOnClickListener {
             lensFacing =
@@ -217,58 +211,23 @@ class CameraActivity : AppCompatActivity(), SurfaceHolder.Callback, AREventListe
             setupCamera()
         }
 
-//        ImageButton openActivity = findViewById(R.id.openActivity);
-//        openActivity.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent myIntent = new Intent(MainActivity.this, BasicActivity.class);
-//                MainActivity.this.startActivity(myIntent);
-//            }
-//
-//
-//        });
-        val screenShotModeButton = findViewById<TextView>(R.id.screenshotModeButton)
-        val recordModeBtn = findViewById<TextView>(R.id.recordModeButton)
-        recordModeBtn.background.alpha = 0x00
-        screenShotModeButton.background.alpha = 0xA0
-        screenShotModeButton.setOnClickListener(View.OnClickListener {
-            if (currentSwitchRecording) {
-                if (recording) {
-                    Toast.makeText(applicationContext,
-                        "Cannot switch to screenshots while recording!",
-                        Toast.LENGTH_SHORT).show()
-                    return@OnClickListener
-                }
-                recordModeBtn.background.alpha = 0x00
-                screenShotModeButton.background.alpha = 0xA0
-                screenshotBtn.setOnClickListener { deepAR!!.takeScreenshot() }
-                currentSwitchRecording = !currentSwitchRecording
-            }
-        })
-        recordModeBtn.setOnClickListener {
-            if (!currentSwitchRecording) {
-                recordModeBtn.background.alpha = 0xA0
-                screenShotModeButton.background.alpha = 0x00
-                screenshotBtn.setOnClickListener {
-                    if (recording) {
-                        deepAR!!.stopVideoRecording()
+        recordBtn.setOnClickListener {
+            if (recording) {
+                deepAR!!.stopVideoRecording()
                         Toast.makeText(applicationContext,
-                            "Recording " + videoFileName!!.name + " saved.",
+                            "Recording " + videoFile!!.name + " saved.",
                             Toast.LENGTH_LONG).show()
-                    } else {
-                        videoFileName = File(getExternalFilesDir(Environment.DIRECTORY_MOVIES),
-                            "video_" + SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(
-                                Date()) + ".mp4")
-                        deepAR!!.startVideoRecording(videoFileName.toString(),
-                            width / 2,
-                            height / 2)
+            } else {
+                videoFile = File(getExternalFilesDir(Environment.DIRECTORY_MOVIES),
+                    "video_" + SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(
+                        Date()) + ".mp4")
+                deepAR!!.startVideoRecording(videoFile.toString(),
+                    width / 2,
+                    height / 2)
                         Toast.makeText(applicationContext, "Recording started.", Toast.LENGTH_SHORT)
                             .show()
-                    }
-                    recording = !recording
-                }
-                currentSwitchRecording = !currentSwitchRecording
             }
+            recording = !recording
         }
         previousMask.setOnClickListener { gotoPrevious() }
         nextMask.setOnClickListener { gotoNext() }
@@ -291,7 +250,7 @@ class CameraActivity : AppCompatActivity(), SurfaceHolder.Callback, AREventListe
 
     private fun initializeDeepAR() {
         deepAR = DeepAR(this)
-        deepAR!!.setLicenseKey("5028032f91b374f1ba4de71571503d86e872c65da07f915446d7290ef5f5707b3268b74d0b8d9aea")
+        deepAR!!.setLicenseKey(DEEP_AR_KEY)
         deepAR!!.initialize(this, this)
         setupCamera()
     }
@@ -384,7 +343,7 @@ class CameraActivity : AppCompatActivity(), SurfaceHolder.Callback, AREventListe
     private fun getFilterPath(filterName: String): String? {
         return if (filterName == "none") {
             null
-        } else "file:///android_asset/$filterName"
+        } else "$ASSETS$filterName"
     }
 
     private fun gotoNext() {
@@ -415,7 +374,6 @@ class CameraActivity : AppCompatActivity(), SurfaceHolder.Callback, AREventListe
 
     override fun onStop() {
         recording = false
-        currentSwitchRecording = false
         var cameraProvider: ProcessCameraProvider? = null
         try {
             cameraProvider = cameraProviderFuture!!.get()
@@ -469,8 +427,8 @@ class CameraActivity : AppCompatActivity(), SurfaceHolder.Callback, AREventListe
             bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream)
             outputStream.flush()
             outputStream.close()
-            //            MediaScannerConnection.scanFile(MainActivity.this, new String[]{imageFile.toString()}, null, null);
-//            Toast.makeText(MainActivity.this, "Screenshot " + imageFile.getName() + " saved.", Toast.LENGTH_SHORT).show();
+            MediaScannerConnection.scanFile(this, arrayOf(imageFile.toString()), null, null)
+//            Toast.makeText(this, "Screenshot " + imageFile.name + " saved.", Toast.LENGTH_SHORT).show();
         } catch (e: Throwable) {
             e.printStackTrace()
         }
@@ -497,5 +455,6 @@ class CameraActivity : AppCompatActivity(), SurfaceHolder.Callback, AREventListe
     companion object {
         private const val NUMBER_OF_BUFFERS = 2
         private const val useExternalCameraTexture = true
+        private const val ASSETS="file:///android_asset/"
     }
 }

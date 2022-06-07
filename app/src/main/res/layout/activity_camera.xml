@@ -162,39 +162,5 @@
                     android:textColor="#ffffff" />
             </RelativeLayout>
         </LinearLayout>
-
-
-        <TextView
-            android:id="@+id/screenshotModeButton"
-            android:layout_width="100dp"
-            android:layout_height="30dp"
-            android:layout_above="@id/recordButton"
-            android:layout_alignParentEnd="true"
-            android:layout_marginRight="25dp"
-            android:background="@drawable/rounded_corners_white"
-            android:backgroundTint="@color/white"
-            android:clickable="true"
-            android:elegantTextHeight="true"
-            android:fadingEdgeLength="56dp"
-            android:requiresFadingEdge="vertical"
-            android:text="  Screenshot  "
-            android:textAlignment="center" />
-
-        <TextView
-            android:id="@+id/recordModeButton"
-            android:layout_width="100dp"
-            android:layout_height="30dp"
-            android:layout_above="@id/recordButton"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="25dp"
-            android:background="@drawable/rounded_corners_white"
-            android:clickable="true"
-            android:elegantTextHeight="true"
-            android:fadingEdgeLength="32dp"
-            android:requiresFadingEdge="horizontal"
-            android:text="  Record  "
-            android:textAlignment="center" />
-
-
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
