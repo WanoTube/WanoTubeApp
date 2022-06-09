@@ -182,8 +182,8 @@ class CameraActivity : AppCompatActivity(), SurfaceHolder.Callback, AREventListe
     }
 
     private fun initializeViews() {
-        val previousMask = findViewById<ImageButton>(R.id.previousMask)
-        val nextMask = findViewById<ImageButton>(R.id.nextMask)
+//        val previousMask = findViewById<ImageButton>(R.id.previousMask)
+//        val nextMask = findViewById<ImageButton>(R.id.nextMask)
         val radioMasks = findViewById<RadioButton>(R.id.masks)
         val radioEffects = findViewById<RadioButton>(R.id.effects)
         val radioFilters = findViewById<RadioButton>(R.id.filters)
@@ -229,8 +229,8 @@ class CameraActivity : AppCompatActivity(), SurfaceHolder.Callback, AREventListe
             }
             recording = !recording
         }
-        previousMask.setOnClickListener { gotoPrevious() }
-        nextMask.setOnClickListener { gotoNext() }
+//        previousMask.setOnClickListener { gotoPrevious() }
+//        nextMask.setOnClickListener { gotoNext() }
         radioMasks.setOnClickListener {
             radioEffects.isChecked = false
             radioFilters.isChecked = false

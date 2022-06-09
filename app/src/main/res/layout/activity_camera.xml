@@ -26,7 +26,7 @@
             android:layout_height="70dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="60dp"
+            android:layout_marginBottom="75dp"
             android:background="@null"
             android:scaleType="centerInside"
             android:src="@drawable/record_selector" />
@@ -58,109 +58,91 @@
 <!--            android:layout_marginEnd="5dp"-->
 <!--            android:background="@null"-->
 <!--            android:scaleType="centerInside"-->
-<!--            android:src="@drawable/open_new_activity" />-->
-
-        <ImageButton
-            android:id="@+id/previousMask"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="20dp"
-            android:layout_marginBottom="20dp"
-            android:background="@null"
-            android:scaleType="centerInside"
-            android:src="@drawable/arrow_left" />
-
-
-        <ImageButton
-            android:id="@+id/nextMask"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="20dp"
-            android:background="@null"
-            android:scaleType="centerInside"
-            android:src="@drawable/arrow_right" />
+<!--            android:src="@drawable/arrow_right" />-->
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="5dp"
+            android:gravity="center"
             android:orientation="horizontal">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="70dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <RadioButton
                     android:id="@+id/masks"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_horizontal"
                     android:buttonTint="@android:color/white"
-                    android:checked="true" />
+                    android:checked="true"
+                    android:gravity="center"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"/>
 
                 <TextView
                     android:id="@+id/textMasks"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/masks"
-                    android:layout_centerHorizontal="true"
                     android:text="Masks"
                     android:textAlignment="center"
-                    android:textColor="#ffffff" />
-            </RelativeLayout>
+                    android:textColor="#ffffff"
+                    android:layout_marginTop="5dp" />
+            </LinearLayout>
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="70dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <RadioButton
                     android:id="@+id/effects"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
+                    android:layout_height="20dp"
                     android:buttonTint="@android:color/white"
-                    android:checked="false" />
+                    android:layout_gravity="center_horizontal"
+                    android:checked="false"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"/>
 
                 <TextView
                     android:id="@+id/textEffects"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/effects"
-                    android:layout_centerHorizontal="true"
                     android:text="Effects"
                     android:textAlignment="center"
-                    android:textColor="#ffffff" />
-            </RelativeLayout>
+                    android:textColor="#ffffff"
+                    android:layout_marginTop="5dp" />
+            </LinearLayout>
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="70dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <RadioButton
                     android:id="@+id/filters"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
+                    android:layout_height="20dp"
                     android:buttonTint="@android:color/white"
+                    android:layout_gravity="center_horizontal"
                     android:checked="false" />
 
                 <TextView
                     android:id="@+id/textFilters"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/filters"
-                    android:layout_centerHorizontal="true"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
                     android:text="Filters"
                     android:textAlignment="center"
-                    android:textColor="#ffffff" />
-            </RelativeLayout>
+                    android:textColor="#ffffff"
+                    android:layout_marginTop="5dp"/>
+            </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
