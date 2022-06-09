@@ -12,7 +12,7 @@ import com.wanotube.wanotubeapp.database.entity.DatabaseWatchHistory
 import com.wanotube.wanotubeapp.database.getDatabase
 import com.wanotube.wanotubeapp.domain.Video
 import com.wanotube.wanotubeapp.network.asDatabaseModel
-import com.wanotube.wanotubeapp.network.objects.NetworkVideoContainer
+import com.wanotube.wanotubeapp.network.objects.NetworkVideoWatchContainer
 import com.wanotube.wanotubeapp.network.objects.NetworkWatchHistoryContainer
 import com.wanotube.wanotubeapp.repository.ChannelRepository
 import com.wanotube.wanotubeapp.repository.VideosRepository
@@ -110,16 +110,16 @@ class WanoTubeViewModel(application: Application) : AndroidViewModel(application
 
     fun getWatchLaterList() {
         val response = videosRepository.getWatchLaterList()
-        response?.enqueue(object : Callback<NetworkVideoContainer> {
+        response?.enqueue(object : Callback<NetworkVideoWatchContainer> {
             override fun onResponse(
-                call: Call<NetworkVideoContainer>?,
-                response: Response<NetworkVideoContainer?>?,
+                call: Call<NetworkVideoWatchContainer>?,
+                response: Response<NetworkVideoWatchContainer?>?,
             ) {
                 if (response?.code() == 200) {
                     watchLaterList.value = response.body()?.asDatabaseModel()?.asDomainModel()!!
                 }
             }
-            override fun onFailure(call: Call<NetworkVideoContainer>?, t: Throwable?) {
+            override fun onFailure(call: Call<NetworkVideoWatchContainer>?, t: Throwable?) {
                 Timber.e("Failed: error: %s", t.toString())
             }
         })

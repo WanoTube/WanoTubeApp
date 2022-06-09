@@ -63,6 +63,6 @@ class ManagementActivity : WanoTubeActivity() {
             channelViewModel.refreshVideos()
             pullToRefresh.isRefreshing = false
         }
-
+        supportActionBar?.title = "My Videos"
     }
 }

@@ -168,7 +168,7 @@ class ShortAdapter : RecyclerView.Adapter<ShortAdapter.VideoViewHolder>(), Playe
             val fragmentManager: FragmentManager =
                 (itemView.context as FragmentActivity).supportFragmentManager // instantiate your view context
 
-            bottomSheetDialog?.show(fragmentManager, bottomSheetDialog!!.tag)
+            bottomSheetDialog?.show(fragmentManager, bottomSheetDialog?.tag)
         }
 
         private fun handleShare(context: Context, obj: Video) {

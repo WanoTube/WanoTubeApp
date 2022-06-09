@@ -7,6 +7,14 @@ class AuthPreferences(context: Context) {
     private val preferences: SharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
     private val editor = preferences.edit()
 
+
+    var userId: String?
+        get() = preferences.getString(KEY_USER_ID, null)
+        set(userId) {
+            editor.putString(KEY_USER_ID, userId)
+            editor.apply()
+        }
+
     var email: String?
         get() = preferences.getString(KEY_ACCOUNT_NAME, null)
         set(email) {
@@ -19,6 +27,22 @@ class AuthPreferences(context: Context) {
         set(username) {
             editor.putString(KEY_USER_NAME, username)
             editor.apply()
+        }
+
+    var avatar: String?
+        get() = preferences.getString(KEY_AVATAR, null)
+        set(avatar) {
+            editor.putString(KEY_AVATAR, avatar)
+            editor.apply()
+        }
+
+    var isBlocked: Boolean?
+        get() = preferences.getBoolean(KEY_IS_BLOCKED, false)
+        set(isBlocked) {
+            if (isBlocked != null) {
+                editor.putBoolean(KEY_IS_BLOCKED, isBlocked)
+                editor.apply()
+            }
         }
 
     var authToken: String?
@@ -42,6 +66,9 @@ class AuthPreferences(context: Context) {
         private const val KEY_ACCOUNT_NAME = "account_name" // email
         private const val KEY_AUTH_TOKEN = "auth_token"
         private const val KEY_USER_NAME = "user_name"
+        private const val KEY_USER_ID = "user_id"
+        private const val KEY_AVATAR = "avatar"
         private const val KEY_IS_ADMIN = "is_admin"
+        private const val KEY_IS_BLOCKED = "is_blocked"
     }
 }

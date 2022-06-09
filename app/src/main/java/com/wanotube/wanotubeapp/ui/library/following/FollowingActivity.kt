@@ -64,5 +64,7 @@ class FollowingActivity: WanoTubeActivity() {
             pullToRefresh.isRefreshing = false
         }
 
+        supportActionBar?.title = "My Followings"
+
     }
 }

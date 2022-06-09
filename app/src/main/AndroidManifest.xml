@@ -20,7 +20,8 @@
         android:theme="@style/Theme.WanoTubeApp"
         android:usesCleartextTraffic="true">
 
-        <service android:name=".network.authentication.AuthenticatorService">
+        <service android:name=".network.authentication.AuthenticatorService"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
@@ -56,6 +57,10 @@
             android:exported="false"
             android:windowSoftInputMode="stateVisible|adjustPan" />
         <activity
+            android:name=".ui.watch.NewWatchActivity"
+            android:exported="false"
+            android:windowSoftInputMode="stateVisible|adjustPan" />
+        <activity
             android:name=".ui.watch.WatchActivity"
             android:exported="false"
             android:windowSoftInputMode="stateVisible|adjustPan" />
@@ -73,7 +78,8 @@
             android:windowSoftInputMode="stateVisible|adjustPan" />
         <activity
             android:name=".MainActivity"
-            android:windowSoftInputMode="stateVisible|adjustPan">
+            android:windowSoftInputMode="stateVisible|adjustPan"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

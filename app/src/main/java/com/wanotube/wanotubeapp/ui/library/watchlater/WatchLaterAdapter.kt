@@ -16,7 +16,6 @@ import com.wanotube.wanotubeapp.database.getDatabase
 import com.wanotube.wanotubeapp.domain.Account
 import com.wanotube.wanotubeapp.domain.Video
 import com.wanotube.wanotubeapp.repository.VideosRepository
-import com.wanotube.wanotubeapp.ui.edit.EditInfoActivity
 import com.wanotube.wanotubeapp.ui.watch.WatchActivity
 import com.wanotube.wanotubeapp.util.toTimeAgo
 
@@ -59,7 +58,7 @@ class WatchLaterAdapter(val application: Application) : RecyclerView.Adapter<Wat
             val context = thumbnailVideoView.context
 
             val channel = channels.find {
-                it.userId == item.authorId
+                it.id == item.authorId
             }
             if (channel != null) {
                 val subtitle = channel.username + "  " +
