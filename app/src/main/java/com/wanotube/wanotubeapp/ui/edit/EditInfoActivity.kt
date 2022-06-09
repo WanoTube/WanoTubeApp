@@ -78,6 +78,7 @@ class EditInfoActivity: WanoTubeActivity(), AdapterView.OnItemSelectedListener  
         super.customActionBar()
         supportActionBar!!.apply {
             displayOptions = ActionBar.DISPLAY_SHOW_TITLE
+            title = "Edit Video Info"
         }
     }
 

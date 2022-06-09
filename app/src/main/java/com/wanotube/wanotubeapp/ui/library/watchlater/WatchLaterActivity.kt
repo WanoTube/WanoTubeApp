@@ -1,15 +1,15 @@
 package com.wanotube.wanotubeapp.ui.library.watchlater
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.wanotube.wanotubeapp.WanoTubeActivity
 import com.wanotube.wanotubeapp.databinding.ActivityWatchLaterBinding
 import com.wanotube.wanotubeapp.util.VideoType
 import com.wanotube.wanotubeapp.viewmodels.WanoTubeViewModel
 
-class WatchLaterActivity : AppCompatActivity() {
+class WatchLaterActivity : WanoTubeActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityWatchLaterBinding.inflate(layoutInflater)
@@ -53,6 +53,8 @@ class WatchLaterActivity : AppCompatActivity() {
             viewModel.getWatchLaterList()
             pullToRefresh.isRefreshing = false
         }
+
+        supportActionBar?.title = "Watch Later"
 
         binding.lifecycleOwner = this
     }

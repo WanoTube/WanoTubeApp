@@ -62,12 +62,13 @@ class VideoHistoryAdapter(val application: Application) : RecyclerView.Adapter<V
                 .centerCrop()
                 .into(thumbnailVideoView)
 
-            thumbnailVideoView.setOnClickListener{
-                val intent = Intent(context, WatchActivity::class.java)
-                intent.putExtra("VIDEO_ID", item.id)
-                intent.putExtra("NEED_TOKEN", false)
-                context.startActivity(intent)
-            }
+            //TODO
+//            thumbnailVideoView.setOnClickListener{
+//                val intent = Intent(context, WatchActivity::class.java)
+//                intent.putExtra("VIDEO_ID", item.id)
+//                intent.putExtra("NEED_TOKEN", false)
+//                context.startActivity(intent)
+//            }
 
             menuView.setOnClickListener {
                 val bottomSheetDialog = BottomSheetDialog(context)

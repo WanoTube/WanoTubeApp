@@ -9,15 +9,12 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.RelativeLayout
-import android.widget.ScrollView
-import android.widget.Toast
+import android.widget.*
 import androidx.core.app.ShareCompat
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.util.Util
 import com.like.LikeButton
@@ -36,6 +33,7 @@ import com.wanotube.wanotubeapp.repository.ChannelRepository
 import com.wanotube.wanotubeapp.repository.CommentRepository
 import com.wanotube.wanotubeapp.repository.VideosRepository
 import com.wanotube.wanotubeapp.util.Constant.PRODUCTION_WEB_URL
+import com.wanotube.wanotubeapp.util.isCountedAsView
 import com.wanotube.wanotubeapp.viewmodels.CommentViewModel
 import com.wanotube.wanotubeapp.viewmodels.WanoTubeViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -402,6 +400,17 @@ class NewWatchActivity : WanoTubeActivity() {
                 //prepare tells the player to acquire all the resources required for playback.
                 exoPlayer.prepare()
             }
+        player!!.addListener(object : Player.EventListener {
+            override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+                updateProgressBar()
+            }
+        })
+    }
+
+    private fun updateProgressBar() {
+        if (player?.currentPosition?.let { player?.duration?.let { it1 -> isCountedAsView(it, it1) } } == true) {
+            increaseView()
+        }
     }
 
     private fun releasePlayer() {
@@ -432,30 +441,6 @@ class NewWatchActivity : WanoTubeActivity() {
             minutes
         ) + ":" + String.format("%02d", seconds)
     }
-
-    //TODO: Increase view
-//    private fun initialiseSeekBar() {
-//        seekBar.progress = 0
-//        seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-//            @SuppressLint("SetTextI18n")
-//            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-//                if (seekBar.id == R.id.seekbar) {
-//                    if (fromUser) {
-//                        binding.videoPlayer.seekTo(progress)
-//                        val currentPosition = binding.videoPlayer.currentPosition
-//                        startTime.text = "" + convertIntToTime(currentPosition)
-//                        endTime.text = "" + convertIntToTime(binding.videoPlayer.duration - currentPosition)
-//                    }
-//                }
-//                if (isCountedAsView(binding.videoPlayer.currentPosition, binding.videoPlayer.duration)) {
-//                    increaseView()
-//                }
-//            }
-//
-//            override fun onStartTrackingTouch(seekBar: SeekBar) {}
-//            override fun onStopTrackingTouch(seekBar: SeekBar) {}
-//        })
-//    }
 
 
     private fun increaseView() {
