@@ -15,7 +15,7 @@
         android:fillViewport="true">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/all_comments"
+            android:id="@+id/watch_histories"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="horizontal"
@@ -63,7 +63,7 @@
                 android:padding="8dp"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/ic_short"
+                android:src="@drawable/history"
                 android:background="@drawable/circle_shape"
                 android:layout_margin="8dp"/>
 
@@ -87,7 +87,7 @@
                 android:padding="8dp"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/ic_short"
+                android:src="@drawable/watchlater"
                 android:background="@drawable/circle_shape"
                 android:layout_margin="8dp"/>
 
@@ -111,7 +111,7 @@
                 android:padding="8dp"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/ic_short"
+                android:src="@drawable/myvideos"
                 android:background="@drawable/circle_shape"
                 android:layout_margin="8dp"/>
 
@@ -135,7 +135,7 @@
                 android:padding="8dp"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/ic_short"
+                android:src="@drawable/followings"
                 android:background="@drawable/circle_shape"
                 android:layout_margin="8dp"/>
 

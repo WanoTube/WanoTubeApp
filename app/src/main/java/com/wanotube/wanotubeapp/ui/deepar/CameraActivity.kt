@@ -12,14 +12,11 @@ import android.os.Environment
 import android.text.format.DateFormat
 import android.util.DisplayMetrics
 import android.util.Size
-import android.view.Surface
-import android.view.SurfaceHolder
-import android.view.SurfaceView
-import android.view.View
+import android.view.*
 import android.widget.ImageButton
 import android.widget.RadioButton
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.ActionBar
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
@@ -30,6 +27,7 @@ import androidx.lifecycle.LifecycleOwner
 import com.google.common.util.concurrent.ListenableFuture
 import com.wanotube.wanotubeapp.BuildConfig.DEEP_AR_KEY
 import com.wanotube.wanotubeapp.R
+import com.wanotube.wanotubeapp.WanoTubeActivity
 import com.wanotube.wanotubeapp.deepar.ARSurfaceProvider
 import java.io.File
 import java.io.FileOutputStream
@@ -39,7 +37,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ExecutionException
 
-class CameraActivity : AppCompatActivity(), SurfaceHolder.Callback, AREventListener {
+class CameraActivity : WanoTubeActivity(), SurfaceHolder.Callback, AREventListener {
     // Default camera lens value, change to CameraSelector.LENS_FACING_BACK to initialize with back camera
     private val defaultLensFacing = CameraSelector.LENS_FACING_FRONT
     private var surfaceProvider: ARSurfaceProvider? = null
@@ -100,6 +98,29 @@ class CameraActivity : AppCompatActivity(), SurfaceHolder.Callback, AREventListe
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_camera)
+    }
+
+    override fun customActionBar() {
+        super.customActionBar()
+        supportActionBar!!.apply {
+            displayOptions = ActionBar.DISPLAY_SHOW_TITLE
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.normal_action_bar, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.save -> {
+            videoFile?.path?.let { uploadVideo(it, false) }
+            true
+        }
+
+        else -> {
+            super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onStart() {
@@ -214,9 +235,9 @@ class CameraActivity : AppCompatActivity(), SurfaceHolder.Callback, AREventListe
         recordBtn.setOnClickListener {
             if (recording) {
                 deepAR!!.stopVideoRecording()
-                        Toast.makeText(applicationContext,
-                            "Recording " + videoFile!!.name + " saved.",
-                            Toast.LENGTH_LONG).show()
+//                        Toast.makeText(applicationContext,
+//                            "Recording " + videoFile!!.name + " saved.",
+//                            Toast.LENGTH_LONG).show()
             } else {
                 videoFile = File(getExternalFilesDir(Environment.DIRECTORY_MOVIES),
                     "video_" + SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(

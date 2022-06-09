@@ -13,7 +13,6 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
-import androidx.core.view.allViews
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.util.Util
@@ -238,7 +237,7 @@ class EditInfoActivity: WanoTubeActivity(), AdapterView.OnItemSelectedListener  
 
         var tags = ""
         val chipGroup = viewBinding.chipGroup
-        chipGroup.allViews.forEach {
+        chipGroup.checkedChipIds.forEach {
             val chip = it as Chip
             tags = "$tags,${chip.text}"
         }
