@@ -67,10 +67,15 @@ class LoginTabFragment : Fragment() {
                     val token = "Bearer " + body.token
 
                     // Save session username & auth token
-                    mAuthPreferences?.authToken = token
-                    mAuthPreferences?.username = user?.username
-                    mAuthPreferences?.email = email
-                    mAuthPreferences?.isAdmin = user?.isAdmin
+                    mAuthPreferences?.apply {
+                        authToken = token
+                        username = user?.username
+                        userId = user?.id as String?
+                        this.email = email
+                        this.isAdmin = user?.isAdmin
+                        this.avatar = user?.avatar
+                        this.isBlocked = user?.isBlocked
+                    }
 
                     // Add account to AccountManager
                     AccountUtils.addAccount(context, email, token)

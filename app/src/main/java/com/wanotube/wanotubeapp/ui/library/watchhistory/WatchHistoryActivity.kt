@@ -48,6 +48,8 @@ class WatchHistoryActivity : WanoTubeActivity() {
             pullToRefresh.isRefreshing = false
         }
 
+        supportActionBar?.title = "Watch History"
+
         binding.lifecycleOwner = this
     }
 }

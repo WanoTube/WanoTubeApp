@@ -1,8 +1,10 @@
 package com.wanotube.wanotubeapp.ui.edit
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -14,6 +16,7 @@ import androidx.appcompat.app.ActionBar
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.util.Util
+import com.google.android.material.chip.Chip
 import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.WanoTubeActivity
 import com.wanotube.wanotubeapp.WanotubeApp
@@ -25,7 +28,6 @@ import com.wanotube.wanotubeapp.network.objects.NetworkVideo
 import com.wanotube.wanotubeapp.network.objects.NetworkVideoWatch
 import com.wanotube.wanotubeapp.network.asDatabaseModel
 import com.wanotube.wanotubeapp.repository.VideosRepository
-import com.wanotube.wanotubeapp.ui.watch.WatchActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -68,12 +70,14 @@ class EditInfoActivity: WanoTubeActivity(), AdapterView.OnItemSelectedListener  
         
         getVideo()
         addResourceForSpinner()
+        handleChip()
     }
     
     override fun customActionBar() {
         super.customActionBar()
         supportActionBar!!.apply {
             displayOptions = ActionBar.DISPLAY_SHOW_TITLE
+            title = "Edit Video Info"
         }
     }
 
@@ -230,6 +234,14 @@ class EditInfoActivity: WanoTubeActivity(), AdapterView.OnItemSelectedListener  
     private fun updateVideo() {
         if (!::video.isInitialized)
             return
+
+        var tags = ""
+        val chipGroup = viewBinding.chipGroup
+        chipGroup.checkedChipIds.forEach {
+            val chip = it as Chip
+            tags = "$tags,${chip.text}"
+        }
+
         val resCall = videosRepository.updateVideo(
             video.id,
             titleText.text.toString(),
@@ -237,7 +249,8 @@ class EditInfoActivity: WanoTubeActivity(), AdapterView.OnItemSelectedListener  
             video.url,
             video.size.toString(),
             video.duration.toString(),
-            visibility.toString()
+            visibility.toString(),
+            tags
         )
         
         val context = this
@@ -265,5 +278,44 @@ class EditInfoActivity: WanoTubeActivity(), AdapterView.OnItemSelectedListener  
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
         parent?.setSelection(visibility)
+    }
+
+    private fun handleChip() {
+        val context = this
+        val textInputEditText = viewBinding.textInputEditText
+        val chipGroup = viewBinding.chipGroup
+
+        textInputEditText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val trimmed = s.toString().trim { it <= ' ' }
+                if (trimmed.length > 1 && trimmed.endsWith(",")) {
+                    val chip = Chip(context)
+                    chip.text = trimmed.substring(0, trimmed.length - 1)
+                    chip.isCloseIconVisible = true
+
+                    //Callback fired when chip close icon is clicked
+                    chip.setOnCloseIconClickListener {
+                        chipGroup.removeView(chip)
+                    }
+
+                    chipGroup.addView(chip)
+                    s?.clear()
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+        textInputEditText.setOnKeyListener { _, _, event ->
+            if (event != null && event.action == KeyEvent.ACTION_DOWN && event.keyCode == KeyEvent.KEYCODE_DEL) {
+                if (textInputEditText.length() == 0 && chipGroup.childCount > 0) {
+                    val chip = chipGroup.getChildAt(chipGroup.childCount - 1) as Chip
+                    chipGroup.removeView(chip)
+                }
+            }
+            false
+        }
+
     }
 }

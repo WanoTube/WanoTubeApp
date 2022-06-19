@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.database.getDatabase
 import com.wanotube.wanotubeapp.network.objects.NetworkCopyrightStatus
@@ -56,7 +57,7 @@ class LibraryFragment: Fragment() {
             ) {
                 if (response?.code() == 200) {
                     val result = response.body()
-                    val status = if (result?.blockedStatus != "NONE") "Normal" else "Blocked"
+                    val status = if (result?.blockedStatus != "NONE") "Blocked" else "Normal"
                     blockedStatusTextView.text = "Status: " + status
                     val strikes = result?.strikes
                     strikeTextView.text = "Strikes: " + strikes?.size.toString()

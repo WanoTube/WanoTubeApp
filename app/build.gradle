@@ -30,6 +30,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        buildTypes.each {
+            it.buildConfigField 'String', 'DEEP_AR_KEY', deep_ar_licensekey
+        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8

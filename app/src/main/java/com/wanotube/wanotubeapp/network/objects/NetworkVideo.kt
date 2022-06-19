@@ -18,6 +18,11 @@ class NetworkVideoContainer {
     var videos: List<NetworkVideo> = listOf()
 }
 
+class NetworkVideoWatchContainer {
+    @SerializedName("videos")
+    var videos: List<NetworkVideoWatch> = listOf()
+}
+
 /**
  * Videos represent a WanoTube video that can be displayed
  */
@@ -119,6 +124,9 @@ class Doc {
     @SerializedName("user_id")
     @Expose
     var user: UserId? = null
+    @SerializedName("avatar")
+    @Expose
+    var avatar: String? = null
 }
 
 class NetworkWatchHistoryDate {
