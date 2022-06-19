@@ -54,4 +54,7 @@
     <string name="save_to_watch_later">Save to watch later</string>
     <string name="share">Share</string>
     <string name="remove_from_watch_later">Remove from Watch Later</string>
+    <string name="followers">Followers</string>
+    <string name="likes">Likes</string>
+    <string name="edit_profile">Edit Profile</string>
 </resources>

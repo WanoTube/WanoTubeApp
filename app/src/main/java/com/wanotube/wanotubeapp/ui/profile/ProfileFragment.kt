@@ -8,7 +8,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.databinding.DataBindingUtil
 import com.wanotube.wanotubeapp.R
+import com.wanotube.wanotubeapp.databinding.DialogCommentShortBinding
+import com.wanotube.wanotubeapp.databinding.FragmentProfileBinding
 import com.wanotube.wanotubeapp.network.authentication.AccountUtils
 import com.wanotube.wanotubeapp.network.authentication.AuthPreferences
 import com.wanotube.wanotubeapp.ui.login.LoginActivity
@@ -18,7 +21,11 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+        val binding: FragmentProfileBinding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_profile, container, false
+        )
+
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

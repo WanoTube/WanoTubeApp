@@ -19,18 +19,29 @@
         <entry key="..\:/KhoaLuan/WanoTube/WanoTubeApp/app/src/main/res/layout/item_people_contacts.xml" value="0.10833333333333334" />
         <entry key="..\:/KhoaLuan/WanoTube/WanoTubeApp/app/src/main/res/layout/toolbar.xml" value="0.10833333333333334" />
         <entry key="..\:/KhoaLuan/WanoTube/WanoTubeApp/app/src/main/res/xml/standalone_chip.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/arrow_right.xml" value="0.3765" />
+        <entry key="app/src/main/res/drawable/arrow_right_black.xml" value="0.319" />
         <entry key="app/src/main/res/drawable/circle_corners.xml" value="0.234" />
         <entry key="app/src/main/res/drawable/circle_shape.xml" value="0.139" />
+        <entry key="app/src/main/res/drawable/profile_text_field.xml" value="0.2845" />
         <entry key="app/src/main/res/drawable/record_selector.xml" value="0.139" />
         <entry key="app/src/main/res/drawable/rounded_corners.xml" value="0.234" />
         <entry key="app/src/main/res/layout/activity_camera.xml" value="0.3390975952148438" />
         <entry key="app/src/main/res/layout/activity_edit_video_info.xml" value="0.31305449936628643" />
         <entry key="app/src/main/res/layout/activity_new_watch.xml" value="0.22760416666666666" />
+        <entry key="app/src/main/res/layout/activity_watch.xml" value="0.42769607843137253" />
         <entry key="app/src/main/res/layout/activity_watch_history.xml" value="0.22760416666666666" />
         <entry key="app/src/main/res/layout/choose_video_dialog_layout.xml" value="0.22760416666666666" />
         <entry key="app/src/main/res/layout/circle_button.xml" value="0.4758565266927085" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.3591485507246377" />
         <entry key="app/src/main/res/layout/fragment_library.xml" value="0.22760416666666666" />
+        <entry key="app/src/main/res/layout/fragment_old_profile.xml" value="0.3591485507246377" />
+        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.42902984619140627" />
+        <entry key="app/src/main/res/layout/home_shimmer_placeholder_layout.xml" value="0.37604166666666666" />
+        <entry key="app/src/main/res/layout/home_video_component_list.xml" value="0.3591485507246377" />
         <entry key="app/src/main/res/layout/management_video_component_list.xml" value="0.31614583333333335" />
+        <entry key="app/src/main/res/layout/profile_text_field.xml" value="0.19479166666666667" />
+        <entry key="app/src/main/res/layout/profile_video_component_list.xml" value="0.3591485507246377" />
         <entry key="app/src/main/res/layout/watch_history_component_list.xml" value="0.31614583333333335" />
       </map>
     </option>

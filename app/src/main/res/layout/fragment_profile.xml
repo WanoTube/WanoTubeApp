@@ -1,26 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.profile.ProfileFragment"
-    android:id="@+id/fragment_profile">
-
+<layout>
+    <data>
+        <variable
+            name="viewModel"
+            type="com.wanotube.wanotubeapp.viewmodels.WanoTubeViewModel" />
+    </data>
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.profile.ProfileFragment"
+        android:id="@+id/fragment_profile">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/profile" />
-
-        <Button
-            android:id="@+id/btn_logout"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/log_out"/>
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:src="@drawable/image_placeholder"/>
+            <include
+                layout="@layout/profile_text_field"
+                app:label="@{&quot;First Name&quot;}"
+                app:value="@{&quot;First Name&quot;}"/>
+
+            <include
+                layout="@layout/profile_text_field"
+                app:label="@{&quot;Last Name&quot;}"
+                app:value="@{&quot;Last Name&quot;}"/>
+
+            <include
+                layout="@layout/profile_text_field"
+                app:label="@{&quot;Gender&quot;}"
+                app:value="@{&quot;gender&quot;}"/>
+
+            <include
+                layout="@layout/profile_text_field"
+                app:label="@{&quot;Birthday&quot;}"
+                app:value="@{&quot;birthday&quot;}"/>
+
+            <include
+                layout="@layout/profile_text_field"
+                app:label="@{&quot;Phone Number&quot;}"
+                app:value="@{&quot;Phone Number&quot;}"/>
+
+            <include
+                layout="@layout/profile_text_field"
+                app:label="@{&quot;Description&quot;}"
+                app:value="@{&quot;Description&quot;}"/>
+
+            <include
+                layout="@layout/profile_text_field"
+                app:label="@{&quot;Country&quot;}"
+                app:value="@{&quot;Country&quot;}"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/btn_logout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/log_out"/>
+        </LinearLayout>
     </LinearLayout>
-</FrameLayout>
+    </FrameLayout>
+</layout>

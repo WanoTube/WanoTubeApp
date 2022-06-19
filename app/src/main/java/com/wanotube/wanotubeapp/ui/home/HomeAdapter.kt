@@ -53,7 +53,6 @@ class HomeAdapter(val application: Application, iEventListener: IEventListener) 
         itemView
     ){
 
-        private var listener: IEventListener = listener
         private val titleView: TextView = itemView.findViewById(R.id.title)
         private val subtitleView: TextView = itemView.findViewById(R.id.subtitle)
         private val thumbnailVideoView: ImageView = itemView.findViewById(R.id.thumbnail_video)
