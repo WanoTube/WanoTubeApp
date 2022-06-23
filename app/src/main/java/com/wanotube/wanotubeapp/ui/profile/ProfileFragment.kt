@@ -20,7 +20,7 @@ class ProfileFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val binding: FragmentProfileBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_profile, container, false
         )
