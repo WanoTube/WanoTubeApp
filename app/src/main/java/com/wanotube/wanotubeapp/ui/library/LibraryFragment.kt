@@ -57,7 +57,14 @@ class LibraryFragment: Fragment() {
             ) {
                 if (response?.code() == 200) {
                     val result = response.body()
-                    val status = if (result?.blockedStatus != "NONE") "Blocked" else "Normal"
+                    val isBlockedStatus = result?.blockedStatus != "NONE"
+                    view.findViewById<LinearLayout>(R.id.account_status).visibility =
+                        if (isBlockedStatus) {
+                            View.VISIBLE
+                        } else {
+                            View.GONE
+                        }
+                    val status = if (isBlockedStatus) "Blocked" else "Normal"
                     blockedStatusTextView.text = "Status: " + status
                     val strikes = result?.strikes
                     strikeTextView.text = "Strikes: " + strikes?.size.toString()
