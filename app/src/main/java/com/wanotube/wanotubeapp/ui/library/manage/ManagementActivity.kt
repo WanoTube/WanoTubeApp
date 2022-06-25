@@ -2,16 +2,23 @@ package com.wanotube.wanotubeapp.ui.library.manage
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.WanoTubeActivity
 import com.wanotube.wanotubeapp.databinding.ActivityManagementBinding
+import com.wanotube.wanotubeapp.domain.Video
 import com.wanotube.wanotubeapp.util.MarginItemDecoration
+import com.wanotube.wanotubeapp.util.VideoType
 import com.wanotube.wanotubeapp.viewmodels.ChannelViewModel
 
+
 class ManagementActivity : WanoTubeActivity() {
-    
+
+    var videos: List<Video> = listOf()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityManagementBinding.inflate(layoutInflater)
@@ -48,7 +55,10 @@ class ManagementActivity : WanoTubeActivity() {
 
         channelViewModel.currentChannelVideos.observe(this) {
             it?.let {
-                adapter.data = it
+                videos = it.filter {
+                    video -> video.type == VideoType.NORMAL.name
+                }
+                adapter.data = videos
                 binding.managementShimmerViewContainer.stopShimmer()
                 binding.managementShimmerViewContainer.visibility = View.GONE
                 binding.pullToRefreshMyVideos.visibility = View.VISIBLE
@@ -63,6 +73,33 @@ class ManagementActivity : WanoTubeActivity() {
             channelViewModel.refreshVideos()
             pullToRefresh.isRefreshing = false
         }
+
         supportActionBar?.title = "My Videos"
+
+        val tabLayout = binding.tabLayout
+        tabLayout.apply {
+            addTab(tabLayout.newTab().setText("Normal"))
+            addTab(tabLayout.newTab().setText("Short"))
+            tabGravity = TabLayout.GRAVITY_FILL
+        }
+        tabLayout.addOnTabSelectedListener(object : OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                when (tab.position) {
+                    0 -> {
+                        adapter.data = videos.filter {
+                            video -> video.type == VideoType.NORMAL.name
+                        }
+                    }
+                    1 -> {
+                        adapter.data = videos.filter {
+                            video -> video.type == VideoType.SHORT.name
+                        }
+                    }
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab) {}
+            override fun onTabReselected(tab: TabLayout.Tab) {}
+        })
     }
 }

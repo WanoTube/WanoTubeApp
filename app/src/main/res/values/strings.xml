@@ -58,4 +58,7 @@
     <string name="artist">Artist</string>
     <string name="album">Album</string>
     <string name="copyright_owners">Copyright owners</string>
+    <string name="copyright_claim">COPYRIGHT CLAIM</string>
+    <string name="copyright_claim_normal">Copyright Claim</string>
+    <string name="close">CLOSE</string>
 </resources>

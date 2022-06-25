@@ -11,6 +11,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textview.MaterialTextView
 import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.domain.Video
 import com.wanotube.wanotubeapp.ui.edit.EditInfoActivity
@@ -44,7 +46,8 @@ class ManagementAdapter : RecyclerView.Adapter<ManagementAdapter.ViewHolder>() {
         private val subtitleView: TextView = itemView.findViewById(R.id.subtitle)
         private val thumbnailVideoView: ImageView = itemView.findViewById(R.id.thumbnail_video)
         private val menuView: ImageView = itemView.findViewById(R.id.video_menu)
-        
+        private val copyrightView: MaterialTextView = itemView.findViewById(R.id.copyright)
+
         fun bind(item: Video) {
             titleView.text = item.title
             val subtitle = item.totalViews.toString() + " views"
@@ -78,6 +81,19 @@ class ManagementAdapter : RecyclerView.Adapter<ManagementAdapter.ViewHolder>() {
                     show()
                 }
             }
+            if (item.recognitionResultTitle?.isNotEmpty() == true) {
+                copyrightView.visibility = View.VISIBLE
+            }
+            copyrightView.setOnClickListener {
+                val resources = context.resources
+                val copyrightLabel = "${resources.getString(R.string.copyright_owners)}: ${item.recognitionResultLabel}"
+                val copyrightTitle = "${item.recognitionResultTitle} - ${ item.recognitionResultArtist}"
+                MaterialAlertDialogBuilder(context)
+                    .setTitle(resources.getString(R.string.copyright_claim_normal))
+                    .setMessage(copyrightTitle + "\n" + copyrightLabel)
+                    .show()
+            }
+
         }
 
         companion object {
