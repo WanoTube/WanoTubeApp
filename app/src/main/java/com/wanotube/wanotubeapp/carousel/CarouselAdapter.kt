@@ -1,12 +1,12 @@
 package com.wanotube.wanotubeapp.carousel
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.common.reflect.Reflection.getPackageName
 import com.wanotube.wanotubeapp.R
 
 class CarouselAdapter: RecyclerView.Adapter<CarouselAdapter.ViewHolder>() {
@@ -44,6 +44,7 @@ class CarouselAdapter: RecyclerView.Adapter<CarouselAdapter.ViewHolder>() {
                 .circleCrop()
                 .into(circleButton)
         }
+
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)

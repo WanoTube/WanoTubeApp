@@ -118,7 +118,10 @@ dependencies {
 
     //Because ListenableFuture conflict with exoplayer library, we need this:
     implementation 'com.google.guava:guava:29.0-android'
-    
+
+    //Use DiscreteScrollView for carousel effect in CameraActivity
+    implementation 'com.yarolegovich:discrete-scrollview:1.5.1'
+
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'

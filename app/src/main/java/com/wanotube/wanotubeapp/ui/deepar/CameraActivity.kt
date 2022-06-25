@@ -28,7 +28,13 @@ import com.google.common.util.concurrent.ListenableFuture
 import com.wanotube.wanotubeapp.BuildConfig.DEEP_AR_KEY
 import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.WanoTubeActivity
+import com.wanotube.wanotubeapp.carousel.CarouselAdapter
+import com.wanotube.wanotubeapp.carousel.DiscreteScrollViewOptions
 import com.wanotube.wanotubeapp.deepar.ARSurfaceProvider
+import com.yarolegovich.discretescrollview.DiscreteScrollView
+import com.yarolegovich.discretescrollview.DiscreteScrollView.OnItemChangedListener
+import com.yarolegovich.discretescrollview.DiscreteScrollView.ScrollStateChangeListener
+import com.yarolegovich.discretescrollview.transform.ScaleTransformer
 import java.io.File
 import java.io.FileOutputStream
 import java.nio.ByteBuffer
@@ -37,7 +43,10 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ExecutionException
 
-class CameraActivity : WanoTubeActivity(), SurfaceHolder.Callback, AREventListener {
+class CameraActivity : WanoTubeActivity(), SurfaceHolder.Callback, AREventListener,
+    ScrollStateChangeListener<CarouselAdapter.ViewHolder>,
+    OnItemChangedListener<CarouselAdapter.ViewHolder>,
+    View.OnClickListener{
     // Default camera lens value, change to CameraSelector.LENS_FACING_BACK to initialize with back camera
     private val defaultLensFacing = CameraSelector.LENS_FACING_FRONT
     private var surfaceProvider: ARSurfaceProvider? = null
@@ -94,6 +103,8 @@ class CameraActivity : WanoTubeActivity(), SurfaceHolder.Callback, AREventListen
     private var width = 0
     private var height = 0
     private var videoFile: File? = null
+    private var filterPicker: DiscreteScrollView? = null
+    private var filterAdapter: CarouselAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -163,6 +174,23 @@ class CameraActivity : WanoTubeActivity(), SurfaceHolder.Callback, AREventListen
         initializeDeepAR()
         initializeFilters()
         initializeViews()
+
+        filterPicker = findViewById(R.id.filter_picker)
+        filterPicker?.setSlideOnFling(true)
+        filterAdapter = CarouselAdapter()
+        filterPicker?.adapter = filterAdapter
+        filterAdapter?.itemList = masks!!
+        DiscreteScrollViewOptions.init(this)
+
+        filterPicker?.addOnItemChangedListener(this)
+        filterPicker?.addScrollStateChangeListener(this)
+//        filterPicker?.scrollToPosition(0)
+        filterPicker?.setItemTransitionTimeMillis(DiscreteScrollViewOptions.getTransitionTime())
+        filterPicker?.setItemTransformer(
+            ScaleTransformer.Builder()
+                .setMinScale(0.7f)
+                .build()
+        )
     }
 
     private fun initializeFilters() {
@@ -203,8 +231,8 @@ class CameraActivity : WanoTubeActivity(), SurfaceHolder.Callback, AREventListen
     }
 
     private fun initializeViews() {
-        val previousMask = findViewById<ImageButton>(R.id.previousMask)
-        val nextMask = findViewById<ImageButton>(R.id.nextMask)
+//        val previousMask = findViewById<ImageButton>(R.id.previousMask)
+//        val nextMask = findViewById<ImageButton>(R.id.nextMask)
         val radioMasks = findViewById<RadioButton>(R.id.masks)
         val radioEffects = findViewById<RadioButton>(R.id.effects)
         val radioFilters = findViewById<RadioButton>(R.id.filters)
@@ -250,8 +278,8 @@ class CameraActivity : WanoTubeActivity(), SurfaceHolder.Callback, AREventListen
             }
             recording = !recording
         }
-        previousMask.setOnClickListener { gotoPrevious() }
-        nextMask.setOnClickListener { gotoNext() }
+//        previousMask.setOnClickListener { gotoPrevious() }
+//        nextMask.setOnClickListener { gotoNext() }
         radioMasks.setOnClickListener {
             radioEffects.isChecked = false
             radioFilters.isChecked = false
@@ -477,5 +505,33 @@ class CameraActivity : WanoTubeActivity(), SurfaceHolder.Callback, AREventListen
         private const val NUMBER_OF_BUFFERS = 2
         private const val useExternalCameraTexture = true
         private const val ASSETS="file:///android_asset/"
+    }
+
+    override fun onScrollEnd(currentItemHolder: CarouselAdapter.ViewHolder, adapterPosition: Int) {
+    }
+
+    override fun onClick(p0: View?) {
+    }
+
+    override fun onScrollStart(
+        currentItemHolder: CarouselAdapter.ViewHolder,
+        adapterPosition: Int
+    ) {
+
+    }
+
+    override fun onScroll(
+        scrollPosition: Float,
+        currentPosition: Int,
+        newPosition: Int,
+        currentHolder: CarouselAdapter.ViewHolder?,
+        newCurrent: CarouselAdapter.ViewHolder?
+    ) {
+    }
+
+    override fun onCurrentItemChanged(
+        viewHolder: CarouselAdapter.ViewHolder?,
+        adapterPosition: Int
+    ) {
     }
 }
