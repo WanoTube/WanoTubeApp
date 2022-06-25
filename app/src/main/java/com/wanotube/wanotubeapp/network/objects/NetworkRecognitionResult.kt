@@ -25,6 +25,11 @@ class Metadata {
 }
 
 class Music {
+
+    @SerializedName("label")
+    @Expose
+    var label: String? = null
+
     @SerializedName("title")
     @Expose
     var title: String? = null

@@ -40,6 +40,46 @@
                 android:text="@string/username"/>
         </LinearLayout>
         <View style="@style/Divider.Horizontal"/>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:backgroundTint="@color/pink"
+
+            android:layout_margin="8dp">
+            <LinearLayout
+                android:id="@+id/copyright_claim"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    android:text="COPYRIGHT CLAIM"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:text="@string/copyright_caption"/>
+
+                <TextView
+                    android:id="@+id/copyright_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    android:text="@string/title"/>
+
+                <TextView
+                    android:id="@+id/copyright_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    android:text="@string/copyright_owners"/>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
         <LinearLayout
             android:layout_marginStart="@dimen/component_large_margin"
             android:layout_marginEnd="@dimen/component_large_margin"
@@ -193,5 +233,7 @@
                 </HorizontalScrollView>
             </com.google.android.material.textfield.TextInputLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
+        <View style="@style/Divider.Horizontal"/>
+
     </LinearLayout>
 </layout>

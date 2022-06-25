@@ -33,8 +33,10 @@ fun List<DatabaseVideo>.asDomainModel(): List<Video> {
             recognitionResultTitle = it.recognitionResultTitle.toString(),
             recognitionResultAlbum = it.recognitionResultAlbum.toString(),
             recognitionResultArtist = it.recognitionResultArtist.toString(),
+            recognitionResultLabel = it.recognitionResultLabel.toString(),
             createdAt = convertStringToDate(it.createdAt),
-            updatedAt = convertStringToDate(it.updatedAt))
+            updatedAt = convertStringToDate(it.updatedAt)
+        )
     }
 }
 
@@ -56,6 +58,7 @@ fun DatabaseVideo.asDomainModel(): Video {
         recognitionResultTitle = recognitionResultTitle.toString(),
         recognitionResultAlbum = recognitionResultAlbum.toString(),
         recognitionResultArtist = recognitionResultArtist.toString(),
+        recognitionResultLabel = recognitionResultLabel.toString(),
         createdAt = convertStringToDate(createdAt),
         updatedAt = convertStringToDate(updatedAt))
 }

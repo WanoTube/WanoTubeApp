@@ -31,6 +31,7 @@ data class Video(
     val recognitionResultTitle: String,
     val recognitionResultAlbum: String,
     val recognitionResultArtist: String,
+    val recognitionResultLabel: String,
     val createdAt: Date,
     val updatedAt: Date 
 ) {
