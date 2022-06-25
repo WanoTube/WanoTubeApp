@@ -1,5 +1,10 @@
 package com.wanotube.wanotubeapp.util
 
+import com.google.gson.Gson
+import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
+import okhttp3.ResponseBody
+import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -78,4 +83,16 @@ fun isCountedAsView(progress: Int, duration: Int): Boolean {
 
 fun isCountedAsView(progress: Long, duration: Long): Boolean {
     return (progress * 100 / duration) > 30
+}
+
+inline fun <reified T> ResponseBody.getErrorObject(): T {
+    val gson = Gson()
+    val jsonObject = JSONObject(charStream().readText())
+    return gson.fromJson(jsonObject.toString(), T::class.java)
+}
+
+class ErrorBody {
+    @SerializedName("message")
+    @Expose
+    var message: String? = null
 }

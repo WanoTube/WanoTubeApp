@@ -33,6 +33,8 @@ import com.wanotube.wanotubeapp.repository.ChannelRepository
 import com.wanotube.wanotubeapp.repository.CommentRepository
 import com.wanotube.wanotubeapp.repository.VideosRepository
 import com.wanotube.wanotubeapp.util.Constant.PRODUCTION_WEB_URL
+import com.wanotube.wanotubeapp.util.ErrorBody
+import com.wanotube.wanotubeapp.util.getErrorObject
 import com.wanotube.wanotubeapp.util.isCountedAsView
 import com.wanotube.wanotubeapp.viewmodels.CommentViewModel
 import com.wanotube.wanotubeapp.viewmodels.WanoTubeViewModel
@@ -181,7 +183,9 @@ class NewWatchActivity : WanoTubeActivity() {
                             loadAvatar(authorAvatar, binding.avatarAuthor)
                             initVideo()
                         } else {
-                            Toast.makeText(WanotubeApp.context, response.message(), Toast.LENGTH_SHORT).show()
+                            if (response.code() == 400) {
+                                Toast.makeText(WanotubeApp.context, response.errorBody()?.getErrorObject<ErrorBody>()?.message, Toast.LENGTH_SHORT).show()
+                            }
                         }
                     }
                 }
