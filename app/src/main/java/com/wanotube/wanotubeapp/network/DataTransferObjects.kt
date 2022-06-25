@@ -34,6 +34,7 @@ fun NetworkVideoContainer.asDatabaseModel(): List<DatabaseVideo> {
         var album = ""
         var artist = ""
         var title = ""
+        var label = ""
 
         if (musicRecognitionResult?.size != null) {
             if (musicRecognitionResult.isNotEmpty()) {
@@ -41,6 +42,7 @@ fun NetworkVideoContainer.asDatabaseModel(): List<DatabaseVideo> {
                 album = music.album?.name.toString()
                 artist = music.artists?.get(0)?.name.toString()
                 title = music.title.toString()
+                label = music.label.toString()
             }
         }
 
@@ -61,6 +63,7 @@ fun NetworkVideoContainer.asDatabaseModel(): List<DatabaseVideo> {
             recognitionResultTitle = title,
             recognitionResultAlbum = album,
             recognitionResultArtist = artist,
+            recognitionResultLabel = label,
             updatedAt = it.updatedAt,
             createdAt = it.createdAt
         )
@@ -97,6 +100,7 @@ fun NetworkVideo.asDatabaseModel(): DatabaseVideo {
     var rAlbum = ""
     var rArtist = ""
     var rTitle = ""
+    var rLabel = ""
 
     if (musicRecognitionResult?.size != null) {
         if (musicRecognitionResult.isNotEmpty()) {
@@ -104,6 +108,7 @@ fun NetworkVideo.asDatabaseModel(): DatabaseVideo {
             rAlbum = music.album?.name.toString()
             rArtist = music.artists?.get(0)?.name.toString()
             rTitle = music.title.toString()
+            rLabel = music.label.toString()
         }
     }
 
@@ -124,6 +129,7 @@ fun NetworkVideo.asDatabaseModel(): DatabaseVideo {
         recognitionResultTitle = rTitle,
         recognitionResultAlbum = rAlbum,
         recognitionResultArtist = rArtist,
+        recognitionResultLabel = rLabel,
         updatedAt = updatedAt,
         createdAt = createdAt
     )
@@ -144,6 +150,7 @@ fun NetworkVideoWatch.asDatabaseModel(): DatabaseVideo {
     var rAlbum = ""
     var rArtist = ""
     var rTitle = ""
+    var rLabel = ""
 
     if (musicRecognitionResult?.size != null) {
         if (musicRecognitionResult.isNotEmpty()) {
@@ -151,6 +158,7 @@ fun NetworkVideoWatch.asDatabaseModel(): DatabaseVideo {
             rAlbum = music.album?.name.toString()
             rArtist = music.artists?.get(0)?.name.toString()
             rTitle = music.title.toString()
+            rLabel = music.label.toString()
         }
     }
 
@@ -171,6 +179,7 @@ fun NetworkVideoWatch.asDatabaseModel(): DatabaseVideo {
         recognitionResultTitle = rTitle,
         recognitionResultAlbum = rAlbum,
         recognitionResultArtist = rArtist,
+        recognitionResultLabel = rLabel,
         updatedAt = updatedAt,
         createdAt = createdAt
     )

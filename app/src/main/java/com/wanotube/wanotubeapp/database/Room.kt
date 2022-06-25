@@ -54,6 +54,7 @@ fun getDatabase(context: Context): AppDatabase {
             database.execSQL("ALTER TABLE DatabaseVideo ADD COLUMN recognitionResultTitle TEXT")
             database.execSQL("ALTER TABLE DatabaseVideo ADD COLUMN recognitionResultAlbum TEXT")
             database.execSQL("ALTER TABLE DatabaseVideo ADD COLUMN recognitionResultArtist TEXT")
+            database.execSQL("ALTER TABLE DatabaseVideo ADD COLUMN recognitionResultLabel TEXT")
         }
     }
     synchronized(AppDatabase::class.java) {

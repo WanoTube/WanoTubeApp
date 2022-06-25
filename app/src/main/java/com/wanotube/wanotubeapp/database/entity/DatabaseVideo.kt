@@ -26,6 +26,7 @@ data class DatabaseVideo constructor(
     var recognitionResultTitle: String? = null,
     var recognitionResultAlbum: String? = null,
     var recognitionResultArtist: String? = null,
+    var recognitionResultLabel: String? = null,
     val createdAt: String,
     val updatedAt: String
 )
