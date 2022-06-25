@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationBarView.LABEL_VISIBILITY_UNLABELED
 import com.wanotube.wanotubeapp.databinding.ActivityMainBinding
 import com.wanotube.wanotubeapp.ui.deepar.CameraActivity
@@ -107,8 +108,13 @@ class MainActivity : WanoTubeActivity(), IEventListener {
                         }
                     }
                     R.id.create -> {
-                        if (checkTokenAvailable(true)) {
+                        if (checkTokenAvailable(true) && !isBlockedStatus()) {
                             showBottomSheetDialog()
+                        } else if (isBlockedStatus()) {
+                            MaterialAlertDialogBuilder(this)
+                                .setTitle(resources.getString(R.string.blocked_status_title))
+                                .setMessage(resources.getString(R.string.blocked_status_caption))
+                                .show()
                         }
                     }
                     else -> validFlag = false

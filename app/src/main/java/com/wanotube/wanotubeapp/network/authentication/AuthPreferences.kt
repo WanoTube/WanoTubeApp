@@ -60,7 +60,26 @@ class AuthPreferences(context: Context) {
                 editor.apply()
             }
         }
-    
+
+    var accountStatus: String?
+        get() = preferences.getString(KEY_ACCOUNT_STATUS, null)
+        set(accountStatus) {
+            if (accountStatus != null) {
+                editor.putString(KEY_ACCOUNT_STATUS, accountStatus)
+                editor.apply()
+            }
+        }
+
+
+    var strikes: String?
+        get() = preferences.getString(KEY_STRIKES, null)
+        set(strikes) {
+            if (strikes != null) {
+                editor.putString(KEY_STRIKES, strikes)
+                editor.apply()
+            }
+        }
+
     companion object {
         private const val PREFS_NAME = "auth"
         private const val KEY_ACCOUNT_NAME = "account_name" // email
@@ -70,5 +89,8 @@ class AuthPreferences(context: Context) {
         private const val KEY_AVATAR = "avatar"
         private const val KEY_IS_ADMIN = "is_admin"
         private const val KEY_IS_BLOCKED = "is_blocked"
+        private const val KEY_ACCOUNT_STATUS = "account_status"
+        private const val KEY_STRIKES = "strikes"
+
     }
 }
