@@ -196,9 +196,10 @@ class EditInfoActivity: WanoTubeActivity(), AdapterView.OnItemSelectedListener  
                             Timber.e("Result: %s", databaseVideo)
                             if (databaseVideo != null) {
                                 video = databaseVideo.asDomainModel()
-                                if (video.recognitionResultAlbum != ""
-                                    && video.recognitionResultArtist != ""
-                                    && video.recognitionResultTitle != "") {
+                                if (video.recognitionResultAlbum?.isNotEmpty()!!
+                                    && video.recognitionResultArtist?.isNotEmpty()!!
+                                    && video.recognitionResultTitle?.isNotEmpty()!!
+                                    && video.recognitionResultLabel?.isNotEmpty()!!) {
                                     viewBinding.copyrightClaim.visibility = View.VISIBLE
                                     viewBinding.copyrightLabel.text = "${resources.getString(R.string.copyright_owners)}: ${video.recognitionResultLabel}"
                                     viewBinding.copyrightTitle.text = "${video.recognitionResultTitle} - ${ video.recognitionResultArtist}"

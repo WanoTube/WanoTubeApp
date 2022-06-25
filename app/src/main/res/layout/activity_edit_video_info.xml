@@ -57,7 +57,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?attr/textAppearanceHeadline6"
-                    android:text="COPYRIGHT CLAIM"/>
+                    android:text="@string/copyright_claim"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
