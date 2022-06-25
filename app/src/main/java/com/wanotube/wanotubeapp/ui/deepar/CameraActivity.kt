@@ -103,6 +103,8 @@ class CameraActivity : WanoTubeActivity(), SurfaceHolder.Callback, AREventListen
     private var width = 0
     private var height = 0
     private var videoFile: File? = null
+    private var filterPicker: DiscreteScrollView? = null
+    private var filterAdapter: CarouselAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -173,50 +175,22 @@ class CameraActivity : WanoTubeActivity(), SurfaceHolder.Callback, AREventListen
         initializeFilters()
         initializeViews()
 
-        val filterPicker = findViewById<DiscreteScrollView>(R.id.filter_picker)
-        filterPicker.setSlideOnFling(true)
-        val adapter = CarouselAdapter()
-        filterPicker.adapter = adapter
-        adapter.itemList = masks!!
+        filterPicker = findViewById(R.id.filter_picker)
+        filterPicker?.setSlideOnFling(true)
+        filterAdapter = CarouselAdapter()
+        filterPicker?.adapter = filterAdapter
+        filterAdapter?.itemList = masks!!
         DiscreteScrollViewOptions.init(this)
 
-        filterPicker.addOnItemChangedListener(this)
-        filterPicker.addScrollStateChangeListener(this)
-        filterPicker.scrollToPosition(2)
-        filterPicker.setItemTransitionTimeMillis(DiscreteScrollViewOptions.getTransitionTime())
-        filterPicker.setItemTransformer(
+        filterPicker?.addOnItemChangedListener(this)
+        filterPicker?.addScrollStateChangeListener(this)
+//        filterPicker?.scrollToPosition(0)
+        filterPicker?.setItemTransitionTimeMillis(DiscreteScrollViewOptions.getTransitionTime())
+        filterPicker?.setItemTransformer(
             ScaleTransformer.Builder()
-                .setMinScale(0.8f)
+                .setMinScale(0.7f)
                 .build()
         )
-        
-    }
-
-    override fun onCurrentItemChanged(holder: CarouselAdapter.ViewHolder?, position: Int) {
-        //viewHolder will never be null, because we never remove items from adapter's list
-        if (holder != null) {
-//            forecastView.setForecast(forecasts.get(position))
-//            holder.showText()
-        }
-    }
-
-    override fun onScrollStart(holder: CarouselAdapter.ViewHolder, position: Int) {
-//        holder.hideText()
-    }
-
-    override fun onScroll(
-        position: Float,
-        currentIndex: Int, newIndex: Int,
-        currentHolder: CarouselAdapter.ViewHolder?,
-        newHolder: CarouselAdapter.ViewHolder?
-    ) {
-//        val current: Forecast = forecasts.get(currentIndex)
-//        val adapter: RecyclerView.Adapter<*> = cityPicker.getAdapter()
-//        val itemCount = adapter?.itemCount ?: 0
-//        if (newIndex >= 0 && newIndex < itemCount) {
-//            val next: Forecast = forecasts.get(newIndex)
-//            forecastView.onScroll(1f - Math.abs(position), current, next)
-//        }
     }
 
     private fun initializeFilters() {
@@ -537,5 +511,27 @@ class CameraActivity : WanoTubeActivity(), SurfaceHolder.Callback, AREventListen
     }
 
     override fun onClick(p0: View?) {
+    }
+
+    override fun onScrollStart(
+        currentItemHolder: CarouselAdapter.ViewHolder,
+        adapterPosition: Int
+    ) {
+
+    }
+
+    override fun onScroll(
+        scrollPosition: Float,
+        currentPosition: Int,
+        newPosition: Int,
+        currentHolder: CarouselAdapter.ViewHolder?,
+        newCurrent: CarouselAdapter.ViewHolder?
+    ) {
+    }
+
+    override fun onCurrentItemChanged(
+        viewHolder: CarouselAdapter.ViewHolder?,
+        adapterPosition: Int
+    ) {
     }
 }
