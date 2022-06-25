@@ -61,4 +61,6 @@
     <string name="copyright_claim">COPYRIGHT CLAIM</string>
     <string name="copyright_claim_normal">Copyright Claim</string>
     <string name="close">CLOSE</string>
+    <string name="blocked_status_title">Message</string>
+    <string name="blocked_status_caption">Due to a copyright claim, you\'re blocked from uploading any video in a week.</string>
 </resources>

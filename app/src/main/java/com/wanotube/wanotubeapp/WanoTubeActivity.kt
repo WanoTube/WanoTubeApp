@@ -25,7 +25,9 @@ import com.wanotube.wanotubeapp.database.getDatabase
 import com.wanotube.wanotubeapp.network.asDatabaseModel
 import com.wanotube.wanotubeapp.network.authentication.AccountUtils
 import com.wanotube.wanotubeapp.network.authentication.AuthPreferences
+import com.wanotube.wanotubeapp.network.objects.NetworkCopyrightStatus
 import com.wanotube.wanotubeapp.network.objects.NetworkVideo
+import com.wanotube.wanotubeapp.repository.ChannelRepository
 import com.wanotube.wanotubeapp.repository.VideosRepository
 import com.wanotube.wanotubeapp.ui.edit.EditInfoActivity
 import com.wanotube.wanotubeapp.ui.edit.UploadActivity
@@ -61,6 +63,7 @@ abstract class WanoTubeActivity : AppCompatActivity(){
         authToken = null
         mAuthPreferences = AuthPreferences(this)
         mAccountManager = AccountManager.get(this)
+        getCopyrightStatus()
     }
 
     open fun customActionBar() {
@@ -97,6 +100,30 @@ abstract class WanoTubeActivity : AppCompatActivity(){
             openLoginActivity()
         }
         return result
+    }
+
+    open fun isBlockedStatus() : Boolean {
+        return mAuthPreferences?.accountStatus != "NONE" && mAuthPreferences?.accountStatus != null
+    }
+
+    open fun getCopyrightStatus() {
+        val channelRepository = ChannelRepository(getDatabase(application))
+        channelRepository.getCopyrightStatus()?.enqueue(object : Callback<NetworkCopyrightStatus> {
+            override fun onResponse(
+                call: Call<NetworkCopyrightStatus>?,
+                response: Response<NetworkCopyrightStatus?>?
+            ) {
+                if (response?.code() == 200) {
+                    val result = response.body()
+                    val strikes = result?.strikes?.size.toString()
+                    mAuthPreferences?.accountStatus = result?.blockedStatus
+                    mAuthPreferences?.strikes = strikes
+                }
+            }
+            override fun onFailure(call: Call<NetworkCopyrightStatus>?, t: Throwable?) {
+                Timber.e("Failed: error: %s", t.toString())
+            }
+        })
     }
     
     open fun logOut() {
