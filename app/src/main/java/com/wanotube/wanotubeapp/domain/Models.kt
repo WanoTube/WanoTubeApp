@@ -28,6 +28,10 @@ data class Video(
     val duration: Int,
     val authorId: String,
     val type: String,
+    val recognitionResultTitle: String?,
+    val recognitionResultAlbum: String?,
+    val recognitionResultArtist: String?,
+    val recognitionResultLabel: String?,
     val createdAt: Date,
     val updatedAt: Date 
 ) {

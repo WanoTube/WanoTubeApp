@@ -1,6 +1,7 @@
 package com.wanotube.wanotubeapp.ui.edit
 
 import android.annotation.SuppressLint
+import android.content.res.Resources
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -67,7 +68,7 @@ class EditInfoActivity: WanoTubeActivity(), AdapterView.OnItemSelectedListener  
         descriptionText = viewBinding.videoDescription
 
         videoId = intent.getStringExtra("VIDEO_ID").toString()
-        
+        viewBinding.copyrightClaim.visibility = View.GONE
         getVideo()
         addResourceForSpinner()
         handleChip()
@@ -189,11 +190,20 @@ class EditInfoActivity: WanoTubeActivity(), AdapterView.OnItemSelectedListener  
                     response: Response<NetworkVideoWatch?>?
                 ) {
                     if (response != null) {
+                        //TODO: Check response code = 400
                         if (response.code() == 200) {
                             val databaseVideo = response.body()?.asDatabaseModel()
                             Timber.e("Result: %s", databaseVideo)
                             if (databaseVideo != null) {
                                 video = databaseVideo.asDomainModel()
+                                if (video.recognitionResultAlbum?.isNotEmpty()!!
+                                    && video.recognitionResultArtist?.isNotEmpty()!!
+                                    && video.recognitionResultTitle?.isNotEmpty()!!
+                                    && video.recognitionResultLabel?.isNotEmpty()!!) {
+                                    viewBinding.copyrightClaim.visibility = View.VISIBLE
+                                    viewBinding.copyrightLabel.text = "${resources.getString(R.string.copyright_owners)}: ${video.recognitionResultLabel}"
+                                    viewBinding.copyrightTitle.text = "${video.recognitionResultTitle} - ${ video.recognitionResultArtist}"
+                                }
                                 initComponents()
                                 if (Util.SDK_INT >= 24) {
                                     initializePlayer()

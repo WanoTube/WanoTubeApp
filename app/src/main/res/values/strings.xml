@@ -54,4 +54,11 @@
     <string name="save_to_watch_later">Save to watch later</string>
     <string name="share">Share</string>
     <string name="remove_from_watch_later">Remove from Watch Later</string>
+    <string name="copyright_caption">The content identified in your video is listed below, along with details.</string>
+    <string name="artist">Artist</string>
+    <string name="album">Album</string>
+    <string name="copyright_owners">Copyright owners</string>
+    <string name="copyright_claim">COPYRIGHT CLAIM</string>
+    <string name="copyright_claim_normal">Copyright Claim</string>
+    <string name="close">CLOSE</string>
 </resources>

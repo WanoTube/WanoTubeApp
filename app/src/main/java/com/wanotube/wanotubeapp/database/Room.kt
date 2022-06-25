@@ -13,7 +13,7 @@ import com.wanotube.wanotubeapp.database.entity.DatabaseAccount
 import com.wanotube.wanotubeapp.database.entity.DatabaseComment
 import com.wanotube.wanotubeapp.database.entity.DatabaseVideo
 
-@Database(entities = [DatabaseVideo::class, DatabaseAccount::class, DatabaseComment::class], version = 4, exportSchema = false)
+@Database(entities = [DatabaseVideo::class, DatabaseAccount::class, DatabaseComment::class], version = 5, exportSchema = false)
 abstract class AppDatabase: RoomDatabase() {
     abstract val videoDao: VideoDao
     abstract val accountDao: AccountDao
@@ -49,7 +49,14 @@ fun getDatabase(context: Context): AppDatabase {
             database.execSQL("ALTER TABLE DatabaseComment ADD COLUMN authorAvatar TEXT")
         }
     }
-    
+    val MIGRATION_4_5: Migration = object : Migration(4,5) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL("ALTER TABLE DatabaseVideo ADD COLUMN recognitionResultTitle TEXT")
+            database.execSQL("ALTER TABLE DatabaseVideo ADD COLUMN recognitionResultAlbum TEXT")
+            database.execSQL("ALTER TABLE DatabaseVideo ADD COLUMN recognitionResultArtist TEXT")
+            database.execSQL("ALTER TABLE DatabaseVideo ADD COLUMN recognitionResultLabel TEXT")
+        }
+    }
     synchronized(AppDatabase::class.java) {
         if (!::INSTANCE.isInitialized) {
             INSTANCE = Room.databaseBuilder(context.applicationContext,
@@ -57,7 +64,7 @@ fun getDatabase(context: Context): AppDatabase {
                     "videos")
                 .fallbackToDestructiveMigration()
                 .allowMainThreadQueries()
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5)
                 .build()
         }
     }

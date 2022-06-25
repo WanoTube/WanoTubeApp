@@ -40,158 +40,213 @@
                 android:text="@string/username"/>
         </LinearLayout>
         <View style="@style/Divider.Horizontal"/>
-        <LinearLayout
-            android:layout_marginStart="@dimen/component_large_margin"
-            android:layout_marginEnd="@dimen/component_large_margin"
-            android:layout_marginTop="@dimen/component_medium_margin"
-            android:layout_marginBottom="@dimen/component_medium_margin"
-            android:layout_width="match_parent"
+
+        <com.google.android.material.card.MaterialCardView
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/title"/>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="start"
-                android:scrollbars="vertical"
-                android:paddingTop="2dp"
-                android:id="@+id/video_title"
-                android:lines="2"
-                android:maxLength="2000"
-                android:imeOptions="actionSend|flagNoEnterAction"
-                android:inputType="textMultiLine|textCapSentences"
-                android:background="@android:color/transparent"
-                android:hint="@string/title_placeholder">
-            </EditText>
-        </LinearLayout>
-        <View style="@style/Divider.Horizontal"/>
-        <LinearLayout
-
-            android:layout_marginStart="@dimen/component_large_margin"
-            android:layout_marginEnd="@dimen/component_large_margin"
-            android:layout_marginTop="@dimen/component_medium_margin"
-            android:layout_marginBottom="20dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
+            android:backgroundTint="@color/pink"
+
+            android:layout_margin="8dp">
+            <LinearLayout
+                android:id="@+id/copyright_claim"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/description"/>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="start"
-                android:scrollbars="vertical"
-                android:paddingTop="2dp"
-                android:id="@+id/video_description"
-                android:lines="2"
-                android:maxLength="2000"
-                android:imeOptions="actionSend|flagNoEnterAction"
-                android:inputType="textMultiLine|textCapSentences"
-                android:background="@android:color/transparent"
-                android:hint="@string/your_description">
-            </EditText>
-
-        </LinearLayout>
-        <View style="@style/Divider.Horizontal"/>
-        <LinearLayout
-
-            android:layout_marginStart="@dimen/component_large_margin"
-            android:layout_marginEnd="@dimen/component_large_margin"
-            android:layout_marginTop="@dimen/component_medium_margin"
-            android:layout_marginBottom="@dimen/component_medium_margin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Privacy"/>
-            <Spinner
-                android:layout_gravity="start"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="20dp"
-                android:textAlignment="textStart"
-                android:id="@+id/privacy_spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-        <View style="@style/Divider.Horizontal"/>
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_marginStart="@dimen/component_large_margin"
-            android:layout_marginEnd="@dimen/component_large_margin"
-            android:layout_marginTop="@dimen/component_medium_margin"
-            android:layout_marginBottom="@dimen/component_medium_margin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:text="Tags"/>
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                app:hintEnabled="false"
-                app:errorEnabled="false"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <!--Horizontal ScrollView to accomodate chips overflow by making them scroll-->
-
-                <HorizontalScrollView
-                    android:id="@+id/horizontal_scroll_view"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:scrollbars="none">
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    android:text="@string/copyright_claim"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:text="@string/copyright_caption"/>
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/copyright_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    android:text="@string/title"/>
+
+                <TextView
+                    android:id="@+id/copyright_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    android:text="@string/copyright_owners"/>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+        <ScrollView
+            android:id="@+id/video_info_section"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_marginStart="@dimen/component_large_margin"
+                    android:layout_marginEnd="@dimen/component_large_margin"
+                    android:layout_marginTop="@dimen/component_medium_margin"
+                    android:layout_marginBottom="@dimen/component_medium_margin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        tools:layout_editor_absoluteX="8dp"
-                        tools:layout_editor_absoluteY="503dp">
+                        android:text="@string/title"/>
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:scrollbars="vertical"
+                        android:paddingTop="2dp"
+                        android:id="@+id/video_title"
+                        android:lines="2"
+                        android:maxLength="2000"
+                        android:imeOptions="actionSend|flagNoEnterAction"
+                        android:inputType="textMultiLine|textCapSentences"
+                        android:background="@android:color/transparent"
+                        android:hint="@string/title_placeholder">
+                    </EditText>
+                </LinearLayout>
+                <View style="@style/Divider.Horizontal"/>
+                <LinearLayout
 
-                        <!--ChipGroup to hold multiple chips and help in removal by getting child elements-->
+                    android:layout_marginStart="@dimen/component_large_margin"
+                    android:layout_marginEnd="@dimen/component_large_margin"
+                    android:layout_marginTop="@dimen/component_medium_margin"
+                    android:layout_marginBottom="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/description"/>
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:scrollbars="vertical"
+                        android:paddingTop="2dp"
+                        android:id="@+id/video_description"
+                        android:lines="2"
+                        android:maxLength="2000"
+                        android:imeOptions="actionSend|flagNoEnterAction"
+                        android:inputType="textMultiLine|textCapSentences"
+                        android:background="@android:color/transparent"
+                        android:hint="@string/your_description">
+                    </EditText>
 
-                        <com.google.android.material.chip.ChipGroup
-                            android:id="@+id/chipGroup"
-                            android:layout_width="wrap_content"
+                </LinearLayout>
+                <View style="@style/Divider.Horizontal"/>
+                <LinearLayout
+
+                    android:layout_marginStart="@dimen/component_large_margin"
+                    android:layout_marginEnd="@dimen/component_large_margin"
+                    android:layout_marginTop="@dimen/component_medium_margin"
+                    android:layout_marginBottom="@dimen/component_medium_margin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Privacy"/>
+                    <Spinner
+                        android:layout_gravity="start"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="20dp"
+                        android:textAlignment="textStart"
+                        android:id="@+id/privacy_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+                <View style="@style/Divider.Horizontal"/>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_marginStart="@dimen/component_large_margin"
+                    android:layout_marginEnd="@dimen/component_large_margin"
+                    android:layout_marginTop="@dimen/component_medium_margin"
+                    android:layout_marginBottom="@dimen/component_medium_margin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:text="Tags"/>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/textInputLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        app:hintEnabled="false"
+                        app:errorEnabled="false"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <!--Horizontal ScrollView to accomodate chips overflow by making them scroll-->
+
+                        <HorizontalScrollView
+                            android:id="@+id/horizontal_scroll_view"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:layout_constraintBottom_toBottomOf="@+id/textInputEditText"
-                            app:layout_constraintEnd_toStartOf="@+id/textInputEditText"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/textInputEditText" />
+                            android:scrollbars="none">
 
-                        <!--Entering chip generation text and using commas to detect when a new chip is to be generated-->
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                tools:layout_editor_absoluteX="8dp"
+                                tools:layout_editor_absoluteY="503dp">
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/textInputEditText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingTop="6dp"
-                            android:paddingStart="0dp"
-                            android:hint="Enter your tag"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/chipGroup"
-                            app:layout_constraintTop_toTopOf="parent" />
+                                <!--ChipGroup to hold multiple chips and help in removal by getting child elements-->
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                                <com.google.android.material.chip.ChipGroup
+                                    android:id="@+id/chipGroup"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    app:layout_constraintBottom_toBottomOf="@+id/textInputEditText"
+                                    app:layout_constraintEnd_toStartOf="@+id/textInputEditText"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="@+id/textInputEditText" />
 
-                </HorizontalScrollView>
-            </com.google.android.material.textfield.TextInputLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                                <!--Entering chip generation text and using commas to detect when a new chip is to be generated-->
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/textInputEditText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingTop="6dp"
+                                    android:paddingStart="0dp"
+                                    android:hint="Enter your tag"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toEndOf="@+id/chipGroup"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        </HorizontalScrollView>
+                    </com.google.android.material.textfield.TextInputLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+                <View style="@style/Divider.Horizontal"/>
+            </LinearLayout>
+        </ScrollView>
+
     </LinearLayout>
 </layout>

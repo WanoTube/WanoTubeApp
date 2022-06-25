@@ -57,6 +57,8 @@ class NetworkVideo {
     val createdAt: String = ""
     @SerializedName("updated_at")
     val updatedAt: String = ""
+    @SerializedName("recognition_result")
+    var recognitionResult: NetworkRecognitionResult? = null
 }
 
 
@@ -91,6 +93,8 @@ class NetworkVideoWatch {
     val createdAt: String = ""
     @SerializedName("updated_at")
     val updatedAt: String = ""
+    @SerializedName("recognition_result")
+    var recognitionResult: NetworkRecognitionResult? = null
 }
 
 class UserWatch {

@@ -1,7 +1,5 @@
 package com.wanotube.wanotubeapp.database
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import com.wanotube.wanotubeapp.database.entity.DatabaseAccount
 import com.wanotube.wanotubeapp.database.entity.DatabaseComment
 import com.wanotube.wanotubeapp.database.entity.DatabaseUser
@@ -11,7 +9,6 @@ import com.wanotube.wanotubeapp.domain.Comment
 import com.wanotube.wanotubeapp.domain.User
 import com.wanotube.wanotubeapp.domain.Video
 import com.wanotube.wanotubeapp.util.convertStringToDate
-import java.util.Date
 
 /**
  * Map DatabaseVideos to domain entities
@@ -33,8 +30,13 @@ fun List<DatabaseVideo>.asDomainModel(): List<Video> {
             duration = it.duration,
             authorId = it.authorId,
             type = it.type,
+            recognitionResultTitle = it.recognitionResultTitle.toString(),
+            recognitionResultAlbum = it.recognitionResultAlbum.toString(),
+            recognitionResultArtist = it.recognitionResultArtist.toString(),
+            recognitionResultLabel = it.recognitionResultLabel.toString(),
             createdAt = convertStringToDate(it.createdAt),
-            updatedAt = convertStringToDate(it.updatedAt))
+            updatedAt = convertStringToDate(it.updatedAt)
+        )
     }
 }
 
@@ -53,6 +55,10 @@ fun DatabaseVideo.asDomainModel(): Video {
         duration = duration,
         authorId = authorId,
         type = type,
+        recognitionResultTitle = recognitionResultTitle.toString(),
+        recognitionResultAlbum = recognitionResultAlbum.toString(),
+        recognitionResultArtist = recognitionResultArtist.toString(),
+        recognitionResultLabel = recognitionResultLabel.toString(),
         createdAt = convertStringToDate(createdAt),
         updatedAt = convertStringToDate(updatedAt))
 }
