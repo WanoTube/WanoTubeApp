@@ -30,6 +30,20 @@ import java.util.Date
  */
 fun NetworkVideoContainer.asDatabaseModel(): List<DatabaseVideo> {
     return videos.map {
+        val musicRecognitionResult = it.recognitionResult?.metadata?.music
+        var album = ""
+        var artist = ""
+        var title = ""
+
+        if (musicRecognitionResult?.size != null) {
+            if (musicRecognitionResult.isNotEmpty()) {
+                val music = musicRecognitionResult[0]
+                album = music.album?.name.toString()
+                artist = music.artists?.get(0)?.name.toString()
+                title = music.title.toString()
+            }
+        }
+
         DatabaseVideo(
             id = it.id,
             url = it.url,
@@ -44,6 +58,9 @@ fun NetworkVideoContainer.asDatabaseModel(): List<DatabaseVideo> {
             duration = it.duration,
             authorId = it.authorId,
             type = it.type,
+            recognitionResultTitle = title,
+            recognitionResultAlbum = album,
+            recognitionResultArtist = artist,
             updatedAt = it.updatedAt,
             createdAt = it.createdAt
         )
@@ -66,6 +83,9 @@ fun NetworkVideoWatchContainer.asDatabaseModel(): List<DatabaseVideo> {
             duration = it.duration,
             authorId = it.user?.channelId.toString(), //AuthorId here's userId
             type = it.type,
+            recognitionResultTitle = "",
+            recognitionResultAlbum = "",
+            recognitionResultArtist = "",
             updatedAt = it.updatedAt,
             createdAt = it.createdAt
         )
@@ -73,6 +93,20 @@ fun NetworkVideoWatchContainer.asDatabaseModel(): List<DatabaseVideo> {
 }
 
 fun NetworkVideo.asDatabaseModel(): DatabaseVideo {
+    val musicRecognitionResult = recognitionResult?.metadata?.music
+    var rAlbum = ""
+    var rArtist = ""
+    var rTitle = ""
+
+    if (musicRecognitionResult?.size != null) {
+        if (musicRecognitionResult.isNotEmpty()) {
+            val music = musicRecognitionResult[0]
+            rAlbum = music.album?.name.toString()
+            rArtist = music.artists?.get(0)?.name.toString()
+            rTitle = music.title.toString()
+        }
+    }
+
     return DatabaseVideo(
         id = id,
         url = url,
@@ -87,6 +121,9 @@ fun NetworkVideo.asDatabaseModel(): DatabaseVideo {
         duration = duration,
         authorId = authorId,
         type = type,
+        recognitionResultTitle = rTitle,
+        recognitionResultAlbum = rAlbum,
+        recognitionResultArtist = rArtist,
         updatedAt = updatedAt,
         createdAt = createdAt
     )
@@ -103,6 +140,20 @@ fun NetworkAccount.asDatabaseModel(): DatabaseAccount {
 }
 
 fun NetworkVideoWatch.asDatabaseModel(): DatabaseVideo {
+    val musicRecognitionResult = recognitionResult?.metadata?.music
+    var rAlbum = ""
+    var rArtist = ""
+    var rTitle = ""
+
+    if (musicRecognitionResult?.size != null) {
+        if (musicRecognitionResult.isNotEmpty()) {
+            val music = musicRecognitionResult[0]
+            rAlbum = music.album?.name.toString()
+            rArtist = music.artists?.get(0)?.name.toString()
+            rTitle = music.title.toString()
+        }
+    }
+
     return DatabaseVideo(
         id = id,
         url = url,
@@ -117,6 +168,9 @@ fun NetworkVideoWatch.asDatabaseModel(): DatabaseVideo {
         duration = duration,
         authorId = "",
         type = type,
+        recognitionResultTitle = rTitle,
+        recognitionResultAlbum = rAlbum,
+        recognitionResultArtist = rArtist,
         updatedAt = updatedAt,
         createdAt = createdAt
     )
@@ -164,7 +218,7 @@ fun NetworkFollowingChannelContainer.asDatabaseModel(): List<DatabaseChannel> {
     return channels.map {
         DatabaseChannel(
             username = it.username.toString(),
-            channelId = it.channelId.toString(),
+            channelId = it.channelId,
             avatar = it.avatar.toString(),
             numberOfFollowers = it.numberOfFollowers
         )
