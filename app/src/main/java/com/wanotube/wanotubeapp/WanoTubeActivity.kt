@@ -226,6 +226,9 @@ abstract class WanoTubeActivity : AppCompatActivity(){
     private var onConnect = Emitter.Listener {
         Timber.e("Video's upload state: %s", "On connect")
         mSocket.on(UploadActivity.UPLOAD_TO_S3, onUpload)
+//        notifyProcessCompleted
+//        notifyRrecognizedCompleted
+//        notifyUploadCompleted
     }
 
     private var onUpload = Emitter.Listener { args ->
@@ -330,6 +333,9 @@ abstract class WanoTubeActivity : AppCompatActivity(){
         if (::mSocket.isInitialized) {
             mSocket.off()
             mSocket.disconnect()
+        }
+        if (::dialog.isInitialized) {
+            dialog.cancel()
         }
     }
 }

@@ -284,16 +284,19 @@ class CameraActivity : WanoTubeActivity(), SurfaceHolder.Callback, AREventListen
             radioEffects.isChecked = false
             radioFilters.isChecked = false
             activeFilterType = 0
+            filterAdapter?.itemList = masks!!
         }
         radioEffects.setOnClickListener {
             radioMasks.isChecked = false
             radioFilters.isChecked = false
             activeFilterType = 1
+            filterAdapter?.itemList = effects!!
         }
         radioFilters.setOnClickListener {
             radioEffects.isChecked = false
             radioMasks.isChecked = false
             activeFilterType = 2
+            filterAdapter?.itemList = filters!!
         }
     }
 
@@ -501,12 +504,6 @@ class CameraActivity : WanoTubeActivity(), SurfaceHolder.Callback, AREventListen
     override fun error(arErrorType: ARErrorType, s: String) {}
     override fun effectSwitched(s: String) {}
 
-    companion object {
-        private const val NUMBER_OF_BUFFERS = 2
-        private const val useExternalCameraTexture = true
-        private const val ASSETS="file:///android_asset/"
-    }
-
     override fun onScrollEnd(currentItemHolder: CarouselAdapter.ViewHolder, adapterPosition: Int) {
     }
 
@@ -533,5 +530,18 @@ class CameraActivity : WanoTubeActivity(), SurfaceHolder.Callback, AREventListen
         viewHolder: CarouselAdapter.ViewHolder?,
         adapterPosition: Int
     ) {
+        if (activeFilterType == 0) {
+            deepAR!!.switchEffect("mask", getFilterPath(masks!![adapterPosition]))
+        } else if (activeFilterType == 1) {
+            deepAR!!.switchEffect("effect", getFilterPath(effects!![adapterPosition]))
+        } else if (activeFilterType == 2) {
+            deepAR!!.switchEffect("filter", getFilterPath(filters!![adapterPosition]))
+        }
+    }
+
+    companion object {
+        private const val NUMBER_OF_BUFFERS = 2
+        private const val useExternalCameraTexture = true
+        private const val ASSETS="file:///android_asset/"
     }
 }
