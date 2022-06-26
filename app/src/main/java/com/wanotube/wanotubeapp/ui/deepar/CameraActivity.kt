@@ -203,7 +203,6 @@ class CameraActivity : WanoTubeActivity(), SurfaceHolder.Callback, AREventListen
         masks!!.add("koala")
         masks!!.add("lion")
         masks!!.add("smallface")
-        masks!!.add("teddycigar")
         masks!!.add("background_segmentation")
         masks!!.add("tripleface")
         masks!!.add("sleepingmask")
@@ -214,12 +213,10 @@ class CameraActivity : WanoTubeActivity(), SurfaceHolder.Callback, AREventListen
         masks!!.add("slash")
         masks!!.add("twistedface")
         masks!!.add("grumpycat")
-        masks!!.add("Helmet_PBR_V1")
+        masks!!.add("helmet")
         effects = ArrayList()
         effects!!.add("none")
-        effects!!.add("fire")
         effects!!.add("rain")
-        effects!!.add("heart")
         effects!!.add("blizzard")
         filters = ArrayList()
         filters!!.add("none")
@@ -263,9 +260,9 @@ class CameraActivity : WanoTubeActivity(), SurfaceHolder.Callback, AREventListen
         recordBtn.setOnClickListener {
             if (recording) {
                 deepAR!!.stopVideoRecording()
-//                        Toast.makeText(applicationContext,
-//                            "Recording " + videoFile!!.name + " saved.",
-//                            Toast.LENGTH_LONG).show()
+                    Toast.makeText(applicationContext,
+                        "Recording " + videoFile!!.name + " saved.",
+                        Toast.LENGTH_LONG).show()
             } else {
                 videoFile = File(getExternalFilesDir(Environment.DIRECTORY_MOVIES),
                     "video_" + SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(
