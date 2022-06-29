@@ -18,7 +18,10 @@ import com.wanotube.wanotubeapp.viewmodels.ChannelViewModel
 
 class ManagementActivity : WanoTubeActivity() {
 
-    var videos: List<Video> = listOf()
+    var currentVideos: List<Video> = listOf()
+    var shortVideos: List<Video> = listOf()
+    var normalvideos: List<Video> = listOf()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityManagementBinding.inflate(layoutInflater)
@@ -55,10 +58,14 @@ class ManagementActivity : WanoTubeActivity() {
 
         channelViewModel.currentChannelVideos.observe(this) {
             it?.let {
-                videos = it.filter {
+                normalvideos = it.filter {
                     video -> video.type == VideoType.NORMAL.name
                 }
-                adapter.data = videos
+                shortVideos = it.filter {
+                    video -> video.type == VideoType.SHORT.name
+                }
+                currentVideos = normalvideos
+                adapter.data = currentVideos
                 binding.managementShimmerViewContainer.stopShimmer()
                 binding.managementShimmerViewContainer.visibility = View.GONE
                 binding.pullToRefreshMyVideos.visibility = View.VISIBLE
@@ -86,14 +93,11 @@ class ManagementActivity : WanoTubeActivity() {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 when (tab.position) {
                     0 -> {
-                        adapter.data = videos.filter {
-                            video -> video.type == VideoType.NORMAL.name
-                        }
+                        adapter.data = normalvideos
                     }
                     1 -> {
-                        adapter.data = videos.filter {
-                            video -> video.type == VideoType.SHORT.name
-                        }
+                        adapter.data = shortVideos
+
                     }
                 }
             }
