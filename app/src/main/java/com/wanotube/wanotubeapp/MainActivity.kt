@@ -31,7 +31,7 @@ class MainActivity : WanoTubeActivity(), IEventListener {
     private var isUploadNormalVideo = true
     
     private lateinit var videoViewModel: WanoTubeViewModel
-
+    private var isCheckCopyrightStatus = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -108,13 +108,21 @@ class MainActivity : WanoTubeActivity(), IEventListener {
                         }
                     }
                     R.id.create -> {
-                        if (checkTokenAvailable(true) && !isBlockedStatus()) {
-                            showBottomSheetDialog()
-                        } else if (isBlockedStatus()) {
-                            MaterialAlertDialogBuilder(this)
-                                .setTitle(resources.getString(R.string.blocked_status_title))
-                                .setMessage(resources.getString(R.string.blocked_status_caption))
-                                .show()
+                        if (checkTokenAvailable(true)) {
+                            if (!isCheckCopyrightStatus) {
+                                getCopyrightStatus()
+                                isCheckCopyrightStatus = true
+                            }
+
+                            val isBlockedStatus = isBlockedStatus()
+                            if (!isBlockedStatus) {
+                                showBottomSheetDialog()
+                            } else {
+                                MaterialAlertDialogBuilder(this)
+                                    .setTitle(resources.getString(R.string.blocked_status_title))
+                                    .setMessage(resources.getString(R.string.blocked_status_caption))
+                                    .show()
+                            }
                         }
                     }
                     else -> validFlag = false
