@@ -63,7 +63,6 @@ abstract class WanoTubeActivity : AppCompatActivity(){
         authToken = null
         mAuthPreferences = AuthPreferences(this)
         mAccountManager = AccountManager.get(this)
-        getCopyrightStatus()
     }
 
     open fun customActionBar() {
