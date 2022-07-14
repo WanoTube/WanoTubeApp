@@ -154,10 +154,10 @@
                                         android:textStyle="bold"
                                         android:textColor="@color/black"
                                         android:text="@string/author_s_name"/>
-                                    <TextView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:text="@string/author_s_followers"/>
+<!--                                    <TextView-->
+<!--                                        android:layout_width="match_parent"-->
+<!--                                        android:layout_height="match_parent"-->
+<!--                                        android:text="@string/author_s_followers"/>-->
                                 </LinearLayout>
                             </LinearLayout>
 

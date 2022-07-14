@@ -19,7 +19,6 @@ import com.wanotube.wanotubeapp.domain.Account
 import com.wanotube.wanotubeapp.domain.Video
 import com.wanotube.wanotubeapp.repository.VideosRepository
 import com.wanotube.wanotubeapp.ui.watch.NewWatchActivity
-import com.wanotube.wanotubeapp.ui.watch.WatchActivity
 import com.wanotube.wanotubeapp.util.toTimeAgo
 
 class HomeAdapter(val application: Application, iEventListener: IEventListener) : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
@@ -82,8 +81,8 @@ class HomeAdapter(val application: Application, iEventListener: IEventListener) 
             Glide.with(thumbnailVideoView.context)
                 .load(item.thumbnail)
                 .placeholder(R.drawable.video_placeholder)
-                .override(480, 269)
                 .centerCrop()
+                .override(480, 269)
                 .into(thumbnailVideoView)
 
             thumbnailVideoView.setOnClickListener{

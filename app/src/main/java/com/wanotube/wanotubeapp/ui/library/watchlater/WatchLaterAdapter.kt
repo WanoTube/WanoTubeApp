@@ -16,7 +16,7 @@ import com.wanotube.wanotubeapp.database.getDatabase
 import com.wanotube.wanotubeapp.domain.Account
 import com.wanotube.wanotubeapp.domain.Video
 import com.wanotube.wanotubeapp.repository.VideosRepository
-import com.wanotube.wanotubeapp.ui.watch.WatchActivity
+import com.wanotube.wanotubeapp.ui.watch.NewWatchActivity
 import com.wanotube.wanotubeapp.util.toTimeAgo
 
 class WatchLaterAdapter(val application: Application) : RecyclerView.Adapter<WatchLaterAdapter.ViewHolder>() {
@@ -77,12 +77,12 @@ class WatchLaterAdapter(val application: Application) : RecyclerView.Adapter<Wat
             Glide.with(thumbnailVideoView.context)
                 .load(item.thumbnail)
                 .placeholder(R.drawable.video_placeholder)
-                .override(480, 269)
                 .centerCrop()
+                .override(480, 269)
                 .into(thumbnailVideoView)
 
             thumbnailVideoView.setOnClickListener{
-                val intent = Intent(context, WatchActivity::class.java)
+                val intent = Intent(context, NewWatchActivity::class.java)
                 intent.putExtra("VIDEO_ID", item.id)
                 intent.putExtra("NEED_TOKEN", false)
                 context.startActivity(intent)
