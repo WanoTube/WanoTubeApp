@@ -14,4 +14,16 @@ interface IUserService {
         @Part email: MultipartBody.Part,
         @Part password: MultipartBody.Part,
     ): Call<LoginResult>
+
+    @Multipart
+    @POST("auth/register")
+    fun signup(
+        @Part email: MultipartBody.Part,
+        @Part username: MultipartBody.Part,
+        @Part firstName: MultipartBody.Part,
+        @Part lastName: MultipartBody.Part,
+        @Part phoneNumber: MultipartBody.Part,
+//        @Part birthDate: MultipartBody.Part,
+        @Part password: MultipartBody.Part,
+    ): Call<LoginResult>
 }
