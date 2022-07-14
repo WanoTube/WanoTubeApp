@@ -1,7 +1,6 @@
 package com.wanotube.wanotubeapp.ui.library.watchhistory
 
 import android.app.Application
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,12 +12,8 @@ import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.database.getDatabase
-import com.wanotube.wanotubeapp.domain.Account
 import com.wanotube.wanotubeapp.domain.Video
 import com.wanotube.wanotubeapp.repository.VideosRepository
-import com.wanotube.wanotubeapp.ui.edit.EditInfoActivity
-import com.wanotube.wanotubeapp.ui.watch.WatchActivity
-import com.wanotube.wanotubeapp.util.toTimeAgo
 
 class VideoHistoryAdapter(val application: Application) : RecyclerView.Adapter<VideoHistoryAdapter.ViewHolder>() {
 
@@ -58,8 +53,8 @@ class VideoHistoryAdapter(val application: Application) : RecyclerView.Adapter<V
             Glide.with(thumbnailVideoView.context)
                 .load(item.thumbnail)
                 .placeholder(R.drawable.video_placeholder)
-                .override(480, 269)
                 .centerCrop()
+                .override(480, 269)
                 .into(thumbnailVideoView)
 
             //TODO

@@ -16,7 +16,7 @@ import com.google.android.material.textview.MaterialTextView
 import com.wanotube.wanotubeapp.R
 import com.wanotube.wanotubeapp.domain.Video
 import com.wanotube.wanotubeapp.ui.edit.EditInfoActivity
-import com.wanotube.wanotubeapp.ui.watch.WatchActivity
+import com.wanotube.wanotubeapp.ui.watch.NewWatchActivity
 
 class ManagementAdapter : RecyclerView.Adapter<ManagementAdapter.ViewHolder>() {
     
@@ -56,13 +56,13 @@ class ManagementAdapter : RecyclerView.Adapter<ManagementAdapter.ViewHolder>() {
             Glide.with(thumbnailVideoView.context)
                 .load(item.thumbnail)
                 .placeholder(R.drawable.video_placeholder)
-                .override(480, 269)
                 .centerCrop()
+                .override(480, 269)
                 .into(thumbnailVideoView)
 
             val context = thumbnailVideoView.context
             thumbnailVideoView.setOnClickListener{
-                val intent = Intent(context, WatchActivity::class.java)
+                val intent = Intent(context, NewWatchActivity::class.java)
                 intent.putExtra("VIDEO_ID", item.id)
                 intent.putExtra("NEED_TOKEN", true)
                 context.startActivity(intent)
