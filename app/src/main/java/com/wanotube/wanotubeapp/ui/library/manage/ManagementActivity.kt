@@ -37,7 +37,7 @@ class ManagementActivity : WanoTubeActivity() {
 
         binding.channelViewModel = channelViewModel
 
-        val adapter = ManagementAdapter()
+        val adapter = ManagementAdapter(application)
 
         binding.videoManagementList.apply {
             this.adapter = adapter

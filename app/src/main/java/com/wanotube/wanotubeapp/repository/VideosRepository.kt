@@ -319,4 +319,32 @@ class VideosRepository(private val database: AppDatabase) {
         }
         return null
     }
+
+    fun deleteVideo(videoId: String) {
+        val mAuthPreferences = context?.let { AuthPreferences(it) }
+        mAuthPreferences?.authToken?.let {
+            val videoService: IVideoService? =
+                ServiceGenerator.createService(IVideoService::class.java, it)
+            val response = videoService?.deleteVideo(MultipartBody.Part.createFormData(
+                "id",
+                videoId
+            ))
+            response?.enqueue(object : Callback<NetworkVideo> {
+
+                override fun onResponse(
+                    call: Call<NetworkVideo>?,
+                    response: Response<NetworkVideo?>?,
+                ) {
+                    if (response?.code() == 204) {
+                        Timber.e("Deleted Video")
+                    } else {
+                        Timber.e("Cannot delete video")
+                    }
+                }
+                override fun onFailure(call: Call<NetworkVideo>?, t: Throwable?) {
+                    Timber.e("Failed: error: %s", t.toString())
+                }
+            })
+        }
+    }
 }

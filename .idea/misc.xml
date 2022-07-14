@@ -44,6 +44,7 @@
         <entry key="app/src/main/res/layout/fragment_signup_tab.xml" value="0.1375" />
         <entry key="app/src/main/res/layout/home_shimmer_placeholder_layout.xml" value="0.37604166666666666" />
         <entry key="app/src/main/res/layout/home_video_component_list.xml" value="0.3591485507246377" />
+        <entry key="app/src/main/res/layout/manage_video_menu_dialog.xml" value="0.1" />
         <entry key="app/src/main/res/layout/management_video_component_list.xml" value="0.8448125203450522" />
         <entry key="app/src/main/res/layout/profile_text_field.xml" value="0.19479166666666667" />
         <entry key="app/src/main/res/layout/profile_video_component_list.xml" value="0.3591485507246377" />

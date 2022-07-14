@@ -29,6 +29,10 @@ interface IVideoService {
     fun getVideoWithAuthorization(@Path("id") id: String): Call<NetworkVideoWatch>?
 
     @Multipart
+    @POST("videos/delete")
+    fun deleteVideo(@Part id: MultipartBody.Part): Call<NetworkVideo>?
+
+    @Multipart
     @POST("videos/upload")
     fun uploadVideo(
         @Part title: MultipartBody.Part,

@@ -1,6 +1,7 @@
 package com.wanotube.wanotubeapp.ui.library.manage
 
 import android.annotation.SuppressLint
+import android.app.Application
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -14,11 +15,13 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textview.MaterialTextView
 import com.wanotube.wanotubeapp.R
+import com.wanotube.wanotubeapp.database.getDatabase
 import com.wanotube.wanotubeapp.domain.Video
+import com.wanotube.wanotubeapp.repository.VideosRepository
 import com.wanotube.wanotubeapp.ui.edit.EditInfoActivity
 import com.wanotube.wanotubeapp.ui.watch.NewWatchActivity
 
-class ManagementAdapter : RecyclerView.Adapter<ManagementAdapter.ViewHolder>() {
+class ManagementAdapter(val application: Application) : RecyclerView.Adapter<ManagementAdapter.ViewHolder>() {
     
     var data =  listOf<Video>()
         @SuppressLint("NotifyDataSetChanged")
@@ -35,10 +38,10 @@ class ManagementAdapter : RecyclerView.Adapter<ManagementAdapter.ViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder.from(parent)
+        return ViewHolder.from(application, parent)
     }
 
-    class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(
+    class ViewHolder private constructor(val application: Application, itemView: View) : RecyclerView.ViewHolder(
         itemView
     ){
 
@@ -77,6 +80,7 @@ class ManagementAdapter : RecyclerView.Adapter<ManagementAdapter.ViewHolder>() {
                         context.startActivity(intent)
                     }
                     findViewById<LinearLayout>(R.id.delete_video)?.setOnClickListener {
+                        deleteVideo(item.id)
                     }
                     show()
                 }
@@ -93,15 +97,19 @@ class ManagementAdapter : RecyclerView.Adapter<ManagementAdapter.ViewHolder>() {
                     .setMessage(copyrightTitle + "\n" + copyrightLabel)
                     .show()
             }
+        }
 
+        private fun deleteVideo(videoId: String) {
+            val videosRepository = VideosRepository(getDatabase(application))
+            videosRepository.deleteVideo(videoId)
         }
 
         companion object {
-            fun from(parent: ViewGroup): ViewHolder {
+            fun from(application: Application, parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater
                     .inflate(R.layout.management_video_component_list, parent, false)
-                return ViewHolder(view)
+                return ViewHolder(application, view)
             }
         }
     }
