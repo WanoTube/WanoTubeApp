@@ -99,22 +99,22 @@
             app:layout_constraintWidth_percent=".8" />
 
 
-        <EditText
-            android:id="@+id/birth_date"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:hint="@string/birth_date"
-            android:inputType="date"
-            android:paddingLeft="20dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/phone_number"
-            app:layout_constraintVertical_bias="0"
-            app:layout_constraintWidth_percent=".8" />
+<!--        <EditText-->
+<!--            android:id="@+id/birth_date"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:hint="@string/birth_date"-->
+<!--            android:inputType="date"-->
+<!--            android:paddingLeft="20dp"-->
+<!--            android:paddingTop="10dp"-->
+<!--            android:paddingBottom="10dp"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/phone_number"-->
+<!--            app:layout_constraintVertical_bias="0"-->
+<!--            app:layout_constraintWidth_percent=".8" />-->
 
         <EditText
             android:id="@+id/password"
@@ -130,11 +130,12 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/birth_date"
+            app:layout_constraintTop_toBottomOf="@+id/phone_number"
             app:layout_constraintVertical_bias="0"
             app:layout_constraintWidth_percent=".8" />
 
         <Button
+            android:id="@+id/btn_signup"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintWidth_percent=".8"

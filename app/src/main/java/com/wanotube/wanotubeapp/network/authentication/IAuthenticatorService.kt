@@ -11,7 +11,14 @@ interface IAuthenticatorService {
      * @param password
      * @return Access token
      */
-    fun signUp(email: String?, username: String?, password: String?): String?
+    fun signUp(
+        email: String,
+        username: String,
+        password: String,
+        firstName: String,
+        lastName: String,
+        phoneNumber: String,)
+    :Call<LoginResult>?
 
     /**
      * Logs the user in and returns its auth token.
