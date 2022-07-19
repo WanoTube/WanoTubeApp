@@ -1,7 +1,6 @@
 package com.wanotube.wanotubeapp.ui.edit
 
 import android.annotation.SuppressLint
-import android.content.res.Resources
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -14,6 +13,7 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
+import com.bumptech.glide.Glide
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.util.Util
@@ -25,9 +25,10 @@ import com.wanotube.wanotubeapp.database.asDomainModel
 import com.wanotube.wanotubeapp.database.getDatabase
 import com.wanotube.wanotubeapp.databinding.ActivityEditVideoInfoBinding
 import com.wanotube.wanotubeapp.domain.Video
+import com.wanotube.wanotubeapp.network.asDatabaseModel
+import com.wanotube.wanotubeapp.network.authentication.AuthPreferences
 import com.wanotube.wanotubeapp.network.objects.NetworkVideo
 import com.wanotube.wanotubeapp.network.objects.NetworkVideoWatch
-import com.wanotube.wanotubeapp.network.asDatabaseModel
 import com.wanotube.wanotubeapp.repository.VideosRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -37,7 +38,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import timber.log.Timber
 
-class EditInfoActivity: WanoTubeActivity(), AdapterView.OnItemSelectedListener  {
+
+class EditInfoActivity: WanoTubeActivity() {
 
     private var videoId: String = ""
     private lateinit var video: Video
@@ -89,6 +91,19 @@ class EditInfoActivity: WanoTubeActivity(), AdapterView.OnItemSelectedListener  
     
     private fun addResourceForSpinner() {
         val privacySpinner = viewBinding.privacySpinner
+        privacySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+
+                val selectedItem: String = parent.getItemAtPosition(position).toString()
+                if (selectedItem == "Add new category") {
+                    Timber.e("onItemSelected: $position")
+                    visibility = position
+
+                }
+            } // to close the onItemSelected
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
 
         ArrayAdapter.createFromResource(
             this,
@@ -227,6 +242,14 @@ class EditInfoActivity: WanoTubeActivity(), AdapterView.OnItemSelectedListener  
         titleText.setText(video.title)
         descriptionText.setText(video.description)
         visibility = video.visibility
+        mAuthPreferences = AuthPreferences(this)
+
+        Glide.with(viewBinding.avatarAuthor.context)
+            .load(mAuthPreferences?.avatar)
+            .placeholder(R.drawable.image_placeholder)
+            .circleCrop()
+            .into(viewBinding.avatarAuthor)
+        viewBinding.username.text = mAuthPreferences?.username?: ""
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
@@ -280,14 +303,6 @@ class EditInfoActivity: WanoTubeActivity(), AdapterView.OnItemSelectedListener  
                 Timber.e("Failed: %s", t.toString())
             }
         })
-    }
-
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        visibility = position
-    }
-
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-        parent?.setSelection(visibility)
     }
 
     private fun handleChip() {

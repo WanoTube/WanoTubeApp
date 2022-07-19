@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.app.ShareCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -19,6 +20,7 @@ import com.wanotube.wanotubeapp.domain.Account
 import com.wanotube.wanotubeapp.domain.Video
 import com.wanotube.wanotubeapp.repository.VideosRepository
 import com.wanotube.wanotubeapp.ui.watch.NewWatchActivity
+import com.wanotube.wanotubeapp.util.Constant
 import com.wanotube.wanotubeapp.util.toTimeAgo
 
 class HomeAdapter(val application: Application, iEventListener: IEventListener) : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
@@ -101,6 +103,11 @@ class HomeAdapter(val application: Application, iEventListener: IEventListener) 
                         bottomSheetDialog.hide()
                     }
                     findViewById<LinearLayout>(R.id.share)?.setOnClickListener {
+                        ShareCompat.IntentBuilder(menuView.context)
+                            .setType("text/plain")
+                            .setChooserTitle("Share URL")
+                            .setText("${Constant.PRODUCTION_WEB_URL}/watch/${item.id}")
+                            .startChooser()
                     }
                     show()
                 }

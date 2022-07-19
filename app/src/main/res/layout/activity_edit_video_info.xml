@@ -34,6 +34,7 @@
                 android:layout_height="@dimen/avatar_size"
                 android:src="@drawable/user"/>
             <TextView
+                android:id="@+id/username"
                 android:layout_marginStart="@dimen/layout_start_margin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
