@@ -77,6 +77,7 @@
                             android:layout_marginTop="8dp"
                             android:layout_marginStart="20dp"
                             android:layout_marginBottom="16dp"
+                            android:layout_gravity="center"
                             android:orientation="horizontal">
                             <LinearLayout
                                 android:layout_width="100dp"
@@ -139,11 +140,12 @@
                                     android:src="@drawable/user"/>
                                 <LinearLayout
                                     android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="match_parent"
                                     android:layout_marginStart="16dp"
                                     android:layout_marginEnd="16dp"
                                     android:layout_marginTop="2dp"
                                     android:layout_marginBottom="2dp"
+                                    android:gravity="center"
 
                                     android:orientation="vertical">
 
@@ -151,6 +153,8 @@
                                         android:id="@+id/author_name"
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
+                                        android:gravity="center"
+                                        android:textAlignment="center"
                                         android:textStyle="bold"
                                         android:textColor="@color/black"
                                         android:text="@string/author_s_name"/>

@@ -76,8 +76,8 @@ class ManagementAdapter : RecyclerView.Adapter<ManagementAdapter.ViewHolder>() {
                         intent.putExtra("VIDEO_ID", item.id)
                         context.startActivity(intent)
                     }
-                    findViewById<LinearLayout>(R.id.delete_video)?.setOnClickListener {
-                    }
+//                    findViewById<LinearLayout>(R.id.delete_video)?.setOnClickListener {
+//                    }
                     show()
                 }
             }
