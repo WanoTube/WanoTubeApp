@@ -44,6 +44,11 @@ class NetworkUser {
     @Expose
     var updatedAt: String? = null
 
+
+    @SerializedName("description")
+    @Expose
+    var description: String? = null
+
     @SerializedName("__v")
     @Expose
     var v: Int? = null

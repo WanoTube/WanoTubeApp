@@ -1,16 +1,8 @@
 package com.wanotube.wanotubeapp.network.services
 
-import com.wanotube.wanotubeapp.network.objects.NetworkAccount
-import com.wanotube.wanotubeapp.network.objects.NetworkCopyrightStatus
-import com.wanotube.wanotubeapp.network.objects.NetworkFollow
-import com.wanotube.wanotubeapp.network.objects.NetworkFollowingChannelContainer
-import com.wanotube.wanotubeapp.network.objects.NetworkVideoContainer
-import com.wanotube.wanotubeapp.network.objects.UserResult
+import com.wanotube.wanotubeapp.network.objects.*
 import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.Headers
-import retrofit2.http.PATCH
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface IChannelService {
     @Headers("isDisableAuthorization:true")
@@ -42,4 +34,15 @@ interface IChannelService {
 
     @GET("users/copyright-status")
     fun getCopyrightStatus(): Call<NetworkCopyrightStatus>?
+
+    @PUT("users/update")
+    fun updateUser(
+        @Path("first_name") firstName: String,
+        @Path("last_name") lastName: String,
+        @Path("gender") gender: String,
+        @Path("birth_date") birthDate: String,
+        @Path("phone_number") phoneNumber: String,
+        @Path("description") description: String,
+        @Path("country") country: String
+    ): Call<NetworkUser>?
 }

@@ -6,16 +6,7 @@ import com.wanotube.wanotubeapp.database.entity.DatabaseComment
 import com.wanotube.wanotubeapp.database.entity.DatabaseUser
 import com.wanotube.wanotubeapp.database.entity.DatabaseVideo
 import com.wanotube.wanotubeapp.database.entity.DatabaseWatchHistory
-import com.wanotube.wanotubeapp.network.objects.NetworkAccount
-import com.wanotube.wanotubeapp.network.objects.NetworkComment
-import com.wanotube.wanotubeapp.network.objects.NetworkCommentContainer
-import com.wanotube.wanotubeapp.network.objects.NetworkFollowingChannelContainer
-import com.wanotube.wanotubeapp.network.objects.NetworkVideo
-import com.wanotube.wanotubeapp.network.objects.NetworkVideoContainer
-import com.wanotube.wanotubeapp.network.objects.NetworkVideoWatch
-import com.wanotube.wanotubeapp.network.objects.NetworkVideoWatchContainer
-import com.wanotube.wanotubeapp.network.objects.NetworkWatchHistoryContainer
-import com.wanotube.wanotubeapp.network.objects.UserId
+import com.wanotube.wanotubeapp.network.objects.*
 import com.wanotube.wanotubeapp.util.convertStringToDate
 import java.util.Date
 
@@ -244,4 +235,18 @@ fun NetworkWatchHistoryContainer.asDatabaseModel(): List<DatabaseWatchHistory> {
             videos = it.videos
         )
     }
+}
+
+fun NetworkUser.asDatabaseModel(): DatabaseUser {
+    return DatabaseUser(
+        id = id.toString(),
+        firstName = firstName.toString(),
+        lastName = lastName.toString(),
+        gender = gender.toString(),
+        phoneNumber = phoneNumber.toString(),
+        country = country.toString(),
+        avatar = avatar.toString(),
+        description = description?: "",
+        birthDate = Date()
+    )
 }

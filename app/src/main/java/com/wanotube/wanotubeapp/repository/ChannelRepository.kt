@@ -7,15 +7,10 @@ import com.wanotube.wanotubeapp.database.AppDatabase
 import com.wanotube.wanotubeapp.database.asDomainModel
 import com.wanotube.wanotubeapp.domain.Account
 import com.wanotube.wanotubeapp.network.services.IChannelService
-import com.wanotube.wanotubeapp.network.objects.NetworkAccount
-import com.wanotube.wanotubeapp.network.objects.NetworkVideoContainer
 import com.wanotube.wanotubeapp.network.ServiceGenerator
-import com.wanotube.wanotubeapp.network.objects.UserResult
 import com.wanotube.wanotubeapp.network.asDatabaseModel
 import com.wanotube.wanotubeapp.network.authentication.AuthPreferences
-import com.wanotube.wanotubeapp.network.objects.NetworkCopyrightStatus
-import com.wanotube.wanotubeapp.network.objects.NetworkFollow
-import com.wanotube.wanotubeapp.network.objects.NetworkFollowingChannelContainer
+import com.wanotube.wanotubeapp.network.objects.*
 import com.wanotube.wanotubeapp.network.services.IVideoService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -170,5 +165,28 @@ class ChannelRepository(private val database: AppDatabase) {
 
     fun clearVideos() {
         database.videoDao.clearVideos()
+    }
+
+    fun updateUser(firstName: String,
+                   lastName: String,
+                   gender: String,
+                   birthDate: String,
+                   phoneNumber: String,
+                   description: String,
+                   country: String,
+    ): Call<NetworkUser>? {
+        val mAuthPreferences = context?.let { AuthPreferences(it) }
+        mAuthPreferences?.authToken?.let {
+            return ServiceGenerator.createService(IChannelService::class.java, it)?.updateUser(
+                firstName,
+                lastName,
+                gender,
+                birthDate,
+                phoneNumber,
+                description,
+                country
+            )
+        }
+        return null
     }
 }
