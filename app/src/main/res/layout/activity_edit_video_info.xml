@@ -150,29 +150,29 @@
 
                 </LinearLayout>
                 <View style="@style/Divider.Horizontal"/>
-                <LinearLayout
+<!--                <LinearLayout-->
 
-                    android:layout_marginStart="@dimen/component_large_margin"
-                    android:layout_marginEnd="@dimen/component_large_margin"
-                    android:layout_marginTop="@dimen/component_medium_margin"
-                    android:layout_marginBottom="@dimen/component_medium_margin"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+<!--                    android:layout_marginStart="@dimen/component_large_margin"-->
+<!--                    android:layout_marginEnd="@dimen/component_large_margin"-->
+<!--                    android:layout_marginTop="@dimen/component_medium_margin"-->
+<!--                    android:layout_marginBottom="@dimen/component_medium_margin"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:orientation="vertical">-->
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Privacy"/>
-                    <Spinner
-                        android:layout_gravity="start"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="20dp"
-                        android:textAlignment="textStart"
-                        android:id="@+id/privacy_spinner"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
+<!--                    <TextView-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="Privacy"/>-->
+<!--                    <Spinner-->
+<!--                        android:layout_gravity="start"-->
+<!--                        android:layout_marginTop="5dp"-->
+<!--                        android:layout_marginBottom="20dp"-->
+<!--                        android:textAlignment="textStart"-->
+<!--                        android:id="@+id/privacy_spinner"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content" />-->
+<!--                </LinearLayout>-->
                 <View style="@style/Divider.Horizontal"/>
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_marginStart="@dimen/component_large_margin"
