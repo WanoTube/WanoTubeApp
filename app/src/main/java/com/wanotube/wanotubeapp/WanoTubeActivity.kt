@@ -132,7 +132,7 @@ abstract class WanoTubeActivity : AppCompatActivity(){
         mAuthPreferences!!.authToken = null
         mAuthPreferences!!.email = null
         mAuthPreferences!!.username = null
-        
+
         // Open LoginActivity
         openLoginActivity()
     }
@@ -197,6 +197,7 @@ abstract class WanoTubeActivity : AppCompatActivity(){
                     }
                 }
                 override fun onFailure(call: Call<NetworkVideo>?, t: Throwable?) {
+                    finishUploading()
                     Timber.e("Failed: %s", t.toString())
                 }
             })
