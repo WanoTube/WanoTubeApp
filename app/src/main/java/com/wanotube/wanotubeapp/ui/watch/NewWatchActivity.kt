@@ -10,6 +10,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.app.ShareCompat
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
@@ -93,6 +94,9 @@ class NewWatchActivity : WanoTubeActivity() {
         initAdapter()
         getVideo()
         setClickListeners()
+        findViewById<AppCompatImageView>(R.id.cross_im).setOnClickListener {
+            finish()
+        }
         loadCommentAuthorAvatar()
     }
 
