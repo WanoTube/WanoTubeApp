@@ -28,18 +28,23 @@
         <entry key="app/src/main/res/drawable/rounded_corners.xml" value="0.234" />
         <entry key="app/src/main/res/layout/activity_camera.xml" value="0.3390975952148438" />
         <entry key="app/src/main/res/layout/activity_edit_video_info.xml" value="0.31305449936628643" />
-        <entry key="app/src/main/res/layout/activity_new_watch.xml" value="0.22760416666666666" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.16770833333333332" />
+        <entry key="app/src/main/res/layout/activity_management.xml" value="0.16770833333333332" />
+        <entry key="app/src/main/res/layout/activity_my_video.xml" value="0.16666666666666666" />
+        <entry key="app/src/main/res/layout/activity_new_watch.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_watch.xml" value="0.42769607843137253" />
         <entry key="app/src/main/res/layout/activity_watch_history.xml" value="0.22760416666666666" />
         <entry key="app/src/main/res/layout/choose_video_dialog_layout.xml" value="0.22760416666666666" />
         <entry key="app/src/main/res/layout/circle_button.xml" value="0.4758565266927085" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.3591485507246377" />
         <entry key="app/src/main/res/layout/fragment_library.xml" value="0.22760416666666666" />
+        <entry key="app/src/main/res/layout/fragment_login_tab.xml" value="0.16770833333333332" />
         <entry key="app/src/main/res/layout/fragment_old_profile.xml" value="0.3591485507246377" />
-        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.42902984619140627" />
+        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_signup_tab.xml" value="0.1375" />
         <entry key="app/src/main/res/layout/home_shimmer_placeholder_layout.xml" value="0.37604166666666666" />
         <entry key="app/src/main/res/layout/home_video_component_list.xml" value="0.3591485507246377" />
-        <entry key="app/src/main/res/layout/management_video_component_list.xml" value="0.31614583333333335" />
+        <entry key="app/src/main/res/layout/management_video_component_list.xml" value="0.8448125203450522" />
         <entry key="app/src/main/res/layout/profile_text_field.xml" value="0.19479166666666667" />
         <entry key="app/src/main/res/layout/profile_video_component_list.xml" value="0.3591485507246377" />
         <entry key="app/src/main/res/layout/watch_history_component_list.xml" value="0.31614583333333335" />
