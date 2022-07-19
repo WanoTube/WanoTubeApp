@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="privacy_array">
-        <item>Public</item>
         <item>Private</item>
+        <item>Public</item>
     </string-array>
 </resources>
